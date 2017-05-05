@@ -1,5 +1,5 @@
 " vim: nowrap fenc=utf-8 ff=unix sw=2
-" Last Change: 2016-09-26 11:03:00
+" Last Change: 2017-05-05 08:18:44
 
 if exists("g:loaded_myvimrc") | finish | endif
 let g:loaded_myvimrc = 1
@@ -97,7 +97,12 @@ try
 	let link = a:lk
       endif
 
-      exec "e D:/Links/" . link
+      let filename = "C:/Users/Joe/Links/" . link
+      if file_readable(filename)
+        exec "e ".filename
+      else
+	echohl WarningMsg | echo "Shortcut not exists: ". a:lk | echohl None
+      endif
     endfunction
   endif
 endtry
@@ -188,7 +193,7 @@ vnoremap <C-k> :m '<-2<CR>gv
 nnoremap <silent> \L	:call <SID>Jump2Animelist()<CR>
 function s:Jump2Animelist ()
   if has('win32')
-    let l:filename = "~/vimfiles/.about anime/1-list"
+    let l:filename = "~/vimfiles/.anime/1-list"
   else
     let l:filename = "$HOME/Documents/.about anime/1-list"
   endif
