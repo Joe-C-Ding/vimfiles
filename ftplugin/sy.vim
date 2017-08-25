@@ -1,8 +1,9 @@
+" sy.vim	vim: ts=8 sw=4
 " Vim filetype plugin file for my own use.
 " Language:	seiyu-record
 " Maintainer:	Joe Ding
-" Version:	3.0
-" Last Changed: 2016-01-25 10:11:31
+" Version:	3.2
+" Last Change:	2017-08-25 18:15:44
 
 if exists("b:my_ftpsy") | finish | endif
 let b:my_ftpsy = 1
@@ -38,7 +39,7 @@ function! s:Modify()
 endfunction	" }}}2
 
 " some covenience map		{{{1
-nnoremap <buffer> \L	:e ~/Documents/.about\ anime/1-list<CR>
+nnoremap <buffer> \L	:e ~/Documents/.anime/1-list<CR>
 nnoremap <buffer> \m	:marks<CR>
 nnoremap <buffer><silent> \d	:if !bufloaded(bufnr("dic.txt")) <bar> tabedit ~/dic.txt <bar> endif <CR>
 nnoremap <buffer><silent> \s	:<C-u>call <SID>Grep("")<CR>
@@ -118,11 +119,81 @@ function! CopyCast()	"{{{2
 endfunction	" }}}2
 
 " fill text			{{{1
-nnoremap <buffer><expr> ;g "^a" . repeat(' ', 6) . "<ESC>+"
-nnoremap <buffer><expr> ;h "^a" . repeat(' ', 4) . "<ESC>+"
-nnoremap <buffer><expr> ;j "^a <ESC>la <ESC>+"
-nnoremap <buffer><expr> ;k "la". repeat(' ', 2) . "<ESC>+"
-nnoremap <buffer><expr> ;l "a" . repeat(' ', 2) . "<ESC>+"
+" hit enter at the end of line triger to fill character name as well as
+" re-indent this line, so that the colon of each line will be aligned
+inoremap <buffer> <CR>	<ESC>:call <SID>FillLine()<CR>o
+
+let s:charWidth = 8
+let s:syRecorde = '^\s*\zs\([^：]\+\)\ze：[^-（]\+\%(（.*）\)\=$'
+
+function! s:FillLine ()
+    " only profrem action when hit ender at the end of line.
+    if virtcol('.') < virtcol('$')-1
+	return
+    endif
+
+    call s:DoFillLine(s:LastColonPos())
+endfunction
+
+function! s:LastColonPos ()
+    "find the last line that containts character's record
+    let line = search(s:syRecorde, 'bnWz')
+    if line == 0
+	return 12   " default postion
+    else
+	" and return at which display-column the colon is
+	let line = getline(line)
+	let col = strdisplaywidth(matchstr(line, '^[^：]*'))
+	return col
+    endif
+endfunction
+
+function! s:DoFillLine (colpos)
+    let line = getline('.')
+    let char = matchstr(line, s:syRecorde)
+    if char == ""
+	return
+    endif
+
+    " fill character to a desired width
+    let width = strdisplaywidth(char)
+    if width < s:charWidth
+	let char = s:Adjust(char)
+	let width = strdisplaywidth(char)
+    endif
+
+    " calculate indentation
+    let indent = repeat(' ', a:colpos - width)
+    let line = substitute(line, '^[^：]*', indent . char, "")
+    call setline(line('.'), line)
+endfunction
+
+function! s:Adjust (char)
+    let length = strchars(a:char)
+    let width = strdisplaywidth(a:char)
+
+    if length == 1  " A_____
+	let rslt = a:char . repeat(' ', s:charWidth - width)
+
+    elseif length == 2	" A____A
+	let rslt = strcharpart(a:char, 0, 1)
+		\. repeat(' ', s:charWidth - width)
+		\. strcharpart(a:char, 1, 1)
+
+    elseif length == 3	" A_A__A
+	let blank = (s:charWidth - width) / 2
+	let rslt = strcharpart(a:char, 0, 1)
+		\. repeat(' ', blank)
+		\. strcharpart(a:char, 1, 1)
+		\. repeat(' ', s:charWidth - width - blank)
+		\. strcharpart(a:char, 2, 1)
+
+    else    " AAA__
+	let rslt = a:char . repeat(' ', s:charWidth - width)
+    endif
+
+    return rslt
+endfunction
 
 " insert text			{{{1
 nnoremap <buffer><expr> ;a "I# <ESC>:put =repeat('=', 36)<CR>YkPjA"

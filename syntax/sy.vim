@@ -2,8 +2,8 @@
 " Vim syntax file for *.sy
 " Language:	seiyu-record
 " Maintainer:	Joe Ding
-" Version:	1.9.0
-" Last Change:	2016-10-26 09:51:26
+" Version:	1.9.1
+" Last Change:	2017-08-25 12:48:44
 
 if exists("b:current_syntax") | finish | endif
 
@@ -18,7 +18,7 @@ syn match  syEpisodeNo display /^# \=\S\+/ contained contains=NONE
 
 
 " Main body {{{2
-syn match syCastLine	display /^[^：]*：[^-（]*\%(（.*）\)\=$/ contains=syCharacter,sySeiyu,syDescription
+syn match syCastLine	display /^[^：]\+：[^-（]*\%(（.*）\)\=$/ contains=syCharacter,sySeiyu,syDescription
 syn match syCharacter	display /^\s*\zs[^：]*\S\@<=/ contained contains=syError
 syn match sySeiyu	display /：\s*\zs[^-（：]*\S\@<=/ contained contains=syError
 syn match syDescription	display /（.*）/ contained contains=syDscSptor,syOriginal

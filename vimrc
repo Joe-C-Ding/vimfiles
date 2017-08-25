@@ -150,10 +150,10 @@ else
   vnoremap <unique> <F2>	"+ygv
 endif
 
-" <F3>/<F4> to jump to next/previous
-nnoremap <unique><expr> <F3>	Next(0)
-nnoremap <unique><expr> <F4>	Next(1)
-function Next ( reverse )
+" <F3>/<F4> to jump to next/previous item
+nnoremap <unique><expr> <F3>	<SID>Next(0)
+nnoremap <unique><expr> <F4>	<SID>Next(1)
+function s:Next ( reverse )
   if empty(getqflist())
     if empty(getloclist(0))
       return a:reverse ? ":Next\<CR>" : ":next\<CR>"
@@ -162,6 +162,21 @@ function Next ( reverse )
     endif
   else
       return a:reverse ? ":cNext\<CR>" : ":cnext\<CR>"
+  endif
+endfunction
+
+" <F8>/<F9> to jump to next/previous file
+nnoremap <unique><expr> <F8>	<SID>NextFile(0)
+nnoremap <unique><expr> <F9>	<SID>NextFile(1)
+function s:NextFile ( reverse )
+  if empty(getqflist())
+    if empty(getloclist(0))
+      return a:reverse ? ":Next\<CR>" : ":next\<CR>"
+    else
+      return a:reverse ? ":lNfile\<CR>" : ":lnfile\<CR>"
+    endif
+  else
+      return a:reverse ? ":cNfile\<CR>" : ":cnfile\<CR>"
   endif
 endfunction
 
@@ -204,6 +219,33 @@ function s:Jump2Animelist ()
     exec "e ".escape(l:filename, ' \')
   endif
 endfunction
+
+" Delete pairs
+let s:pairs = {
+      \  '"': '"',
+      \  '(': ')',
+      \  '[': ']',
+      \  '{': '}',
+      \  '<': '>',
+      \}
+
+function! Backspace ()
+  let line = getline('.')
+  let col = col('.') - 1
+  let char = line[col-1]
+
+  let keys = "\<BS>"
+  try
+    " s:pairs[char] may throw exception
+    if s:pairs[char] == line[col]
+      let keys .= "\<DEL>"
+    endif
+  finally
+    return keys
+  endtry
+endfunction
+
+inoremap <expr> <BS> Backspace()
 
 
 

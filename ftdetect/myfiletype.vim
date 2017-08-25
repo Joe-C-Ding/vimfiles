@@ -3,12 +3,12 @@
 " Language:	Vim-script
 " Maintainer:	Joe Ding
 " Version:	0.3
-" Last Change:	2016-10-26 09:50:18
+" Last Change:	2017-02-15 17:04:41
 
 augroup myft
     au BufNewfile,BufRead *.sy	setf sy
     if has('win32')
-	au BufNewfile,BufRead ~/vimfiles/.about\ anime/s\ 声優资料/* setf sy
+	au BufNewfile,BufRead ~/vimfiles/.anime/s\ 声優资料/* setf sy
     else
 	au BufNewfile,BufRead ~/Documents/.about\ anime/s\ 声優资料/* setf sy
     endif

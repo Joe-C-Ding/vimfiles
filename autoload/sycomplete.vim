@@ -1,11 +1,12 @@
+" sycomplete.vim	vim: ts=8 sw=4
 " Vim completion script for sy-rec
 " Language:	seiyu-record
 " Maintainer:	Joe Ding
 " Version:	2.3
-" Last Changed: 2016-02-25 08:30:43
+" Last Change:	2017-02-15 17:06:02
 
-let s:data_base = '~/vimfiles/.about anime/data/seiyu'
-let s:search_root = '~/vimfiles/.about anime/s 声優资料/'
+let s:data_base = '~/vimfiles/.anime/data/seiyu'
+let s:search_root = '~/vimfiles/.anime/s 声優资料/'
 
 if !exists("*s:Cons_db")
     let s:db = {}
