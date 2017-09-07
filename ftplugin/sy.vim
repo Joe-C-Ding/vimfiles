@@ -3,7 +3,7 @@
 " Language:	seiyu-record
 " Maintainer:	Joe Ding
 " Version:	3.2
-" Last Change:	2017-08-25 18:15:44
+" Last Change:	2017-09-04 20:32:43
 
 if exists("b:my_ftpsy") | finish | endif
 let b:my_ftpsy = 1
@@ -38,7 +38,7 @@ function! s:Modify()
     setl nomodified
 endfunction	" }}}2
 
-" some covenience map		{{{1
+" some convenience map		{{{1
 nnoremap <buffer> \L	:e ~/Documents/.anime/1-list<CR>
 nnoremap <buffer> \m	:marks<CR>
 nnoremap <buffer><silent> \d	:if !bufloaded(bufnr("dic.txt")) <bar> tabedit ~/dic.txt <bar> endif <CR>
@@ -61,7 +61,7 @@ function! s:Grep( keyword )	" {{{2
     setl ft=grep
 endfunction	" }}}2
 
-" move aroud			{{{1
+" move around			{{{1
 nnoremap <buffer><silent> <M-m> :call search('^歌\t', 'bsw')<CR>
 nnoremap <buffer><silent> <M-l> :call search('^\t.* ---- ', 'bsw')<CR>
 nnoremap <buffer><silent> <M-f> m':keepjumps norm G<CR>:call <SID>EpisodeMotion(3, 0)<CR>zt
@@ -101,7 +101,7 @@ function! CopyCast()	"{{{2
 
     let list = getbufline("%", start, line("."))
 
-    " remove additonal informations with casts.
+    " remove additional information with casts.
     call map(list, "substitute(v:val, '（.*）$', '', '')")
 
     " remove titles but not the number of this episode
@@ -115,11 +115,11 @@ function! CopyCast()	"{{{2
     endif
 
     let cast = join(list, "\n") . "\n"
-    call setreg('"', cast, "V")
+    call setreg('*', cast, "V")
 endfunction	" }}}2
 
 " fill text			{{{1
-" hit enter at the end of line triger to fill character name as well as
+" hit enter at the end of line trigger to fill character name as well as
 " re-indent this line, so that the colon of each line will be aligned
 inoremap <buffer> <CR>	<ESC>:call <SID>FillLine()<CR>o
 
@@ -127,7 +127,7 @@ let s:charWidth = 8
 let s:syRecorde = '^\s*\zs\([^：]\+\)\ze：[^-（]\+\%(（.*）\)\=$'
 
 function! s:FillLine ()
-    " only profrem action when hit ender at the end of line.
+    " only preform action when hit enter at the end of line.
     if virtcol('.') < virtcol('$')-1
 	return
     endif
@@ -136,10 +136,10 @@ function! s:FillLine ()
 endfunction
 
 function! s:LastColonPos ()
-    "find the last line that containts character's record
+    "find the last line that contains character's record
     let line = search(s:syRecorde, 'bnWz')
     if line == 0
-	return 12   " default postion
+	return 12   " default position
     else
 	" and return at which display-column the colon is
 	let line = getline(line)

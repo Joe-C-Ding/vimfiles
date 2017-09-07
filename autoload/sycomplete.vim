@@ -3,7 +3,7 @@
 " Language:	seiyu-record
 " Maintainer:	Joe Ding
 " Version:	2.3
-" Last Change:	2017-02-15 17:06:02
+" Last Change:	2017-08-29 10:16:56
 
 let s:data_base = '~/vimfiles/.anime/data/seiyu'
 let s:search_root = '~/vimfiles/.anime/s 声優资料/'
@@ -14,7 +14,7 @@ if !exists("*s:Cons_db")
     function s:Cons_db()
 	" Only construct for empty dictionary.
 	" This dictionary may be modified during editing, so rebuilt it may
-	" lose those informations.
+	" lose those information.
 	if !empty(s:db) | return | endif
 
 	if bufloaded(s:data_base) == 0
@@ -33,9 +33,9 @@ if !exists("*s:Cons_db")
     call s:Cons_db()  " Construct this table right now.
 endif
 
-" Omni-function for sy-recoder
+" Omni-function for sy-recorders
 " It can do more than completing the names, but also lists the 
-" yomikata for each cadidate (if it exist in database).
+" yomikata for each candidate (if it exist in database).
 let s:name	= '^\%([^：]*：\s*\)\@>\zs[^（]*\S\@<='
 let s:lines	= '^\t\S[^-]* ---- \%([^(＆]*＆\)*\zs.*'
 let s:posit	= '^\%(作詞\|作曲\|詞曲\|作編曲\|編曲\)\t$'
@@ -71,7 +71,7 @@ function! sycomplete#Complete(findstart, base)
     " Completing for each category.
     if s:type == 'name'
 	" If base is empty string, do noting.
-	" Becase there are more than thousands candidates for it.
+	" Because there are more than thousands candidates for it.
 	if a:base == "" | return [] | endif
 
 	let items = []
@@ -136,7 +136,7 @@ function! sycomplete#Preview()
 	if key =~ "^" . name
 	    let found = 1
 	    if len(value) < 3
-		echo key . ": No more informations.\n\n"
+		echo key . ": No more information.\n\n"
 	    else
 		echo value[0] . "（" . value[1] . "）"
 		let value = split(value[2], ';')
@@ -159,7 +159,7 @@ function! s:Unique( list )
     " functions changes the contents of them. (which means change in-place)
     call sort(a:list)
     let i = 0
-    " The lenth of the list may be shortened in the loop
+    " The length of the list may be shortened in the loop
     while i < len(a:list)
 	while ( i+1 < len(a:list) && a:list[i] == a:list[i+1] )
 	    call remove(a:list, i+1)
@@ -241,8 +241,8 @@ function! sycomplete#Check()
     nnoremap <buffer> q :call <SID>Checkin()<CR>
 
     call append(line('0'), insert(add, "# Those didn't find in database:"))
-    call append(line('$'), insert(cpl, "# Those of which the informations are not complete:"))
-    call append(line('$'), insert(mod, "# Those you may need to check the correctness of the informations:"))
+    call append(line('$'), insert(cpl, "# Those of which the information are not complete:"))
+    call append(line('$'), insert(mod, "# Those you may need to check the correctness of the information:"))
 endfunction
 
 function! sycomplete#Grep( name )

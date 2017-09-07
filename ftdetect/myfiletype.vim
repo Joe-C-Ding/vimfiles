@@ -1,9 +1,9 @@
-" myfiletype.vim	vim: ts=8 sw=4
+" myfiletype.vim	vim: ts=8 sw=4 ff=unix
 " Vim filetype-detect file.
 " Language:	Vim-script
 " Maintainer:	Joe Ding
 " Version:	0.3
-" Last Change:	2017-02-15 17:04:41
+" Last Change:	2017-08-28 09:35:00
 
 augroup myft
     au BufNewfile,BufRead *.sy	setf sy
@@ -24,7 +24,7 @@ function s:Addheader()
 
     let m = match(lines[0], '\s\+vim:')
     if m == -1
-	call append(0, '" '.expand("%:p:t")."\tvim: ts=8 sw=4")
+	call append(0, '" '.expand("%:p:t")."\tvim: ts=8 sw=4 ff=unix")
     endif
 
     let m = match(lines, 'Language\c')

@@ -8,7 +8,8 @@ if v:progname =~? "evim" | finish | endif
 
 set nocompatible 
 set backspace=indent,eol,start
-set mouse=a nobackup ruler showcmd incsearch 
+set mouse=a mousehide
+set nobackup ruler showcmd incsearch 
 
 let &guioptions = substitute(&guioptions, "t", "", "g")
 
@@ -38,7 +39,7 @@ if has("autocmd")
 	  \ endif
   augroup END
 else
-  set autoindent		" always set autoindenting on
+  set autoindent		" always set auto-indenting on
 endif " has("autocmd")
 
 " Convenient command to see the difference between the current buffer and the
@@ -63,9 +64,15 @@ language C
 set encoding=utf-8
 set fileencodings=ucs-bom,utf-8,chinese,default,latin1
 so $VIMRUNTIME/delmenu.vim | set langmenu=none | so $VIMRUNTIME/menu.vim
+set fileformats=unix,dos
+
+" spell checking
+set spell spelllang=en_us,cjk
+set spellsuggest=best,20
 
 set sw=4 sts=4
 set cmdheight=2
+set scrolljump=5 scrolloff=3
 set wildmenu wildmode=list:full bsdir=current
 set nu aw ar hidden smartcase splitright visualbell
 
@@ -80,6 +87,15 @@ set guioptions-=m
 
 " this will highlight the column after 'textwidth'
 set colorcolumn=+1
+
+" When possible use + register for copy-paste 
+if has('unnamedplus')
+  set clipboard=unnamed,unnamedplus 
+else
+  set clipboard=unnamed 
+endif 
+
+
 
 " set fonts and useful commands for windows
 try
@@ -109,7 +125,7 @@ endtry
 
 " useful to search files in directory
 " `:3S file_name.txt'
-"   to search it in `.' and subdirs with deepth no more than 3.
+"   to search it in `.' and subdirs with depth no more than 3.
 command -nargs=1 -count=2 S  :call <SID>searchopen(<f-args>, <count>)
 function s:searchopen(file, deepth)
   if a:file =~ '[\[\]*?]'
@@ -180,7 +196,7 @@ function s:NextFile ( reverse )
   endif
 endfunction
 
-" <F5> to clear buffur
+" <F5> to clear buffer
 nnoremap <unique> <F5>	:%d_<CR>
 
 nnoremap <unique> R	gR
@@ -204,7 +220,7 @@ vnoremap <C-j> :m '>+1<CR>gv
 nnoremap <C-k> m`:m -2<CR>``
 vnoremap <C-k> :m '<-2<CR>gv
 
-" Jumping to Animetion list.
+" Jumping to Animation list.
 nnoremap <silent> \L	:call <SID>Jump2Animelist()<CR>
 function s:Jump2Animelist ()
   if has('win32')
@@ -249,13 +265,13 @@ inoremap <expr> <BS> Backspace()
 
 
 
-" ======= simulate emacs' keybinding ======
+" ======= simulate Emacs' keybinding ======
 " <A-d> and <A-BS> delete forward or backward a word
 inoremap <unique> <M-d>	<C-o>de
 cnoremap <unique> <M-d>	<C-o>de
 inoremap <unique> <M-<BS>>	<C-w>
 cnoremap <unique> <M-<BS>>	<C-w>
-" <M-f> and <M-b> move cursor foward or backward a word
+" <M-f> and <M-b> move cursor forward or backward a word
 inoremap <unique> <M-b>	<C-left>
 cnoremap <unique> <M-b>	<C-left>
 inoremap <unique> <M-f>	<C-right>
