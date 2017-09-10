@@ -1,9 +1,9 @@
 " c.vim	vim: ts=8 sw=4
 " Vim filetype plugin file
 " Language:	c
-" Version:	0.5
+" Version:	0.7
 " Maintainer:	Joe Ding
-" Last Change:	2017-02-07 15:12:43
+" Last Change:	2017-09-10 09:08:28
 
 if exists("b:my_ftpc") | finish | endif
 let b:my_ftpc = 1
@@ -16,7 +16,30 @@ setl cindent
 "setl expandtab
 "setl tabstop=8
 
-setl path=.,/usr/include,/usr/local/include,C:/MinGW/include,F:/bbndk/target_10_3_1_995/qnx6/usr/include,F:/bbndk/target_10_3_1_995/qnx6/usr/include/qt4
+" set include path
+setl path=.
+if has("win32")
+    let s:mingw_root = 'C:/MinGW/'
+    if isdirectory(s:mingw_root)
+	let s:mingw = s:mingw_root . 'include'
+	let s:libgcc = finddir('include', s:mingw_root.'lib/gcc/mingw32/*/', -1)
+	if len(s:libgcc) > 0
+	    " only include the newest one (the last version number)
+	    let s:libgcc = s:mingw_root[0:1] . s:libgcc[-1]
+	    let s:mingw .= ',' . s:libgcc
+	endif
+
+	exec "setl path+=" . s:mingw
+    endif
+
+    let s:gnuwin_root = 'C:/GnuWin32/'
+    if isdirectory(s:gnuwin_root)
+	let s:gnuwin = s:gnuwin_root . 'include'
+	exec "setl path+=" . s:gnuwin
+    endif
+else	" unix-like
+    setl path+=/usr/include,/usr/local/include
+end
 
 nnoremap <buffer> <F3> :cn<CR>
 nnoremap <buffer> <F4> :cp<CR>
