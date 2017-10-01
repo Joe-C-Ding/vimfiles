@@ -1,3 +1,6 @@
 .about anime/
 .netrwhist
 viminfo
+**/*.swp
+
+packages/**
