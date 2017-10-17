@@ -56,7 +56,7 @@ endif
 
 autocmd BufEnter * silent! lcd %:p:h
 
-set cpoptions+=FJW	"cpo
+set cpoptions+=FJ	"cpo
 "set cpo-=Ckvx<
 set formatoptions+=M1	"fo
 
@@ -72,9 +72,10 @@ set spellsuggest=best,20
 
 set sw=4 sts=4
 set cmdheight=2
-set scrolljump=5 scrolloff=3
+set scrolljump=5
 set wildmenu wildmode=list:full bsdir=current
-set nu aw ar hidden smartcase splitright visualbell
+set verbosefile=$HOME/vim_verbosefile.txt
+set nu aw ar hidden smartcase splitright visualbell paste
 
 set timeout timeoutlen=1000 ttimeoutlen=100
 set wildignore=*.bak,*.o,*.e,*~,#*#
@@ -96,12 +97,16 @@ else
 endif 
 
 
+" ====================================
+" My commands ~~~
+" ====================================
 
 " set fonts and useful commands for windows
 try
   if has('win32')
     set guifont=Droid_Sans_Mono:h12:cANSI
     set guifontwide=MS_Gothic:h12:cSHIFTJIS
+    set shellslash
 
     call utilities#Clear()
 
@@ -153,6 +158,10 @@ function s:searchopen(file, deepth)
   endif
 endfunction
 
+" ====================================
+" My mappings ~~~
+" ====================================
+
 " <space>/<bs> to scroll down/up
 nnoremap <unique>	<space>	<C-f>
 nnoremap <unique>	<bs>	<C-b>
@@ -199,28 +208,7 @@ endfunction
 " <F5> to clear buffer
 nnoremap <unique> <F5>	:%d_<CR>
 
-nnoremap <unique> R	gR
-" make a line title caps. The original function of `g~~' is switch case.
-nnoremap <silent> g~~	:s/\v<(.)(\w*)/\u\1\L\2/g<CR>
-
-" some useful :setlocal mappings
-nnoremap <unique> \l	:setl list!<CR>
-nnoremap <unique> \w	:setl wrap!<CR>
-nnoremap <unique> \h	:nohlsearch<CR>
-nnoremap <unique> <expr> \d	(col('.') == col('$')-1 ? "a" : "C")
-      \ . "\<C-R>=strftime('%Y-%m-%d %H:%M:%S')\<CR>\<ESC>"
-
-nnoremap <unique> \c	:setl ft=c<CR>
-nnoremap <unique> \C	:setl ft=cpp<CR>
-nnoremap <unique> \v	:setl ft=vim<CR>
-
-" move a line or a block up or down
-nnoremap <C-j> m`:m +1<CR>``
-vnoremap <C-j> :m '>+1<CR>gv
-nnoremap <C-k> m`:m -2<CR>``
-vnoremap <C-k> :m '<-2<CR>gv
-
-" Jumping to Animation list.
+" \L to Jump to Animation list.
 nnoremap <silent> \L	:call <SID>Jump2Animelist()<CR>
 function s:Jump2Animelist ()
   if has('win32')
@@ -236,7 +224,7 @@ function s:Jump2Animelist ()
   endif
 endfunction
 
-" Delete pairs
+" smart <BS>,  Delete pairs
 let s:pairs = {
       \  '"': '"',
       \  '(': ')',
@@ -262,6 +250,34 @@ function! Backspace ()
 endfunction
 
 inoremap <expr> <BS> Backspace()
+
+nnoremap <unique> R	gR
+" make a line title caps. The original function of `g~~' is switch case.
+nnoremap <silent> g~~	:s/\v<(.)(\w*)/\u\1\L\2/g<CR>
+
+" \e to start Emacs at cwd
+" if has('win32')
+"   nnoremap <unique> \e	:exec "!start runemacs ".shellescape(getcwd())." &"
+" else
+"   nnoremap <unique> \e	:exec "!emacs ".shellescape(getcwd())." &"
+" endif
+
+" some useful :setlocal mappings
+nnoremap <unique> \l	:setl list!<CR>
+nnoremap <unique> \w	:setl wrap!<CR>
+nnoremap <unique> \h	:nohlsearch<CR>
+nnoremap <unique> <expr> \d	(col('.') == col('$')-1 ? "a" : "C")
+      \ . "\<C-R>=strftime('%Y-%m-%d %H:%M:%S')\<CR>\<ESC>"
+
+nnoremap <unique> \c	:setl ft=c<CR>
+nnoremap <unique> \C	:setl ft=cpp<CR>
+nnoremap <unique> \v	:setl ft=vim<CR>
+
+" move a line or a block up or down
+nnoremap <C-j> m`:m +1<CR>``
+vnoremap <C-j> :m '>+1<CR>gv
+nnoremap <C-k> m`:m -2<CR>``
+vnoremap <C-k> :m '<-2<CR>gv
 
 
 
@@ -290,8 +306,9 @@ inoremap <unique> <M-g>  <C-\><C-N>
 iabbr teh the
 
 "====================================
-" setting for plugins
+" setting for plugins/packages
 "====================================
+
 " NETRW:
 let g:netrw_keepdir = 0
 
@@ -330,3 +347,12 @@ let g:calendar_weeknm = 1 " WK01
 " let g:calendar_weeknm = 3 " KW01
 " let g:calendar_weeknm = 4 " KW 1
 " let g:calendar_weeknm = 5 " 1
+
+" vim-latex:
+" packadd! vim-latex
+set grepprg=grep\ -nH\ $*
+let g:tex_flavor = 'latex'
+" let g:Tex_CompileRule_pdf = 'xelatex -interaction=nonstopmode $*'
+
+" MATCHIT:
+packadd! matchit

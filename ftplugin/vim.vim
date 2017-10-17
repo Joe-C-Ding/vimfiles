@@ -3,9 +3,10 @@
 " Language:	Vim-script
 " Maintainer:	Joe Ding
 " Version:	0.8
-" Last Change:	2016-10-26 16:39:27
+" Last Change:	2017-09-29 16:54:39
 
 nnoremap <buffer>   <C-F5>  m`ggVG"ay``:@a<CR>
+vnoremap <buffer>   <C-F5>  "ay:@a<CR>gv
 
 if exists("*Vim2html")
     finish

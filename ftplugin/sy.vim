@@ -2,8 +2,8 @@
 " Vim filetype plugin file for my own use.
 " Language:	seiyu-record
 " Maintainer:	Joe Ding
-" Version:	3.2
-" Last Change:	2017-09-04 20:32:43
+" Version:	3.5
+" Last Change:	2017-09-20 07:39:39
 
 if exists("b:my_ftpsy") | finish | endif
 let b:my_ftpsy = 1
@@ -39,7 +39,6 @@ function! s:Modify()
 endfunction	" }}}2
 
 " some convenience map		{{{1
-nnoremap <buffer> \L	:e ~/Documents/.anime/1-list<CR>
 nnoremap <buffer> \m	:marks<CR>
 nnoremap <buffer><silent> \d	:if !bufloaded(bufnr("dic.txt")) <bar> tabedit ~/dic.txt <bar> endif <CR>
 nnoremap <buffer><silent> \s	:<C-u>call <SID>Grep("")<CR>
@@ -121,18 +120,43 @@ endfunction	" }}}2
 " fill text			{{{1
 " hit enter at the end of line trigger to fill character name as well as
 " re-indent this line, so that the colon of each line will be aligned
-inoremap <buffer> <CR>	<ESC>:call <SID>FillLine()<CR>o
+inoremap <silent><buffer> ：	：<ESC>:call <SID>DoFillLine(0)<CR>a
+inoremap <silent><buffer> <ESC>	<ESC>:call <SID>DoFillLine(0)<CR>
 
 let s:charWidth = 8
-let s:syRecorde = '^\s*\zs\([^：]\+\)\ze：[^-（]\+\%(（.*）\)\=$'
+let s:syRecorde = '^\s*\zs\([^：]\+\)\ze：'
 
-function! s:FillLine ()
-    " only preform action when hit enter at the end of line.
-    if virtcol('.') < virtcol('$')-1
+function! s:DoFillLine (colpos)
+    if a:colpos == 0
+	let colpos = s:LastColonPos()
+    else
+	let colpos = a:colpos
+    endif
+
+    let line = getline('.')
+    let char = matchstr(line, s:syRecorde)
+    if char == ""
 	return
     endif
 
-    call s:DoFillLine(s:LastColonPos())
+    " save which character is under cursor
+    " use strpart() to working on wchars
+    let cursor = strpart(line, col('.')-1)
+
+    " fill character to a desired width
+    let width = strdisplaywidth(char)
+    if width < s:charWidth
+	let char = s:Adjust(char)
+	let width = strdisplaywidth(char)
+    endif
+
+    " calculate indentation
+    let indent = repeat(' ', colpos - width)
+    let line = substitute(line, '^[^：]*', indent . char, "")
+    call setline(line('.'), line)
+
+    " jump to saved character
+    call search(cursor, 'c', line('.'))
 endfunction
 
 function! s:LastColonPos ()
@@ -146,26 +170,6 @@ function! s:LastColonPos ()
 	let col = strdisplaywidth(matchstr(line, '^[^：]*'))
 	return col
     endif
-endfunction
-
-function! s:DoFillLine (colpos)
-    let line = getline('.')
-    let char = matchstr(line, s:syRecorde)
-    if char == ""
-	return
-    endif
-
-    " fill character to a desired width
-    let width = strdisplaywidth(char)
-    if width < s:charWidth
-	let char = s:Adjust(char)
-	let width = strdisplaywidth(char)
-    endif
-
-    " calculate indentation
-    let indent = repeat(' ', a:colpos - width)
-    let line = substitute(line, '^[^：]*', indent . char, "")
-    call setline(line('.'), line)
 endfunction
 
 function! s:Adjust (char)
@@ -194,6 +198,7 @@ function! s:Adjust (char)
 
     return rslt
 endfunction
+
 
 " insert text			{{{1
 nnoremap <buffer><expr> ;a "I# <ESC>:put =repeat('=', 36)<CR>YkPjA"
