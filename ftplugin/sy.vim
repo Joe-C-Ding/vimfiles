@@ -3,7 +3,7 @@
 " Language:	seiyu-record
 " Maintainer:	Joe Ding
 " Version:	3.5
-" Last Change:	2017-09-20 07:39:39
+" Last Change:	2017-10-19 19:42:44
 
 if exists("b:my_ftpsy") | finish | endif
 let b:my_ftpsy = 1
@@ -111,6 +111,14 @@ function! CopyCast()	"{{{2
     endwhile
     if i > 2
 	call remove(list, 2, i-1)
+    endif
+
+    " increase episode number.
+    let episode = str2nr(matchstr(list[1], '^#\s\+\zs\d\+'))
+    if episode != 0
+	let episode += 1
+	let list[1] = substitute(list[1], '^#\s\+\zs\d\+',
+		    \	printf('%02d', episode), '')
     endif
 
     let cast = join(list, "\n") . "\n"
