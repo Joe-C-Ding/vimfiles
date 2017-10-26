@@ -2,7 +2,7 @@
 " Language:	Vim-script
 " Maintainer:	Joe Ding
 " Version:	0.6
-" Last Change:	2017-10-17 22:18:05
+" Last Change:	2017-10-23 15:36:17
 
 let s:keepcpo= &cpo
 set cpo&vim
@@ -17,7 +17,7 @@ set sw=2 textwidth=78
 " all the figure labels. Very useful!
 set iskeyword+=:
 
-nnoremap <buffer>   <C-F5>  :!pdflatex %<CR>
+nnoremap <buffer>   <C-F5>  :update<CR>:!pdflatex %<CR>
 
 let s:latex_file = expand("<sfile>:p:h") . '/latex_command.txt'
 if !bufloaded(s:latex_file)
