@@ -1,8 +1,8 @@
 " vim: fdm=marker ff=unix
 " Language:	Vim-script
 " Maintainer:	Joe
-" Version:	0.8
-" Last Change:	2017-08-25 14:19:26
+" Version:	1.0
+" Last Change:	2017-10-27 09:14:19
 
 if exists("g:my_statusline") | finish | endif
 let g:my_statusline = 1
@@ -84,7 +84,7 @@ endfunction
 function! s:MSLcursposi( is_cw )	"{{{1
     if a:is_cw
 	if &iminsert
-	    return '%#MSLpercent#< %P_%{SkkGetModeStr()} '
+	    return '%#MSLpercent#< %P '
 		\. '%#MSLposition#<%13(%#MSLline#%l%#MSLcolum#:%c%V %)'
 	else
 	    return '%#MSLpercent#< %P_%{&fdm}[%{&fdl}] '

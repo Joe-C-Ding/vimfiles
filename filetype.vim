@@ -2,7 +2,7 @@
 " Language:	Vim filetype-detect file.
 " Maintainer:	Joe Ding
 " Version:	0.5
-" Last Change:	2017-10-26 09:01:47
+" Last Change:	2017-10-26 12:41:34
 
 if exists("did_load_filetypes")
   finish
@@ -12,9 +12,9 @@ let s:cpo_save = &cpo
 set cpo&vim
 
 if has('win32')
-    let s:data_root = '~/vimfiles/.anime/s\ 声優资料/**/*'
+    let s:data_root = 'vimfiles/.anime/s 声優资料/**/*'
 else
-    let s:data_root = '~/Documents/.about\ anime/s\ 声優资料/**/*'
+    let s:data_root = 'Documents/.about anime/s 声優资料/**/*'
 endif
 
 augroup myft
@@ -22,6 +22,9 @@ augroup myft
     exec "au BufNewfile,BufRead ".s:data_root." setf sy"
 
     au BufNewfile,BufRead *.ass	setf ass
+
+    au BufNewFile *.vim	call vim#InsertTemplate()
+    au BufWrite *.vim	call vim#Writeheader(expand("<afile>:p"))
 augroup END
 
 let &cpo = s:cpo_save

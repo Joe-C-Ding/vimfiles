@@ -96,7 +96,6 @@ else
   set clipboard=unnamed 
 endif 
 
-
 " ====================================
 " My commands ~~~
 " ====================================
@@ -323,12 +322,14 @@ endif
 let g:fencview_autodetect = 1
 
 " SKK:
-let g:skk_large_jisyo = '~/vimfiles/plugin/SKK-JISYO.L'
+" packadd! skk
+let s:jisyou = '~/vimfiles/pack/skk/opt/skk/plugin/SKK-JISYO.L'
+let g:skk_large_jisyo = s:jisyou
 let g:skk_auto_save_jisyo = 1
 let g:skk_show_candidates_count = 3
 
 let g:eskk#large_dictionary = {
-      \ 'path': '~/vimfiles/plugin/SKK-JISYO.L',
+      \ 'path': s:jisyou,
       \ 'sorted': 1,
       \ 'encoding': 'euc-jp',
       \}
@@ -356,3 +357,6 @@ let g:tex_flavor = 'latex'
 
 " MATCHIT:
 packadd! matchit
+
+" BMK:
+packadd! bmk
