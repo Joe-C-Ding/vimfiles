@@ -108,29 +108,33 @@ try
     set shellslash
 
     call utilities#Clear()
-
-    command -nargs=1 E  :call <SID>Elink(<q-args>)
-    function s:Elink ( lk )
-      if a:lk !~ "lnk$"
-	let link = a:lk . ".lnk"
-      else
-	let link = a:lk
-      endif
-
-      let filename = "C:/Users/Joe/Links/" . link
-      if file_readable(filename)
-        exec "e ".filename
-      else
-	echohl WarningMsg | echo "Shortcut not exists: ". a:lk | echohl None
-      endif
-    endfunction
   endif
 endtry
+
+if has('win32')
+  command -nargs=1 E  :call <SID>Elink(<q-args>)
+
+  function s:Elink ( lk )
+    if a:lk !~ "lnk$"
+      let link = a:lk . ".lnk"
+    else
+      let link = a:lk
+    endif
+
+    let filename = "$HOME/Links/" . link
+    if file_readable(filename)
+      exec "e ".filename
+    else
+      echohl WarningMsg | echo "Shortcut not exists: ". a:lk | echohl None
+    endif
+  endfunction
+endif
 
 " useful to search files in directory
 " `:3S file_name.txt'
 "   to search it in `.' and subdirs with depth no more than 3.
 command -nargs=1 -count=2 S  :call <SID>searchopen(<f-args>, <count>)
+
 function s:searchopen(file, deepth)
   if a:file =~ '[\[\]*?]'
     let files = glob('**/'.a:file, 0, 1)
@@ -148,7 +152,7 @@ function s:searchopen(file, deepth)
     echo i.":"  files[i-1]
   endfor
 
-  let choice = input("edit? ")
+  let choice = input("edit [empty/<num>/all]? ")
   if choice > 0 && choice <= length
     exec "e " . fnameescape(files[choice-1])
   elseif choice =~? 'a\%[ll]'
@@ -207,22 +211,6 @@ endfunction
 " <F5> to clear buffer
 nnoremap <unique> <F5>	:%d_<CR>
 
-" \L to Jump to Animation list.
-nnoremap <silent> \L	:call <SID>Jump2Animelist()<CR>
-function s:Jump2Animelist ()
-  if has('win32')
-    let l:filename = "~/vimfiles/.anime/1-list"
-  else
-    let l:filename = "$HOME/Documents/.about anime/1-list"
-  endif
-
-  if &mod || line('$') != 1 || getline(1) != ''
-    exec "new ".escape(l:filename, ' \')
-  else
-    exec "e ".escape(l:filename, ' \')
-  endif
-endfunction
-
 " smart <BS>,  Delete pairs
 let s:pairs = {
       \  '"': '"',
@@ -265,8 +253,6 @@ nnoremap <silent> g~~	:s/\v<(.)(\w*)/\u\1\L\2/g<CR>
 nnoremap <unique> \l	:setl list!<CR>
 nnoremap <unique> \w	:setl wrap!<CR>
 nnoremap <unique> \h	:nohlsearch<CR>
-nnoremap <unique> <expr> \d	(col('.') == col('$')-1 ? "a" : "C")
-      \ . "\<C-R>=strftime('%Y-%m-%d %H:%M:%S')\<CR>\<ESC>"
 
 nnoremap <unique> \c	:setl ft=c<CR>
 nnoremap <unique> \C	:setl ft=cpp<CR>
@@ -277,7 +263,6 @@ nnoremap <C-j> m`:m +1<CR>``
 vnoremap <C-j> :m '>+1<CR>gv
 nnoremap <C-k> m`:m -2<CR>``
 vnoremap <C-k> :m '<-2<CR>gv
-
 
 
 " ======= simulate Emacs' keybinding ======
