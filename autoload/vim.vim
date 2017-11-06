@@ -1,7 +1,7 @@
 " vim.vim	vim: ts=8 sw=4 ff=unix
 " Maintainer:	Joe Ding
 " Version:	0.9
-" Last Change:	2017-10-26 12:41:34
+" Last Change:	2017-11-06 09:19:49
 
 let s:cpo_save = &cpo
 set cpo&vim
@@ -51,7 +51,7 @@ function! vim#InsertTemplate()
     1d_	" remove the blank 1st line
     norm G
     call search('>!<', 'bW')
-    norm c3l
+    norm "_d3l
 endfunction
 
 function! vim#Vim2html()

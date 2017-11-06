@@ -121,7 +121,7 @@ if has('win32')
       let link = a:lk
     endif
 
-    let filename = "$HOME/Links/" . link
+    let filename = $HOME . "/Links/" . link
     if file_readable(filename)
       exec "e ".filename
     else
@@ -254,6 +254,11 @@ nnoremap <unique> \l	:setl list!<CR>
 nnoremap <unique> \w	:setl wrap!<CR>
 nnoremap <unique> \h	:nohlsearch<CR>
 
+inoremap <unique><expr> <M-;>	"<C-R>=strftime(\'%Y-%m-%d\')<CR>"
+cnoremap <unique><expr> <M-;>	"<C-R>=strftime(\'%Y-%m-%d\')<CR>"
+inoremap <unique><expr> <M-:>	"<C-R>=strftime(\'%H:%M:%S\')<CR>"
+cnoremap <unique><expr> <M-:>	"<C-R>=strftime(\'%Y-%m-%d\')<CR>"
+
 nnoremap <unique> \c	:setl ft=c<CR>
 nnoremap <unique> \C	:setl ft=cpp<CR>
 nnoremap <unique> \v	:setl ft=vim<CR>
@@ -343,5 +348,7 @@ let g:tex_flavor = 'latex'
 " MATCHIT:
 packadd! matchit
 
-" BMK:
+" My packages:
 packadd! bmk
+packadd! sy
+packadd! texcompletion
