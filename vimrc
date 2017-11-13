@@ -342,7 +342,7 @@ let g:calendar_weeknm = 1 " WK01
 " vim-latex:
 " packadd! vim-latex
 set grepprg=grep\ -nH\ $*
-let g:tex_flavor = 'latex'
+" let g:tex_flavor = 'latex'
 " let g:Tex_CompileRule_pdf = 'xelatex -interaction=nonstopmode $*'
 
 " MATCHIT:
