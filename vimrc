@@ -210,6 +210,8 @@ endfunction
 
 " <F5> to clear buffer
 nnoremap <unique> <F5>	:%d_<CR>
+" <F12> to show the syntax item name under cursor
+nnoremap <unique> <F12>	:echo synIDattr(synID(line("."), col("."), 1), "name")<CR>
 
 " smart <BS>,  Delete pairs
 let s:pairs = {
