@@ -2,7 +2,7 @@
 " Language:	Vim-script
 " Maintainer:	Joe Ding
 " Version:	0.8
-" Last Change:	2017-11-23 16:45:54
+" Last Change:	2017-11-23 16:49:57
 
 let s:keepcpo= &cpo
 set cpo&vim
