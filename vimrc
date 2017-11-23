@@ -70,7 +70,7 @@ set fileformats=unix,dos
 set spell spelllang=en_us,cjk
 set spellsuggest=best,20
 
-set sw=4 sts=4
+set sw=4 sts=-1
 set cmdheight=2
 set scrolljump=5
 set wildmenu wildmode=list:full bsdir=current
