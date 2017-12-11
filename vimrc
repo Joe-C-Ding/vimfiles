@@ -343,9 +343,12 @@ let g:calendar_weeknm = 1 " WK01
 
 " vim-latex:
 " packadd! vim-latex
+" let g:Tex_Debug = 1
 set grepprg=grep\ -nH\ $*
 " let g:tex_flavor = 'latex'
-" let g:Tex_CompileRule_pdf = 'xelatex -interaction=nonstopmode $*'
+let g:Tex_CompileRule_pdf = 'xelatex -interaction=nonstopmode $*'
+let g:Tex_ViewRule_pdf = 'sumatrapdf'
+let g:Tex_ViewRule_dvi = 'sumatrapdf'
 
 " MATCHIT:
 packadd! matchit

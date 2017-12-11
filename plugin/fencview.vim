@@ -598,7 +598,7 @@ endfunction
 
 
 function! s:DetectHtmlEncoding() " {{{1
-    normal m`
+    normal! m`
     normal gg
     if search('\c<meta http-equiv=\("\?\)Content-Type\1 content="text/html; charset=[-A-Za-z0-9_]\+">')!=0
         let charset=matchstr(getline('.'), 'text/html; charset=\zs[-A-Za-z0-9_]\+', col('.') - 1)

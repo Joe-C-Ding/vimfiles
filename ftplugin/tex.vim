@@ -2,7 +2,7 @@
 " Language:	Vim-script
 " Maintainer:	Joe Ding
 " Version:	0.8
-" Last Change:	2017-11-23 16:49:57
+" Last Change:	2017-11-28 09:27:30
 
 let s:keepcpo= &cpo
 set cpo&vim
@@ -18,6 +18,7 @@ set iskeyword+=:
 
 if has('win32')
     nnoremap <buffer>   <C-F5>  :update<CR>:!xelatex %<CR>
+    nnoremap <buffer>   \lv  :!start sumatrapdf %:r.pdf<CR>
 else
     nnoremap <buffer>   <C-F5>  :call Go()<CR>
 endif
