@@ -1,0 +1,30 @@
+\usepackage{xeCJK}                                      
+\setCJKmainfont[BoldFont=Adobe Heiti Std,ItalicFont=Adobe Kaiti Std]{Adobe Song Std}
+\setCJKsansfont{Adobe Kaiti Std}         
+\setCJKmonofont{Adobe Fangsong Std} 
+
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\usepackage{indentfirst}
+
+\usepackage[top=1in,bottom=1in,left=1.25in,right=1.25in]{geometry}
+
+% formula
+\usepackage{amsmath}
+\usepackage{amsthm}
+
+% figure or table
+\usepackage{graphicx}
+\graphicspath{{pic/}}
+
+\usepackage{multirow}
+
+\usepackage[font=small]{caption}
+\captionsetup[figure]{name=图}
+\captionsetup[table]{name=表}
+
+% \usepackage{chngcntr}
+
+% biblatex
+\usepackage[style=gb7714-2015]{biblatex}
+

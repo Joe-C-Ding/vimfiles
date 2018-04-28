@@ -1,0 +1,38 @@
+%! TEX program = xelatex
+
+\documentclass[11pt,a4paper,draft]{article}
+\input{preamble.template}
+\addbibresource{refs.bib}
+
+% my handy ====================================
+\newcommand\cdf{\mathop{F}\nolimits}
+\newcommand\pdf{\mathop{f}\nolimits}
+% my handy ====================================
+
+\title{论文标题}
+\author{丁然 \and 李强}
+\date{} % force a empty date
+
+\begin{document}
+\maketitle
+\begin{abstract}
+  中文摘要
+\end{abstract}
+
+% ====================================
+\section*{引言}
+>!<
+\section{第一部分}
+
+\section{第二部分}
+
+\section{结论}
+\begin{enumerate}
+  \item 结论一
+  \item 结论二
+\end{enumerate}
+% ====================================
+
+\printbibliography[title=参考文献]
+\end{document}
+

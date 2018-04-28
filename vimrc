@@ -121,7 +121,7 @@ if has('win32')
       let link = a:lk
     endif
 
-    let filename = $HOME . "/Links/" . link
+    let filename = "D:/Links/" . link
     if file_readable(filename)
       exec "e ".filename
     else
@@ -344,15 +344,36 @@ let g:calendar_weeknm = 1 " WK01
 " vim-latex:
 " packadd! vim-latex
 " let g:Tex_Debug = 1
-set grepprg=grep\ -nH\ $*
-" let g:tex_flavor = 'latex'
-let g:Tex_CompileRule_pdf = 'xelatex -interaction=nonstopmode $*'
-let g:Tex_ViewRule_pdf = 'sumatrapdf'
-let g:Tex_ViewRule_dvi = 'sumatrapdf'
+"set grepprg=grep\ -nH\ $*
+"" let g:tex_flavor = 'latex'
+"let g:Tex_CompileRule_pdf = 'xelatex -interaction=nonstopmode $*'
+"let g:Tex_ViewRule_pdf = 'sumatrapdf'
+"let g:Tex_ViewRule_dvi = 'sumatrapdf'
 
 " MATCHIT:
 packadd! matchit
 let loaded_matchit = 1
+
+" VIMTEX:
+packadd! vimtex
+let g:vimtex_compiler_latexmk = {
+    \ 'backend' : 'jobs',
+    \ 'background' : 1,
+    \ 'build_dir' : '',
+    \ 'callback' : 1,
+    \ 'continuous' : 1,
+    \ 'executable' : 'latexmk',
+    \ 'options' : [
+    \   '-pdf',
+    \   '-verbose',
+    \   '-file-line-error',
+    \ ],
+    \}
+let g:vimtex_view_general_viewer = 'SumatraPDF'
+let g:vimtex_view_general_options = 
+      \ '-reuse-instance -forward-search @tex @line @pdf'
+let g:vimtex_view_general_options_latexmk = '-reuse-instance'
+
 
 " My packages:
 packadd! bmk
