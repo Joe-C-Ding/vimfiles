@@ -9,6 +9,11 @@
 
 \usepackage[top=1in,bottom=1in,left=1.25in,right=1.25in]{geometry}
 
+% lineskip
+\usepackage{setspace}
+\onehalfspacing
+%\setstretch{1.25}
+
 % formula
 \usepackage{amsmath}
 \usepackage{amsthm}
