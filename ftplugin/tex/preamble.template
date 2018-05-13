@@ -1,6 +1,8 @@
+% vim: ft=tex
+
 \usepackage{xeCJK}                                      
 \setCJKmainfont[BoldFont=Adobe Heiti Std,ItalicFont=Adobe Kaiti Std]{Adobe Song Std}
-\setCJKsansfont{Adobe Kaiti Std}         
+\setCJKsansfont{Adobe Heiti Std}         
 \setCJKmonofont{Adobe Fangsong Std} 
 
 \XeTeXlinebreaklocale "zh"
@@ -13,10 +15,10 @@
 \usepackage{setspace}
 \onehalfspacing
 %\setstretch{1.25}
+\setdisplayskipstretch{0.5}
 
 % formula
-\usepackage{amsmath}
-\usepackage{amsthm}
+\usepackage{amsmath,amsthm}
 
 % figure or table
 \usepackage{graphicx}
@@ -30,6 +32,70 @@
 
 % \usepackage{chngcntr}
 
+% adjust enumeration items 
+\usepackage{enumitem}
+\setlist{topsep=2pt,itemsep=2pt,parsep=1pt,leftmargin=\parindent}
+
 % biblatex
 \usepackage[style=gb7714-2015]{biblatex}
 
+
+% adjust title
+\usepackage{titling}
+\pretitle{\begin{center}\huge}
+\posttitle{\par\end{center}}
+
+\newcommand{\thecompany}{}
+\newcommand{\company}[1]{\renewcommand{\thecompany}{#1}}
+\preauthor{\begin{center}\Large\it \begin{tabular}[t]{c}}
+\postauthor{\end{tabular}\par\ifx\thecompany\empty\else
+  \small\rm（\thecompany）\fi\end{center}}
+
+\predate{}
+\postdate{}
+
+
+\usepackage{titlesec}
+%\titleformat{command}[shape]
+%   {format}
+%   {label}
+%   {sep}
+%   {before-code} [after-code]
+%
+%\titlespacing*{command}
+%   {left}{before-sep}{after-sep}[right-sep]
+
+\titleformat{\chapter}
+    {\normalfont\Huge\sffamily}
+    {第\thechapter 章}
+    {1em}
+    {}
+%\titlespacing{\chapter}{0pt}{50pt}{40pt}
+
+\titleformat{\section}
+    {\normalfont\Large\sffamily}
+    {\thesection}
+    {1em}
+    {}
+\titlespacing{\section}{0pt}{*1}{*0}
+
+\titleformat{\subsection}
+    {\normalfont\sffamily}
+    {\thesubsection}
+    {1em}
+    {}
+\titlespacing{\subsection}{0pt}{*1}{*0}
+
+
+\renewenvironment{abstract}
+{\noindent{\bf 摘\hphantom{空}要：}}
+{\par}
+
+\newcommand{\keywords}[1]{\noindent{\bf 关键字：}#1\par}
+\newcommand{\CLCnumber}[1]{\noindent {\bf 中图分类号：}#1\hfil
+  {\bf 文献标识码：}A\hfil\par\vskip 1ex}
+
+\usepackage[hang,flushmargin]{footmisc} 
+\makeatletter
+\def\blfootnote{\gdef\@thefnmark{}\@footnotetext}
+\makeatother
