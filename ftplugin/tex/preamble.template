@@ -39,17 +39,21 @@
 % biblatex
 \usepackage[style=gb7714-2015]{biblatex}
 
+\newenvironment{tightcenter}
+  {\setlength\topsep{0pt}\setlength\parskip{0pt}\begin{center}}
+  {\end{center}}
 
 % adjust title
 \usepackage{titling}
-\pretitle{\begin{center}\huge}
-\posttitle{\par\end{center}}
+\setlength{\droptitle}{-5ex}
+\pretitle{\begin{tightcenter}\huge}
+\posttitle{\par\end{tightcenter}\vskip 1ex}
 
 \newcommand{\thecompany}{}
 \newcommand{\company}[1]{\renewcommand{\thecompany}{#1}}
-\preauthor{\begin{center}\Large\it \begin{tabular}[t]{c}}
+\preauthor{\begin{tightcenter}\Large\it \begin{tabular}[t]{c}}
 \postauthor{\end{tabular}\par\ifx\thecompany\empty\else
-  \small\rm（\thecompany）\fi\end{center}}
+  \small\rm（\thecompany）\fi\end{tightcenter}}
 
 \predate{}
 \postdate{}
@@ -91,7 +95,13 @@
 {\noindent{\bf 摘\hphantom{空}要：}}
 {\par}
 
+\newenvironment{eabstract}
+{\noindent{\bf Abstract:} }
+{\par}
+
 \newcommand{\keywords}[1]{\noindent{\bf 关键字：}#1\par}
+\newcommand{\ekeywords}[1]{\noindent{\bf Keywords:} #1\par}
+
 \newcommand{\CLCnumber}[1]{\noindent {\bf 中图分类号：}#1\hfil
   {\bf 文献标识码：}A\hfil\par\vskip 1ex}
 
@@ -99,3 +109,6 @@
 \makeatletter
 \def\blfootnote{\gdef\@thefnmark{}\@footnotetext}
 \makeatother
+
+\newcommand{\emaketitle}{\begingroup\let\newpage=\relax\maketitle\endgroup}
+

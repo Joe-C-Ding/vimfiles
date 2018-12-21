@@ -1,13 +1,17 @@
 " netrw.vim	vim: ts=8 sw=4
 " Language:	Vim-script
 " Maintainer:	Joe Ding
-" Version:	0.4
-" Last Change:	2018-05-02 16:19:48
+" Version:	0.5
+" Last Change:	2018-07-16 17:27:00
 
 " nmap ,s	:call spectrum#Spect("")<CR>
 
+" jump to the previous/next directory
+" </> ignores those directories whose name begin with a dot
 nnoremap <buffer><silent>   <	:call <SID>Jumpdir(1)<CR>
 nnoremap <buffer><silent>   >	:call <SID>Jumpdir(2)<CR>
+nnoremap <buffer><silent>   {	:call <SID>Jumpdir(3)<CR>
+nnoremap <buffer><silent>   }	:call <SID>Jumpdir(4)<CR>
 
 if has('win32')
     nnoremap <buffer><silent>   e	:exec '!start /b explorer '.substitute(getcwd(), '/', '\', 'g')<CR>
@@ -18,16 +22,19 @@ nnoremap <buffer><silent>   c	:call <SID>Msys()<CR>
 
 function s:Jumpdir ( dir )
     let l:flags = 'sW'
-    if a:dir == 1 | let l:flags .= 'b' | endif
+    if a:dir == 1 || a:dir == 3
+	let l:flags .= 'b'
+    endif
 
-    call search('^.*\%(\.\.\=\)\@<!/$', l:flags)
+    if a:dir < 3
+	let l:pattern = '\m^\.\@!.*/$'
+    else    " elseif a:dir < 5
+	let l:pattern = '\m^.\+/$'
+    end
+	
+    call search(l:pattern, l:flags)
 endfunction
 
 function s:Msys()
-    " make clipboard contents `cd cwd`
-    let cwd = substitute(getcwd(), '\\', '/', 'g')
-    let cwd = escape(cwd, ' ')
-    call setreg("+", "cd " . cwd)
-
-    !start /MIN c:\MinGW\msys\1.0\msys.bat
+    !start cmd /k
 endfunction

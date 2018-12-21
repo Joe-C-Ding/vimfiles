@@ -1,8 +1,8 @@
 " vim: fdm=marker ff=unix
 " Language:	Vim-script
 " Maintainer:	Joe
-" Version:	1.0
-" Last Change:	2017-10-27 09:14:19
+" Version:	1.1
+" Last Change:	2018-07-08 07:52:40
 
 if exists("g:my_statusline") | finish | endif
 let g:my_statusline = 1
@@ -31,9 +31,9 @@ function! MyStatusLine( is_cw )
 endfunction
 
 function! s:MSLmode( is_cw )	" {{{1
-    let l:mode = mode()
     if !a:is_cw | return '' | endif
 
+    let l:mode = mode()
     if l:mode == "v"
 	return '%#MSLvisual#%( VISUAL  %)'
     elseif l:mode == "V"

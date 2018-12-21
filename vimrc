@@ -106,13 +106,24 @@ try
     set guifont=Droid_Sans_Mono:h12:cANSI
     set guifontwide=MS_Gothic:h12:cSHIFTJIS
     set shellslash
+    set pythonthreedll=python36.dll
 
     call utilities#Clear()
   endif
 endtry
 
 if has('win32')
-  command -nargs=1 E  :call <SID>Elink(<q-args>)
+  let s:linkdir = "D:/Links/"
+
+  let s:links = glob(s:linkdir.'*.lnk', 0, 1)
+  call map(s:links, 'substitute(v:val, ''^.*/\(.*\)\.lnk$'', ''\1'', "")')
+  let s:links = join(s:links, "\n")
+
+  command -nargs=1 -complete=custom,s:Ecomplete E  :call <SID>Elink(<q-args>)
+
+  function s:Ecomplete(ArgLead, CmdLine, CursorPos)
+    return s:links
+  endfunction
 
   function s:Elink ( lk )
     if a:lk !~ "lnk$"
@@ -121,7 +132,7 @@ if has('win32')
       let link = a:lk
     endif
 
-    let filename = "D:/Links/" . link
+    let filename = s:linkdir . link
     if file_readable(filename)
       exec "e ".filename
     else
@@ -345,7 +356,7 @@ let g:calendar_weeknm = 1 " WK01
 " packadd! vim-latex
 " let g:Tex_Debug = 1
 "set grepprg=grep\ -nH\ $*
-"" let g:tex_flavor = 'latex'
+let g:tex_flavor = 'latex'
 "let g:Tex_CompileRule_pdf = 'xelatex -interaction=nonstopmode $*'
 "let g:Tex_ViewRule_pdf = 'sumatrapdf'
 "let g:Tex_ViewRule_dvi = 'sumatrapdf'
