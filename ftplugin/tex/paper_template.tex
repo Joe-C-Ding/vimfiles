@@ -5,46 +5,51 @@
 \input{preamble.template}
 \addbibresource{refs.bib}
 
-% my handy ================================ %{{{2
+\date{} % force a empty date
+
+% packages	{{{2 
+%\usepackage{multirow}
+
+% my handy	{{{2
 \newcommand\cdf{\mathop{F}\nolimits}
 \newcommand\pdf{\mathop{f}\nolimits}
 
-\newcommand\equref[1]{式~\eqref{#1}}
-\newcommand\tabref[1]{表~\ref{#1}}
-\newcommand\figref[1]{图~\ref{#1}}
-% my handy ====================================
 
-\title{论文标题}	%{{{2
-\author{丁然 \and 李强}
-\company{北京交通大学机械与电子控制工程学院}
-\date{} % force a empty date
+%}}}1
 
 \begin{document}
+% titles	{{{1
+% Chinese info	{{{2
+\title{论文标题}
+\author{丁然 \and 李强}
+\company{北京交通大学机械与电子控制工程学院}
 \maketitle
 
-\begin{abstract}	%{{{2
+\begin{abstract}
   中文摘要
 \end{abstract}
 \keywords{关键字一；关键字二}
 \CLCnumber{O346.5}
 
-\title{\Large English Title}	%{{{2
+% English info	{{{2
+\title{\Large English Title}
 \author{Ding Ran \and Li Qiang}
 \company{School of Mechanical, Electronic and Control engineering,
   Beijing Jiaotong University}
 \emaketitle
 
-\begin{eabstract}	%{{{2
+\begin{eabstract}
   English Abstract
 \end{eabstract}
 \ekeywords{keyword 1; keyword 2}
 
-\blfootnote{由国家自然科学基金重大项目（11790281）资助。}	%{{{2
+% funds etc.	{{{2
+\blfootnote{由国家自然科学基金重大项目（11790281）资助。}
 \blfootnote{作者简介：丁然(1989--)，男，北京人，博士研究生，研究方向疲劳可靠性。E-mail：12116339@bjtu.edu.cn}
 \blfootnote{通信作者：李强(1962--)，男，山西文水人，教授，博士生导师。E-mail：qli3@bjtu.edu.cn}
 
 %}}}1
-% ====================================
+
 \section*{引言}
 
 \section{第一部分}
@@ -56,8 +61,8 @@
   \item 结论一
   \item 结论二
 \end{enumerate}
-% ====================================
 
+% ending	{{{1
 \printbibliography[title=参考文献]
 \end{document}
 

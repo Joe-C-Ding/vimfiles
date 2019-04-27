@@ -329,16 +329,16 @@ let g:fencview_autodetect = 1
 
 " SKK:
 " packadd! skk
-let s:jisyou = '~/vimfiles/pack/skk/opt/skk/plugin/SKK-JISYO.L'
-let g:skk_large_jisyo = s:jisyou
-let g:skk_auto_save_jisyo = 1
-let g:skk_show_candidates_count = 3
-
-let g:eskk#large_dictionary = {
-      \ 'path': s:jisyou,
-      \ 'sorted': 1,
-      \ 'encoding': 'euc-jp',
-      \}
+"let s:jisyou = '~/vimfiles/pack/skk/opt/skk/plugin/SKK-JISYO.L'
+"let g:skk_large_jisyo = s:jisyou
+"let g:skk_auto_save_jisyo = 1
+"let g:skk_show_candidates_count = 3
+"
+"let g:eskk#large_dictionary = {
+"      \ 'path': s:jisyou,
+"      \ 'sorted': 1,
+"      \ 'encoding': 'euc-jp',
+"      \}
 " let skk_jisyo = "path to private dictionary"
 
 " VIMIM:
@@ -408,7 +408,3 @@ let g:UltiSnipsEditSplit="vertical"
 " My packages:
 packadd! bmk
 packadd! sy
-packadd! texcompletion
-
-
-

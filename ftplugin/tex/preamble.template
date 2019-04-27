@@ -24,8 +24,6 @@
 \usepackage{graphicx}
 \graphicspath{{pic/}}
 
-%\usepackage{multirow}
-
 \usepackage[font=small]{caption}
 \captionsetup[figure]{name=图}
 \captionsetup[table]{name=表}
@@ -33,7 +31,7 @@
 % \usepackage{chngcntr}
 
 % adjust enumeration items 
-\usepackage{enumitem}
+\usepackage[inline,shortlabels]{enumitem}
 \setlist{topsep=2pt,itemsep=2pt,parsep=1pt,leftmargin=\parindent}
 
 % biblatex
@@ -112,3 +110,6 @@
 
 \newcommand{\emaketitle}{\begingroup\let\newpage=\relax\maketitle\endgroup}
 
+\newcommand\equref[1]{式~\eqref{#1}}
+\newcommand\tabref[1]{表~\ref{#1}}
+\newcommand\figref[1]{图~\ref{#1}}
