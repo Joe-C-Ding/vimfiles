@@ -1,0 +1,67 @@
+# vim: ft=snippets
+
+snippet mk "Math" wA
+$${1}$`!pif t[2] and t[2][0] not in [',', '.', '?', '-', ' ']:
+    snip.rv = ' 'else:
+    snip.rv = ''` $0
+endsnippet
+
+snippet dm "Math" wA
+\[
+$1
+\]
+endsnippet
+
+snippet '([A-Za-z])(\d)' "auto subscript" wrA
+`!p snip.rv = match.group(1)`_`!p snip.rv = match.group(2)`
+endsnippet
+
+snippet '([A-Za-z])_(\d\d)' "auto subscript2" wrA
+`!p snip.rv = match.group(1)`_{`!p snip.rv = match.group(2)`}
+endsnippet
+
+snippet sr "^2" iA
+^2
+endsnippet
+
+snippet cb "^3" iA
+^3
+endsnippet
+
+#snippet compl "complement" iA
+#^{c}
+#endsnippet
+
+snippet td "superscript" iA
+^{$1}$0
+endsnippet
+
+snippet // "fractions" iA
+\frac{${1:1}}{$2}
+endsnippet
+
+snippet "(\d+)//" "fractions with numerator" wrA
+\frac{`!p snip.rv = match.group(1)`}{$1}
+endsnippet
+
+snippet \b(  "\big-pair" iA
+\bigl(${1:${VISUAL}}\bigr)
+endsnippet
+
+snippet \B(  "\Big-pair" iA
+\Bigl(${1:${VISUAL}}\Bigr)
+endsnippet
+
+snippet \bigg(  "\Big-pair" iA
+\biggl(${1:${VISUAL}}\biggr)
+endsnippet
+
+snippet \Bigg(  "\Big-pair" iA
+\Biggl(${1:${VISUAL}}\Biggr)
+endsnippet
+
+snippet enum* "Nested enumarate"
+\begin{enumerate*}
+	\item $0
+\end{enumerate*}
+endsnippet

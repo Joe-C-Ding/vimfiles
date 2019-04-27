@@ -20,13 +20,6 @@ map Q gq
 " so that you can undo CTRL-U after inserting a line break.
 inoremap <C-U> <C-G>u<C-U>
 
-" Switch syntax highlighting on, when the terminal has colors
-" Also switch on highlighting the last used search pattern.
-if &t_Co > 2 || has("gui_running")
-  syntax on
-  set hlsearch
-endif
-
 if has("autocmd")
   filetype plugin indent on
 
@@ -41,6 +34,13 @@ if has("autocmd")
 else
   set autoindent		" always set auto-indenting on
 endif " has("autocmd")
+
+" Switch syntax highlighting on, when the terminal has colors
+" Also switch on highlighting the last used search pattern.
+if &t_Co > 2 || has("gui_running")
+  syntax on
+  set hlsearch
+endif
 
 " Convenient command to see the difference between the current buffer and the
 " file it was loaded from, thus the changes you made.
@@ -103,25 +103,27 @@ endif
 " set fonts and useful commands for windows
 try
   if has('win32')
-    set guifont=Droid_Sans_Mono:h12:cANSI
-    set guifontwide=MS_Gothic:h12:cSHIFTJIS
+    set guifont=Droid_Sans_Mono:h16:cANSI
+    set guifontwide=MS_Gothic:h16:cSHIFTJIS
     set shellslash
-    set pythonthreedll=python36.dll
+    set pythonthreedll=python37.dll
 
-    call utilities#Clear()
+    " call utilities#Clear()
   endif
 endtry
 
 if has('win32')
   let s:linkdir = "D:/Links/"
 
-  let s:links = glob(s:linkdir.'*.lnk', 0, 1)
-  call map(s:links, 'substitute(v:val, ''^.*/\(.*\)\.lnk$'', ''\1'', "")')
-  let s:links = join(s:links, "\n")
-
   command -nargs=1 -complete=custom,s:Ecomplete E  :call <SID>Elink(<q-args>)
 
   function s:Ecomplete(ArgLead, CmdLine, CursorPos)
+    if !exists('s:links')
+      let s:links = glob(s:linkdir.'*.lnk', 0, 1)
+      call map(s:links, 'substitute(v:val, ''^.*/\(.*\)\.lnk$'', ''\1'', "")')
+      let s:links = join(s:links, "\n")
+    endif
+
     return s:links
   endfunction
 
@@ -266,6 +268,7 @@ nnoremap <silent> g~~	:s/\v<(.)(\w*)/\u\1\L\2/g<CR>
 nnoremap <unique> \l	:setl list!<CR>
 nnoremap <unique> \w	:setl wrap!<CR>
 nnoremap <unique> \h	:nohlsearch<CR>
+nnoremap <unique> Y	y$
 
 inoremap <unique><expr> <M-;>	"<C-R>=strftime(\'%Y-%m-%d\')<CR>"
 cnoremap <unique><expr> <M-;>	"<C-R>=strftime(\'%Y-%m-%d\')<CR>"
@@ -365,7 +368,8 @@ let g:tex_flavor = 'latex'
 packadd! matchit
 let loaded_matchit = 1
 
-" VIMTEX:
+
+" Vimtex:
 packadd! vimtex
 let g:vimtex_compiler_latexmk = {
     \ 'backend' : 'jobs',
@@ -386,7 +390,25 @@ let g:vimtex_view_general_options =
 let g:vimtex_view_general_options_latexmk = '-reuse-instance'
 
 
+" UltiSnips:
+packadd! ultisnips
+packadd! vim-snippets
+
+let g:UltiSnipsUsePythonVersion = 3
+
+" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
+
+
 " My packages:
 packadd! bmk
 packadd! sy
 packadd! texcompletion
+
+
+

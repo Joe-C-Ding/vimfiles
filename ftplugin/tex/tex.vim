@@ -1,8 +1,8 @@
 " tex.vim	vim: ts=8 sw=4 ff=unix
 " Language:	Vim-script
 " Maintainer:	Joe Ding
-" Version:	0.9
-" Last Change:	2018-08-07 09:45:37
+" Version:	0.92
+" Last Change:	2019-04-20 22:31:50
 
 let s:keepcpo= &cpo
 set cpo&vim
@@ -57,9 +57,13 @@ function! TexTemplate()
     call search('>!<', 'bW')
     norm cc
 
-    " copy preamble.template to working dir, and touch refs.bib
-    let pre = readfile(s:dir . "preamble.template")
-    call writefile(pre, "preamble.template")
+    " copy preamble.template and config files to working dir
+    " and touch refs.bib
+    files = ["preamble.template", ".gitignore", ".gitattributes"]
+    for f in files
+	let content = readfile(s:dir . f)
+	call writefile(content, f)
+    end
     call writefile([], "refs.bib", "a")
 endfunction
 

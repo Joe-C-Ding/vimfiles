@@ -18,13 +18,13 @@
 \setdisplayskipstretch{0.5}
 
 % formula
-\usepackage{amsmath,amsthm}
+\usepackage{amsmath}
 
 % figure or table
 \usepackage{graphicx}
 \graphicspath{{pic/}}
 
-\usepackage{multirow}
+%\usepackage{multirow}
 
 \usepackage[font=small]{caption}
 \captionsetup[figure]{name=图}
@@ -92,12 +92,12 @@
 
 
 \renewenvironment{abstract}
-{\noindent{\bf 摘\hphantom{空}要：}}
-{\par}
+  {\noindent{\bf 摘\hphantom{空}要：}}
+  {\par}
 
 \newenvironment{eabstract}
-{\noindent{\bf Abstract:} }
-{\par}
+  {\noindent{\bf Abstract:} }
+  {\par}
 
 \newcommand{\keywords}[1]{\noindent{\bf 关键字：}#1\par}
 \newcommand{\ekeywords}[1]{\noindent{\bf Keywords:} #1\par}
