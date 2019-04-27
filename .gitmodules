@@ -1,0 +1,12 @@
+[submodule "pack/dist/opt/vim-snippets"]
+	path = pack/vim-snippets/opt/vim-snippets
+	url = https://github.com/honza/vim-snippets.git
+[submodule "pack/dist/opt/ultisnips"]
+	path = pack/ultisnips/opt/ultisnips
+	url = https://github.com/SirVer/ultisnips.git
+[submodule "pack/vimtex/opt/vimtex"]
+	path = pack/vimtex/opt/vimtex
+	url = https://github.com/lervag/vimtex.git
+[submodule "pack/vimBookmarks"]
+	path = pack/vimBookmarks
+	url = git@github.com:Joe-C-Ding/vimBookmarks.git

@@ -1,9 +1,0 @@
-let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =7
-let g:netrw_dirhist_1='D:/Documents/sourcetree/thesis'
-let g:netrw_dirhist_2='D:/Documents/sourcetree/thesis/chapter'
-let g:netrw_dirhist_3='D:/Documents/sourcetree/thesis/chapter/miner'
-let g:netrw_dirhist_4='D:/Documents/sourcetree/thesis/chapter/miner/pic'
-let g:netrw_dirhist_5='D:/Documents/study/project/vim/tex'
-let g:netrw_dirhist_6='C:/Users/Joe/vimfiles/pack/sy/database/s 声優资料'
-let g:netrw_dirhist_7='C:/Users/Joe/vimfiles/pack/sy/database/s 声優资料/ひぐらしのなく頃に'
