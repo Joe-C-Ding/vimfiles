@@ -103,8 +103,8 @@ endif
 " set fonts and useful commands for windows
 try
   if has('win32')
-    set guifont=Droid_Sans_Mono:h16:cANSI
-    set guifontwide=MS_Gothic:h16:cSHIFTJIS
+    set guifont=Consolas:h16
+    set guifontwide=MS_Gothic:h16
     set shellslash
     set pythonthreedll=python37.dll
 
@@ -388,6 +388,8 @@ let g:vimtex_view_general_viewer = 'SumatraPDF'
 let g:vimtex_view_general_options = 
       \ '-reuse-instance -forward-search @tex @line @pdf'
 let g:vimtex_view_general_options_latexmk = '-reuse-instance'
+set conceallevel=2
+let g:tex_conceal='abdmgs'
 
 
 " UltiSnips:

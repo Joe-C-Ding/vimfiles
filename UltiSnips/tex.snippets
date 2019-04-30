@@ -65,3 +65,29 @@ snippet enum* "Nested enumarate"
 	\item $0
 \end{enumerate*}
 endsnippet
+
+snippet pb  "parbox for figure" bA
+\parbox{${1:0.45}\textwidth}{
+	\centering
+	\includegraphics[width=${2:$1}\textwidth]{${3:fig.eps}}
+	\caption*{$4}
+} $0
+endsnippet
+
+snippet eqr  "my equref" iA
+\equref{eq:$1} $0
+endsnippet
+
+snippet figr  "my equref" iA
+\figref{fig:$1} $0
+endsnippet
+
+snippet tabr  "my equref" iA
+\tabref{tab:$1} $0
+endsnippet
+
+snippet "tp([+-]?\d+)"  "10 to the power of"
+\num{e`!p snip.rv = match.group(1)`} $0
+endsnippet
+
+
