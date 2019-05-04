@@ -60,6 +60,11 @@ set cpoptions+=FJ	"cpo
 "set cpo-=Ckvx<
 set formatoptions+=M1	"fo
 
+" go, must remove one by one, see |:set-=|
+for f in split('e r R l L b h')
+  exec 'set guioptions-='.f
+endfor
+
 language C
 set encoding=utf-8
 set fileencodings=ucs-bom,utf-8,chinese,default,latin1
@@ -109,6 +114,8 @@ try
     set pythonthreedll=python37.dll
 
     " call utilities#Clear()
+  else
+    set guifont=Monospace\ 15
   endif
 endtry
 
@@ -379,16 +386,24 @@ let g:vimtex_compiler_latexmk = {
     \ 'continuous' : 1,
     \ 'executable' : 'latexmk',
     \ 'options' : [
-    \   '-pdf',
-    \   '-verbose',
     \   '-file-line-error',
+    \   '-synctex=1',
+    \   '-interaction=nonstopmode',
     \ ],
     \}
-let g:vimtex_view_general_viewer = 'SumatraPDF'
-let g:vimtex_view_general_options = 
-      \ '-reuse-instance -forward-search @tex @line @pdf'
-let g:vimtex_view_general_options_latexmk = '-reuse-instance'
-set conceallevel=2
+
+if has('win32')
+  let g:vimtex_view_general_viewer = 'SumatraPDF'
+  let g:vimtex_view_general_options = 
+	\ '-reuse-instance -forward-search @tex @line @pdf'
+  let g:vimtex_view_general_options_latexmk = '-reuse-instance'
+else
+  let g:vimtex_view_general_viewer = 'okular'
+  let g:vimtex_view_general_options = '--unique file:@pdf\#src:@line@tex'
+  let g:vimtex_view_general_options_latexmk = '--unique'
+endif
+
+set conceallevel=1
 let g:tex_conceal='abdmgs'
 
 
@@ -409,4 +424,3 @@ let g:UltiSnipsEditSplit="vertical"
 
 " My packages:
 packadd! bmk
-packadd! sy

@@ -86,8 +86,12 @@ snippet tabr  "my equref" iA
 \tabref{tab:$1} $0
 endsnippet
 
-snippet "tp([+-]?\d+)"  "10 to the power of"
+snippet "tp_?([+-]?\d+)"  "10 to the power of" rA
 \num{e`!p snip.rv = match.group(1)`} $0
+endsnippet
+
+snippet SI "number with unit" wA
+\SI{${1:num}}{${2:unit}} $0
 endsnippet
 
 

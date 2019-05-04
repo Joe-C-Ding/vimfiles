@@ -1,8 +1,8 @@
 " netrw.vim	vim: ts=8 sw=4
 " Language:	Vim-script
 " Maintainer:	Joe Ding
-" Version:	0.5
-" Last Change:	2018-07-16 17:27:00
+" Version:	0.52
+" Last Change:	2019-05-01 09:36:20
 
 " nmap ,s	:call spectrum#Spect("")<CR>
 
@@ -16,7 +16,7 @@ nnoremap <buffer><silent>   }	:call <SID>Jumpdir(4)<CR>
 if has('win32')
     nnoremap <buffer><silent>   e	:exec '!start /b explorer '.substitute(getcwd(), '/', '\', 'g')<CR>
 else
-    nnoremap <buffer><silent>   e	:exec '!start /b explorer '.shellescape(getcwd())<CR>
+    nnoremap <buffer><silent>   e	:exec '!nautilus '.shellescape(getcwd()).' &'<CR>
 endif
 nnoremap <buffer><silent>   c	:call <SID>Msys()<CR>
 
@@ -36,5 +36,9 @@ function s:Jumpdir ( dir )
 endfunction
 
 function s:Msys()
-    !start cmd /k
+    if has('win32')
+	!start cmd /k
+    else
+	!bash
+    end
 endfunction

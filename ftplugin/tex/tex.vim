@@ -2,7 +2,7 @@
 " Language:	Vim-script
 " Maintainer:	Joe Ding
 " Version:	0.92
-" Last Change:	2019-04-20 22:31:50
+" Last Change:	2019-05-01 11:16:42
 
 let s:keepcpo= &cpo
 set cpo&vim
@@ -24,9 +24,9 @@ if has('win32')
     nnoremap <buffer>   <C-F5>  :update<CR>:!start xelatex %<CR>
     " nnoremap <buffer>   \lv  :!start sumatrapdf %:r.pdf<CR>
 else
-    nnoremap <buffer>   <C-F5>  :call Go()<CR>
+    noremap <buffer>   <C-F5>  :<c-u>VimtexCompile<CR>
 endif
-nnoremap <buffer>	K  :exec "!start texdoc " . expand("<cword>")<CR>
+"nnoremap <buffer>	K  :exec "!start texdoc " . expand("<cword>")<CR>
 
 function! Go()
     update
