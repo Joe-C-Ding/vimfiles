@@ -1,8 +1,8 @@
 " tex.vim	vim: ts=8 sw=4 ff=unix
 " Language:	Vim-script
 " Maintainer:	Joe Ding
-" Version:	0.92
-" Last Change:	2019-05-01 11:16:42
+" Version:	0.95
+" Last Change:	2019-05-04 23:23:07
 
 let s:keepcpo= &cpo
 set cpo&vim
@@ -20,22 +20,16 @@ set iskeyword+=:
 " set indentkeys-=[,(,{,),},]	" should set in after/
 
 
-if has('win32')
-    nnoremap <buffer>   <C-F5>  :update<CR>:!start xelatex %<CR>
-    " nnoremap <buffer>   \lv  :!start sumatrapdf %:r.pdf<CR>
-else
-    noremap <buffer>   <C-F5>  :<c-u>VimtexCompile<CR>
-endif
-"nnoremap <buffer>	K  :exec "!start texdoc " . expand("<cword>")<CR>
+noremap <buffer><silent>   <C-F5>  :call Go()<CR>
 
 function! Go()
+    " if running in continuous mode, updating files will trigger compilation
     update
 
-    silent !xelatex -interaction=nonstopmode 1>null 2>&1 %
-    vs %:r.log
-    silent !evince %:r.pdf &
-
-    redraw
+    " else we do need to start it.
+    if !b:vimtex.compiler.is_running()
+	VimtexCompile
+    endif
 endfunction
 
 inoremap <silent><buffer> <F3>	<C-\><C-O>:call TexInsEnv()<CR>
