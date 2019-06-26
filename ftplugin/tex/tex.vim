@@ -2,7 +2,7 @@
 " Language:	Vim-script
 " Maintainer:	Joe Ding
 " Version:	0.95
-" Last Change:	2019-05-04 23:23:07
+" Last Change:	2019-06-26 11:18:03
 
 let s:keepcpo= &cpo
 set cpo&vim
@@ -53,7 +53,7 @@ function! TexTemplate()
 
     " copy preamble.template and config files to working dir
     " and touch refs.bib
-    files = ["preamble.template", ".gitignore", ".gitattributes"]
+    let files = ["preamble.template", ".gitignore", ".gitattributes"]
     for f in files
 	let content = readfile(s:dir . f)
 	call writefile(content, f)
