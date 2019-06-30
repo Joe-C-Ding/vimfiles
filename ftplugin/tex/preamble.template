@@ -36,6 +36,8 @@
 
 % biblatex
 \usepackage[style=gb7714-2015]{biblatex}
+\def\bibfont{\small}
+\setlength{\bibitemsep}{1pt}
 
 \newenvironment{tightcenter}
   {\setlength\topsep{0pt}\setlength\parskip{0pt}\begin{center}}
@@ -88,20 +90,19 @@
     {}
 \titlespacing{\subsection}{0pt}{*1}{*0}
 
-
 \renewenvironment{abstract}
-  {\noindent{\bf 摘\hphantom{空}要：}}
+  {\noindent\small{\bf 摘\hphantom{空}要：}}
   {\par}
 
 \newenvironment{eabstract}
-  {\noindent{\bf Abstract:} }
+  {\noindent\small{\bf Abstract:} }
   {\par}
 
-\newcommand{\keywords}[1]{\noindent{\bf 关键字：}#1\par}
-\newcommand{\ekeywords}[1]{\noindent{\bf Keywords:} #1\par}
+\newcommand{\keywords}[1]{\begingroup\small\noindent{\bf 关键字：}#1\par\endgroup}
+\newcommand{\ekeywords}[1]{\begingroup\small\noindent{\bf Keywords:} #1\par\endgroup}
 
-\newcommand{\CLCnumber}[1]{\noindent {\bf 中图分类号：}#1\hfil
-  {\bf 文献标识码：}A\hfil\par\vskip 1ex}
+\newcommand{\CLCnumber}[1]{\begingroup\noindent\small{\bf 中图分类号：}#1\hfil
+  {\bf 文献标识码：}A\hfil\par\vskip 1ex\endgroup}
 
 \usepackage[hang,flushmargin]{footmisc} 
 \makeatletter

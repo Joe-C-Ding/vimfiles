@@ -2,7 +2,7 @@
 " Language:	Vim-script
 " Maintainer:	Joe Ding
 " Version:	0.52
-" Last Change:	2019-05-01 09:36:20
+" Last Change:	2019-05-06 10:54:41
 
 " nmap ,s	:call spectrum#Spect("")<CR>
 
@@ -14,7 +14,7 @@ nnoremap <buffer><silent>   {	:call <SID>Jumpdir(3)<CR>
 nnoremap <buffer><silent>   }	:call <SID>Jumpdir(4)<CR>
 
 if has('win32')
-    nnoremap <buffer><silent>   e	:exec '!start /b explorer '.substitute(getcwd(), '/', '\', 'g')<CR>
+    nnoremap <buffer><silent>   e	:exec '!start /b '.substitute(getcwd(), '/', '\', 'g')<CR>
 else
     nnoremap <buffer><silent>   e	:exec '!nautilus '.shellescape(getcwd()).' &'<CR>
 endif

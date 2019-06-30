@@ -2,7 +2,7 @@
 " Language:	Vim-script
 " Maintainer:	Joe Ding
 " Version:	0.95
-" Last Change:	2019-06-26 11:18:03
+" Last Change:	2019-06-30 16:56:45
 
 let s:keepcpo= &cpo
 set cpo&vim
@@ -57,7 +57,7 @@ function! TexTemplate()
     for f in files
 	let content = readfile(s:dir . f)
 	call writefile(content, f)
-    end
+    endfor
     call writefile([], "refs.bib", "a")
 endfunction
 
