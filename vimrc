@@ -108,7 +108,7 @@ endif
 " set fonts and useful commands for windows
 try
   if has('win32')
-    set guifont=Consolas:h16
+    set guifont=DejaVu_Sans_Mono:h16
     set guifontwide=MS_Gothic:h16
     set shellslash
     set pythonthreedll=python37.dll
@@ -122,7 +122,7 @@ endtry
 if has('win32')
   let s:linkdir = "D:/Links/"
 
-  command -nargs=1 -complete=custom,s:Ecomplete E  :call <SID>Elink(<q-args>)
+  command -nargs=? -complete=custom,s:Ecomplete E  :call <SID>Elink(<q-args>)
 
   function s:Ecomplete(ArgLead, CmdLine, CursorPos)
     if !exists('s:links')
@@ -135,7 +135,11 @@ if has('win32')
   endfunction
 
   function s:Elink ( lk )
-    if a:lk !~ "lnk$"
+    if empty(a:lk)
+      exec "!start " . getcwd()
+      return
+
+    elseif a:lk !~ '\.lnk$'
       let link = a:lk . ".lnk"
     else
       let link = a:lk
@@ -230,7 +234,8 @@ endfunction
 
 " <F5> to clear buffer
 nnoremap <unique> <F5>	:%d_<CR>
-" <F12> to show the syntax item name under cursor
+" <F11> and <F12> echo info of syntax items
+nnoremap <unique> <F11>	:echo map(synstack(line("."), col(".")), 'synIDattr(v:val, "name")')<CR>
 nnoremap <unique> <F12>	:echo synIDattr(synID(line("."), col("."), 1), "name")<CR>
 
 " smart <BS>,  Delete pairs
@@ -386,6 +391,7 @@ let g:vimtex_compiler_latexmk = {
     \ 'continuous' : 1,
     \ 'executable' : 'latexmk',
     \ 'options' : [
+    \   '-verbose',
     \   '-file-line-error',
     \   '-synctex=1',
     \   '-interaction=nonstopmode',
