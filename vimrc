@@ -430,3 +430,6 @@ let g:UltiSnipsEditSplit="vertical"
 
 " My packages:
 packadd! bmk
+let g:vbookmarks_omitpath = 1
+
+packadd! sy
