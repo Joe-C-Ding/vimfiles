@@ -247,7 +247,7 @@ let s:pairs = {
       \  '<': '>',
       \}
 
-function! Backspace ()
+function! s:Backspace ()
   let line = getline('.')
   let col = col('.') - 1
   let char = line[col-1]
@@ -263,7 +263,7 @@ function! Backspace ()
   endtry
 endfunction
 
-inoremap <expr> <BS> Backspace()
+inoremap <expr> <BS> <SID>Backspace()
 
 nnoremap <unique> R	gR
 " make a line title caps. The original function of `g~~' is switch case.
@@ -277,19 +277,20 @@ nnoremap <silent> g~~	:s/\v<(.)(\w*)/\u\1\L\2/g<CR>
 " endif
 
 " some useful :setlocal mappings
+nnoremap <unique> \c	:setl ft=c<CR>
+nnoremap <unique> \C	:setl ft=cpp<CR>
+nnoremap <unique> \v	:setl ft=vim<CR>
+
 nnoremap <unique> \l	:setl list!<CR>
 nnoremap <unique> \w	:setl wrap!<CR>
 nnoremap <unique> \h	:nohlsearch<CR>
+nnoremap <unique> \m	:marks<CR>
 nnoremap <unique> Y	y$
 
 inoremap <unique><expr> <M-;>	"<C-R>=strftime(\'%Y-%m-%d\')<CR>"
 cnoremap <unique><expr> <M-;>	"<C-R>=strftime(\'%Y-%m-%d\')<CR>"
 inoremap <unique><expr> <M-:>	"<C-R>=strftime(\'%H:%M:%S\')<CR>"
-cnoremap <unique><expr> <M-:>	"<C-R>=strftime(\'%Y-%m-%d\')<CR>"
-
-nnoremap <unique> \c	:setl ft=c<CR>
-nnoremap <unique> \C	:setl ft=cpp<CR>
-nnoremap <unique> \v	:setl ft=vim<CR>
+cnoremap <unique><expr> <M-:>	"<C-R>=strftime(\'%H:%M:%S\')<CR>"
 
 " move a line or a block up or down
 nnoremap <C-j> m`:m +1<CR>``
@@ -378,8 +379,6 @@ let g:tex_flavor = 'latex'
 
 " MATCHIT:
 packadd! matchit
-let loaded_matchit = 1
-
 
 " Vimtex:
 packadd! vimtex
