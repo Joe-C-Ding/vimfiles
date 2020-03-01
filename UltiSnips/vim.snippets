@@ -1,0 +1,20 @@
+# vim: ft=snippets
+
+snippet map  "Add a plugin mapping" bw
+if !hasmapto('<Plug>${1:ScriptMap}')
+	${2:mode}map <unique>  <Leader>${3:keys}	<Plug>$1
+endif
+$2noremap <silent>  <Plug>$1	${4:do_what}
+
+$0
+endsnippet
+
+snippet cmd  "Add a plugin command" bw
+if !exists(":${1:CommandName}")
+	command -nargs=${2:01*?+}  $1	${3:do what}
+endif
+
+$0
+endsnippet
+
+

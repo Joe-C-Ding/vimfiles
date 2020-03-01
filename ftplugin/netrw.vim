@@ -2,33 +2,35 @@
 " Language:	Vim-script
 " Maintainer:	Joe Ding
 " Version:	0.52
-" Last Change:	2019-05-06 10:54:41
+" Last Change:	2020-02-29 11:31:37
 
-" nmap ,s	:call spectrum#Spect("")<CR>
-
-" jump to the previous/next directory
+" move to the previous/next directory
 " </> ignores those directories whose name begin with a dot
-nnoremap <buffer><silent>   <	:call <SID>Jumpdir(1)<CR>
-nnoremap <buffer><silent>   >	:call <SID>Jumpdir(2)<CR>
-nnoremap <buffer><silent>   {	:call <SID>Jumpdir(3)<CR>
-nnoremap <buffer><silent>   }	:call <SID>Jumpdir(4)<CR>
+nmap <buffer><nowait><silent>   <	<Plug>(netrw-prev-dir)
+nmap <buffer><nowait><silent>   >	<Plug>(netrw-next-dir)
+nmap <buffer><nowait><silent>   {	<Plug>(netrw-prev-dirall)
+nmap <buffer><nowait><silent>   }	<Plug>(netrw-next-dirall)
+nmap <buffer><nowait><silent>   c	<Plug>(netrw-open-terminal)
 
-if has('win32')
-    nnoremap <buffer><silent>   e	:exec '!start /b '.substitute(getcwd(), '/', '\', 'g')<CR>
-else
-    nnoremap <buffer><silent>   e	:exec '!nautilus '.shellescape(getcwd()).' &'<CR>
-endif
-nnoremap <buffer><silent>   c	:call <SID>Msys()<CR>
+nnoremap <buffer><silent> <Plug>(netrw-prev-dir)    :call <SID>Jumpdir(1)<CR>
+nnoremap <buffer><silent> <Plug>(netrw-next-dir)    :call <SID>Jumpdir(2)<CR>
+nnoremap <buffer><silent> <Plug>(netrw-prev-dirall) :call <SID>Jumpdir(3)<CR>
+nnoremap <buffer><silent> <Plug>(netrw-next-dirall) :call <SID>Jumpdir(4)<CR>
+nnoremap <buffer><silent> <Plug>(netrw-open-terminal)	:call <SID>Msys()<CR>
 
-function s:Jumpdir ( dir )
+
+" Jumpdir: move to the next fold for plugin netrw
+" direction: 1, 2 -- move to the fold whose name not begin with a dot
+"	     3, 4 -- similar to 1 and 2, but counts for all folds.
+function s:Jumpdir ( direction )
     let l:flags = 'sW'
-    if a:dir == 1 || a:dir == 3
+    if a:direction == 1 || a:direction == 3
 	let l:flags .= 'b'
     endif
 
-    if a:dir < 3
+    if a:direction < 3
 	let l:pattern = '\m^\.\@!.*/$'
-    else    " elseif a:dir < 5
+    else    " elseif a:direction < 5
 	let l:pattern = '\m^.\+/$'
     end
 	

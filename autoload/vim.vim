@@ -1,13 +1,13 @@
 " vim.vim	vim: ts=8 sw=4 ff=unix
 " Maintainer:	Joe Ding
-" Version:	0.9
-" Last Change:	2017-11-06 09:19:49
+" Version:	0.5
+" Last Change:	2020-03-01 09:50:38
 
 let s:cpo_save = &cpo
 set cpo&vim
 
 function! vim#Writeheader(file)
-    if a:file =~ substitute($VIMRUNTIME, '\\', '/', 'g')
+    if a:file =~# substitute($VIMRUNTIME, '\\', '/', 'g')
 	return
     endif
 
@@ -40,13 +40,13 @@ function! vim#InsertTemplate()
     put ='endif'
     put ='let g:loaded_'.plugin.' = 1'
     put =''
-    put ='let s:keepcpo = &cpo'
+    put ='let s:save_cpo = &cpo'
     put ='set cpo&vim'
     put =''
     put ='>!<'
     put =''
-    put ='let &cpo = s:keepcpo'
-    put ='unlet s:keepcpo'
+    put ='let &cpo = s:save_cpo'
+    put ='unlet s:save_cpo'
 
     1d_	" remove the blank 1st line
     norm G
