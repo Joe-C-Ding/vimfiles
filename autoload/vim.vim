@@ -1,7 +1,7 @@
 " vim.vim	vim: ts=8 sw=4 ff=unix
 " Maintainer:	Joe Ding
 " Version:	0.5
-" Last Change:	2020-03-01 09:50:38
+" Last Change:	2020-03-12 14:47:12
 
 let s:cpo_save = &cpo
 set cpo&vim
@@ -29,7 +29,7 @@ endfunction
 function! vim#InsertTemplate()
     let plugin = expand('%:t:r')
 
-    put ='\" '.expand('%:t').'	vim: ts=8 sw=4 ff=unix'
+    put ='\" '.expand('%:t').'	vim: ts=8 sw=4 ff=unix fdm=marker'
     put ='\" Language:	Vim-script'
     put ='\" Maintainer:	Joe Ding'
     put ='\" Version:	0.1'
