@@ -108,8 +108,8 @@ endif
 " set fonts and useful commands for windows
 try
   if has('win32')
-    set guifont=DejaVu_Sans_Mono:h16
-    set guifontwide=MS_Gothic:h16
+    set guifont=DejaVu_Sans_Mono:h14
+    set guifontwide=MS_Gothic:h14
     set shellslash
     set pythonthreedll=python37.dll
 
@@ -430,5 +430,3 @@ let g:UltiSnipsEditSplit="vertical"
 " My packages:
 packadd! bmk
 let g:vbookmarks_omitpath = 1
-
-packadd! sy
