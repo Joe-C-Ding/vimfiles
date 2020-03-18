@@ -1,60 +1,12 @@
 " vim: nowrap fenc=utf-8 ff=unix sw=2
 " Last Change: 2017-05-05 08:18:44
 
-if exists("g:loaded_myvimrc") | finish | endif
-let g:loaded_myvimrc = 1
+source $VIMRUNTIME/vimrc_example.vim
 
-if v:progname =~? "evim" | finish | endif
-
-set nocompatible 
-set backspace=indent,eol,start
-set mouse=a mousehide
-set nobackup ruler showcmd incsearch 
-
-let &guioptions = substitute(&guioptions, "t", "", "g")
-
-" Don't use Ex mode, use Q for formatting
-map Q gq
-
-" CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
-" so that you can undo CTRL-U after inserting a line break.
-inoremap <C-U> <C-G>u<C-U>
-
-if has("autocmd")
-  filetype plugin indent on
-
-  augroup vimrcEx
-    au!
-    autocmd FileType text setlocal textwidth=78 fo=n2tM1
-    autocmd BufReadPost *
-	  \ if line("'\"") > 1 && line("'\"") <= line("$") |
-	  \   exe "normal! g`\"" |
-	  \ endif
-  augroup END
-else
-  set autoindent		" always set auto-indenting on
-endif " has("autocmd")
-
-" Switch syntax highlighting on, when the terminal has colors
-" Also switch on highlighting the last used search pattern.
-if &t_Co > 2 || has("gui_running")
-  syntax on
-  set hlsearch
-endif
-
-" Convenient command to see the difference between the current buffer and the
-" file it was loaded from, thus the changes you made.
-" Only define it when not defined already.
-if !exists(":DiffOrig")
-  command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
-	\ | wincmd p | diffthis
-endif
-
-" ====================================
-" My options ~~~
-" ====================================
-
-autocmd BufEnter * silent! lcd %:p:h
+augroup MyVimrc
+  au!
+  au BufEnter * silent! lcd %:p:h
+augroup END
 
 set cpoptions+=FJ	"cpo
 "set cpo-=Ckvx<
@@ -68,7 +20,7 @@ endfor
 language C
 set encoding=utf-8
 set fileencodings=ucs-bom,utf-8,chinese,default,latin1
-so $VIMRUNTIME/delmenu.vim | set langmenu=none | so $VIMRUNTIME/menu.vim
+" so $VIMRUNTIME/delmenu.vim | set langmenu=none | so $VIMRUNTIME/menu.vim
 set fileformats=unix,dos
 
 " spell checking
@@ -80,9 +32,9 @@ set cmdheight=2
 set scrolljump=5
 set wildmenu wildmode=list:full bsdir=current
 set verbosefile=$HOME/vim_verbosefile.txt
-set nu aw ar hidden smartcase splitright visualbell paste
+set nu aw ar hidden smartcase splitright visualbell paste nobackup
 
-set timeout timeoutlen=1000 ttimeoutlen=100
+" set timeout timeoutlen=1000 ttimeoutlen=100
 set wildignore=*.bak,*.o,*.e,*~,#*#
 set listchars=eol:$,tab:>.,trail:.,extends:>,precedes:<
 set viminfo='50,/100,<10,@100,f1,h,s1
@@ -253,14 +205,10 @@ function! s:Backspace ()
   let char = line[col-1]
 
   let keys = "\<BS>"
-  try
-    " s:pairs[char] may throw exception
-    if s:pairs[char] == line[col]
-      let keys .= "\<DEL>"
-    endif
-  finally
-    return keys
-  endtry
+  if get(s:pairs, char, '') == line[col]
+    let keys .= "\<DEL>"
+  endif
+  return keys
 endfunction
 
 inoremap <expr> <BS> <SID>Backspace()
@@ -376,9 +324,6 @@ let g:tex_flavor = 'latex'
 "let g:Tex_CompileRule_pdf = 'xelatex -interaction=nonstopmode $*'
 "let g:Tex_ViewRule_pdf = 'sumatrapdf'
 "let g:Tex_ViewRule_dvi = 'sumatrapdf'
-
-" MATCHIT:
-packadd! matchit
 
 " Vimtex:
 packadd! vimtex
