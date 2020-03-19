@@ -1,50 +1,69 @@
-" vim: nowrap fenc=utf-8 ff=unix sw=2
-" Last Change: 2017-05-05 08:18:44
+" vim: nowrap fenc=utf-8 ff=unix sw=2 fdm=marker
+" Last Change: 2020-03-19 13:32:47
 
+" For vim-8.2, all affected options in vimrc_example.vim are:
+"   backup, undofile, hlsearch, textwidth, and matchit
+" it will source default.vim, and further affects:
+"   backspace, history, ruler, showcmd, wildmenu
+"   ttimeout, ttimeoutlen, display, scrolloff,
+"   incsearch, nrformats, guioptions, mouse, langremap
+"   syntax on & filetype on
+" if gvimrc will be sourced after vimrc files, gvimrc_example.vim affects:
+"   cmdheight, mousehide, <S-Insert>
+"   syntax on and defines several highlights
+unlet! skip_defaults_vim
 source $VIMRUNTIME/vimrc_example.vim
 
+" something I don't like in default	{{{1
+" no backup is needed
+set nobackup noundofile
+
+" do not use scrolloff, scrolljump is more intuitive
+" scrollfocus makes Windows scrolling like other system.
+set scrolloff=0 scrolljump=5 scrollfocus
+
+" further adjust go, and adjust cpo and fo here too
+" flags must remove one by one see |:set-=|
+set go+=c cpo+=FJ fo+=M1
+for flag in split('e b r R l L m T')
+  exec 'set go-='..flag
+endfor
+
+language C
+" if menu present, change its language to English
+" so $VIMRUNTIME/delmenu.vim | set langmenu=none | so $VIMRUNTIME/menu.vim
+
+
+" My options	 {{{1
 augroup MyVimrc
   au!
   au BufEnter * silent! lcd %:p:h
 augroup END
 
-set cpoptions+=FJ	"cpo
-"set cpo-=Ckvx<
-set formatoptions+=M1	"fo
-
-" go, must remove one by one, see |:set-=|
-for f in split('e r R l L b h')
-  exec 'set guioptions-='.f
-endfor
-
-language C
 set encoding=utf-8
 set fileencodings=ucs-bom,utf-8,chinese,default,latin1
-" so $VIMRUNTIME/delmenu.vim | set langmenu=none | so $VIMRUNTIME/menu.vim
 set fileformats=unix,dos
 
 " spell checking
 set spell spelllang=en_us,cjk
 set spellsuggest=best,20
+" and correcting
+iabbr teh the
 
-set sw=4 sts=-1
-set cmdheight=2
-set scrolljump=5
-set wildmenu wildmode=list:full bsdir=current
-set verbosefile=$HOME/vim_verbosefile.txt
-set nu aw ar hidden smartcase splitright visualbell paste nobackup
+set ts&vim sw=4 sts=-1
+set nu aw ar hidden smartcase paste
 
-" set timeout timeoutlen=1000 ttimeoutlen=100
-set wildignore=*.bak,*.o,*.e,*~,#*#
-set listchars=eol:$,tab:>.,trail:.,extends:>,precedes:<
+set splitright visualbell bsdir=current conceallevel=1
+set wildmode=list:full wildignore=*.bak,*.o,*.e,*~,#*#
+
 set viminfo='50,/100,<10,@100,f1,h,s1
-
-set guioptions+=c
-set guioptions-=T
-set guioptions-=m
+set listchars=eol:$,tab:>.,trail:.,extends:>,precedes:<
 
 " this will highlight the column after 'textwidth'
 set colorcolumn=+1
+
+set shellslash
+set pythonthreedll=python37.dll
 
 " When possible use + register for copy-paste 
 if has('unnamedplus')
@@ -53,25 +72,9 @@ else
   set clipboard=unnamed 
 endif 
 
-" ====================================
-" My commands ~~~
-" ====================================
 
-" set fonts and useful commands for windows
-try
-  if has('win32')
-    set guifont=DejaVu_Sans_Mono:h14
-    set guifontwide=MS_Gothic:h14
-    set shellslash
-    set pythonthreedll=python37.dll
-
-    " call utilities#Clear()
-  else
-    set guifont=Monospace\ 15
-  endif
-endtry
-
-if has('win32')
+" My commands	{{{1
+if has('win32')	" commad E for windows	{{{2
   let s:linkdir = "D:/Links/"
 
   command -nargs=? -complete=custom,s:Ecomplete E  :call <SID>Elink(<q-args>)
@@ -88,25 +91,25 @@ if has('win32')
 
   function s:Elink ( lk )
     if empty(a:lk)
-      exec "!start " . getcwd()
+      exec "!start " .. getcwd()
       return
 
-    elseif a:lk !~ '\.lnk$'
-      let link = a:lk . ".lnk"
+    elseif a:lk !~? '\.lnk$'
+      let l:link = a:lk .. ".lnk"
     else
-      let link = a:lk
+      let l:link = a:lk
     endif
 
-    let filename = s:linkdir . link
-    if file_readable(filename)
+    let filename = s:linkdir .. l:link
+    if filereadable(filename)
       exec "e ".filename
     else
-      echohl WarningMsg | echo "Shortcut not exists: ". a:lk | echohl None
+      echohl WarningMsg | echom "Shortcut not exists: ". a:lk | echohl None
     endif
   endfunction
 endif
 
-" useful to search files in directory
+" :S, useful to search files in directory	{{{2
 " `:3S file_name.txt'
 "   to search it in `.' and subdirs with depth no more than 3.
 command -nargs=1 -count=2 S  :call <SID>searchopen(<f-args>, <count>)
@@ -137,26 +140,24 @@ function s:searchopen(file, deepth)
   endif
 endfunction
 
-" ====================================
-" My mappings ~~~
-" ====================================
+" My mappings	{{{1
+nnoremap Y	y$
+nnoremap R	gR
 
 " <space>/<bs> to scroll down/up
-nnoremap <unique>	<space>	<C-f>
-nnoremap <unique>	<bs>	<C-b>
+nnoremap <space>	<C-f>
+nnoremap <bs>	<C-b>
+
+" make a line title caps. The original function of `g~~' is switch case.
+nnoremap <silent> g~~	:s/\v<(.)(\w*)/\u\1\L\2/g<CR>
 
 " <F2> to copy text to clipboard
-if has("unix")
-  nnoremap <unique> <F2>	:%!expand<CR>m`gg"+yG``
-  vnoremap <unique> <F2>	"+ygv
-else
-  nnoremap <unique> <F2>	m`gg"+yG``
-  vnoremap <unique> <F2>	"+ygv
-endif
+nnoremap <F2>	m`gg"+yG``
+vnoremap <F2>	"+ygv
 
 " <F3>/<F4> to jump to next/previous item
-nnoremap <unique><expr> <F3>	<SID>Next(0)
-nnoremap <unique><expr> <F4>	<SID>Next(1)
+nnoremap <expr> <F3>	<SID>Next(0)
+nnoremap <expr> <F4>	<SID>Next(1)
 function s:Next ( reverse )
   if empty(getqflist())
     if empty(getloclist(0))
@@ -170,8 +171,8 @@ function s:Next ( reverse )
 endfunction
 
 " <F8>/<F9> to jump to next/previous file
-nnoremap <unique><expr> <F8>	<SID>NextFile(0)
-nnoremap <unique><expr> <F9>	<SID>NextFile(1)
+nnoremap <expr> <F8>	<SID>NextFile(0)
+nnoremap <expr> <F9>	<SID>NextFile(1)
 function s:NextFile ( reverse )
   if empty(getqflist())
     if empty(getloclist(0))
@@ -185,12 +186,13 @@ function s:NextFile ( reverse )
 endfunction
 
 " <F5> to clear buffer
-nnoremap <unique> <F5>	:%d_<CR>
-" <F11> and <F12> echo info of syntax items
-nnoremap <unique> <F11>	:echo map(synstack(line("."), col(".")), 'synIDattr(v:val, "name")')<CR>
-nnoremap <unique> <F12>	:echo synIDattr(synID(line("."), col("."), 1), "name")<CR>
+nnoremap <F5>	:%d_<CR>
+
+" <F12> echo syntax stack
+nnoremap <F12>	:echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')<CR>
 
 " smart <BS>,  Delete pairs
+inoremap <expr> <BS> <SID>Backspace()
 let s:pairs = {
       \  '"': '"',
       \  '(': ')',
@@ -205,40 +207,26 @@ function! s:Backspace ()
   let char = line[col-1]
 
   let keys = "\<BS>"
-  if get(s:pairs, char, '') == line[col]
+  if get(s:pairs, char, 'xx') == line[col]
     let keys .= "\<DEL>"
   endif
   return keys
 endfunction
 
-inoremap <expr> <BS> <SID>Backspace()
+" Some useful :setlocal mappings  {{{1
+nnoremap \c	:setl ft=c<CR>
+nnoremap \C	:setl ft=cpp<CR>
+nnoremap \v	:setl ft=vim<CR>
 
-nnoremap <unique> R	gR
-" make a line title caps. The original function of `g~~' is switch case.
-nnoremap <silent> g~~	:s/\v<(.)(\w*)/\u\1\L\2/g<CR>
+nnoremap \l	:setl list!<CR>
+nnoremap \w	:setl wrap!<CR>
+nnoremap \h	:nohlsearch<CR>
+nnoremap \m	:marks<CR>
 
-" \e to start Emacs at cwd
-" if has('win32')
-"   nnoremap <unique> \e	:exec "!start runemacs ".shellescape(getcwd())." &"
-" else
-"   nnoremap <unique> \e	:exec "!emacs ".shellescape(getcwd())." &"
-" endif
-
-" some useful :setlocal mappings
-nnoremap <unique> \c	:setl ft=c<CR>
-nnoremap <unique> \C	:setl ft=cpp<CR>
-nnoremap <unique> \v	:setl ft=vim<CR>
-
-nnoremap <unique> \l	:setl list!<CR>
-nnoremap <unique> \w	:setl wrap!<CR>
-nnoremap <unique> \h	:nohlsearch<CR>
-nnoremap <unique> \m	:marks<CR>
-nnoremap <unique> Y	y$
-
-inoremap <unique><expr> <M-;>	"<C-R>=strftime(\'%Y-%m-%d\')<CR>"
-cnoremap <unique><expr> <M-;>	"<C-R>=strftime(\'%Y-%m-%d\')<CR>"
-inoremap <unique><expr> <M-:>	"<C-R>=strftime(\'%H:%M:%S\')<CR>"
-cnoremap <unique><expr> <M-:>	"<C-R>=strftime(\'%H:%M:%S\')<CR>"
+inoremap <expr> <M-;>	"<C-R>=strftime(\'%Y-%m-%d\')<CR>"
+cnoremap <expr> <M-;>	"<C-R>=strftime(\'%Y-%m-%d\')<CR>"
+inoremap <expr> <M-:>	"<C-R>=strftime(\'%H:%M:%S\')<CR>"
+cnoremap <expr> <M-:>	"<C-R>=strftime(\'%H:%M:%S\')<CR>"
 
 " move a line or a block up or down
 nnoremap <C-j> m`:m +1<CR>``
@@ -246,34 +234,7 @@ vnoremap <C-j> :m '>+1<CR>gv
 nnoremap <C-k> m`:m -2<CR>``
 vnoremap <C-k> :m '<-2<CR>gv
 
-
-" ======= simulate Emacs' keybinding ======
-" <A-d> and <A-BS> delete forward or backward a word
-inoremap <unique> <M-d>	<C-o>de
-cnoremap <unique> <M-d>	<C-o>de
-inoremap <unique> <M-<BS>>	<C-w>
-cnoremap <unique> <M-<BS>>	<C-w>
-" <M-f> and <M-b> move cursor forward or backward a word
-inoremap <unique> <M-b>	<C-left>
-cnoremap <unique> <M-b>	<C-left>
-inoremap <unique> <M-f>	<C-right>
-cnoremap <unique> <M-f>	<C-right>
-" <M-<> and <M->> move cursor to the begin or end of buffer
-nnoremap <unique> <M->>	G
-nnoremap <unique> <M-<>	gg
-nnoremap <unique> <M-{>	{
-nnoremap <unique> <M-}>	}
-
-cnoremap <unique> <M-g>  <C-\><C-N>
-inoremap <unique> <M-g>  <C-\><C-N>
-" =========================================
-
-" spell correcting
-iabbr teh the
-
-"====================================
-" setting for plugins/packages
-"====================================
+" setting for plugins/packages	{{{1
 
 " NETRW:
 let g:netrw_keepdir = 0
@@ -316,17 +277,9 @@ let g:calendar_weeknm = 1 " WK01
 " let g:calendar_weeknm = 4 " KW 1
 " let g:calendar_weeknm = 5 " 1
 
-" vim-latex:
-" packadd! vim-latex
-" let g:Tex_Debug = 1
-"set grepprg=grep\ -nH\ $*
-let g:tex_flavor = 'latex'
-"let g:Tex_CompileRule_pdf = 'xelatex -interaction=nonstopmode $*'
-"let g:Tex_ViewRule_pdf = 'sumatrapdf'
-"let g:Tex_ViewRule_dvi = 'sumatrapdf'
-
 " Vimtex:
 packadd! vimtex
+let g:tex_flavor = 'latex'
 let g:vimtex_compiler_latexmk = {
     \ 'backend' : 'jobs',
     \ 'background' : 1,
@@ -353,7 +306,6 @@ else
   let g:vimtex_view_general_options_latexmk = '--unique'
 endif
 
-set conceallevel=1
 let g:tex_conceal='abdmgs'
 
 
