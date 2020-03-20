@@ -2,7 +2,7 @@
 " Author:	Joe
 " Modified:	2013-10-15 20:32:16
 
-" colors for mystatusline.vim	{{{1
+" colors for mystatusline.vim
 " s:coloralias {{{2
 if &t_Co == '' || &t_Co <= 8	    " {{{3
     let s:coloralias = {
@@ -166,6 +166,6 @@ hi link MSLposition	g2_on_g0
 hi link MSLline		g2_on_g0
 hi link MSLcolum	g6_on_g0
 " }}}2
+
 unlet s:coloralias
-" colors for mystatusline.vim END}}}1
 

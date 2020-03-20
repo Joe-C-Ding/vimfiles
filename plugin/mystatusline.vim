@@ -2,7 +2,7 @@
 " Language:	Vim-script
 " Maintainer:	Joe
 " Version:	1.1
-" Last Change:	2018-07-08 07:52:40
+" Last Change:	2020-03-20 00:28:36
 
 if exists("g:my_statusline") | finish | endif
 let g:my_statusline = 1
@@ -15,9 +15,10 @@ set laststatus=2
 set statusline=%!MyStatusLine(1)
 
 augroup MyStatusLine
+    au!
+
     au WinEnter	* setl statusline=%!MyStatusLine(1)
     au WinLeave	* setl statusline=%!MyStatusLine(0)
-
     " Because the change of syntax may clear all highlights.
     au Syntax	* runtime colors/mycolors.vim
 augroup END
@@ -73,12 +74,12 @@ function! s:MSLstatus( is_cw )	"{{{1
 endfunction
 
 function! s:MSLfileinfo( is_cw )	"{{{1
-"    if a:is_cw
+    if a:is_cw
 	return '%<%#MSLdefault#< %{&ff} '
 	    \. '< %{&fenc!=""?&fenc:&enc} < %{&ft!=""?&ft:"no ft"} '
-"    else
-"	return ''
-"    endif
+    else
+	return ''
+    endif
 endfunction
 
 function! s:MSLcursposi( is_cw )	"{{{1
