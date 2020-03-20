@@ -35,11 +35,6 @@ language C
 
 
 " My options	 {{{1
-augroup MyVimrc
-  au!
-  au BufEnter * silent! lcd %:p:h
-augroup END
-
 set encoding=utf-8
 set fileencodings=ucs-bom,utf-8,chinese,default,latin1
 set fileformats=unix,dos
@@ -51,7 +46,7 @@ set spellsuggest=best,20
 iabbr teh the
 
 set ts&vim sw=4 sts=-1
-set nu aw ar hidden smartcase paste
+set nu aw ar hidden smartcase paste autochdir
 
 set splitright visualbell bsdir=current conceallevel=1
 set wildmode=list:full wildignore=*.bak,*.o,*.e,*~,#*#
@@ -140,6 +135,23 @@ function s:searchopen(file, deepth)
   endif
 endfunction
 
+" do a external command without cmd.	{{{2
+nnoremap <expr> \d	":Do "
+nnoremap <expr> \D	":Do! "
+nnoremap <expr> \g	":Do git "
+nnoremap <expr> \D	":Do! git "
+
+command! -bang -nargs=1 Do  :call <SID>ExecCmd(<q-args>, <q-bang>)
+function! s:ExecCmd(cmd, window) abort	" {{{3
+  let l:cmd = substitute(a:cmd, '\s\@<=%\S*', '\=expand(submatch(0))', 'g')
+  if empty(a:window)
+    echo system(l:cmd)
+  else
+    call term_start(l:cmd)
+  end
+endfunction
+
+
 " My mappings	{{{1
 nnoremap Y	y$
 nnoremap R	gR
@@ -147,6 +159,8 @@ nnoremap R	gR
 " <space>/<bs> to scroll down/up
 nnoremap <space>	<C-f>
 nnoremap <bs>	<C-b>
+nnoremap zl	zL
+nnoremap zh	zH
 
 " make a line title caps. The original function of `g~~' is switch case.
 nnoremap <silent> g~~	:s/\v<(.)(\w*)/\u\1\L\2/g<CR>
@@ -327,3 +341,5 @@ let g:UltiSnipsEditSplit="vertical"
 " My packages:
 packadd! bmk
 let g:vbookmarks_omitpath = 1
+
+packadd! sy
