@@ -10,3 +10,6 @@
 [submodule "pack/vimBookmarks"]
 	path = pack/vimBookmarks
 	url = git@github.com:Joe-C-Ding/vimBookmarks.git
+[submodule "pack/fugitive/opt/fugitive"]
+	path = pack/fugitive/opt/fugitive
+	url = git@github.com:tpope/vim-fugitive.git

@@ -1,8 +1,8 @@
 " vim: fdm=marker ff=unix
 " Language:	Vim-script
 " Maintainer:	Joe
-" Version:	1.1
-" Last Change:	2020-03-20 00:28:36
+" Version:	1.2
+" Last Change:	2020-03-21 11:22:40
 
 if exists("g:my_statusline") | finish | endif
 let g:my_statusline = 1
@@ -67,7 +67,7 @@ endfunction
 function! s:MSLstatus( is_cw )	"{{{1
     if a:is_cw
 	return '%#MSLdefault#> %#MSLro#%(%R%{&ma?"":"-"}%)%)'
-	    \. '%#MSLdefault#%{&mod?"+":""}%h%w%q'
+	    \. '%#MSLdefault#%{&mod?"+":""}%h%w%q%{FugitiveStatusline()}'
     else
 	return '%#MSLdefault#> %R%M%h%w%q'
     endif

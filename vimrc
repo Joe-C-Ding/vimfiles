@@ -138,8 +138,6 @@ endfunction
 " do a external command without cmd.	{{{2
 nnoremap <expr> \d	":Do "
 nnoremap <expr> \D	":Do! "
-nnoremap <expr> \g	":Do git "
-nnoremap <expr> \D	":Do! git "
 
 command! -bang -nargs=1 Do  :call <SID>ExecCmd(<q-args>, <q-bang>)
 function! s:ExecCmd(cmd, window) abort	" {{{3
@@ -337,6 +335,8 @@ let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
 
+" Fugitive:
+packadd! fugitive
 
 " My packages:
 packadd! bmk
