@@ -18,13 +18,13 @@ source $VIMRUNTIME/vimrc_example.vim
 " no backup is needed
 set nobackup noundofile
 
-" do not use scrolloff, scrolljump is more intuitive
-" scrollfocus makes Windows scrolling like other system.
-set scrolloff=0 scrolljump=5 scrollfocus
+" do not use scrolloff, scrolljump is more intuitive, but sidescrolloff is
+" good.  scrollfocus makes Windows scrolling like other system.
+set scrolloff=0 scrolljump=5 sidescrolloff=5 scrollfocus
 
 " further adjust go, and adjust cpo and fo here too
 " flags must remove one by one see |:set-=|
-set go+=c cpo+=FJ fo+=M1
+set go+=c cpo+=FJ fo+=M1j
 for flag in split('e b r R l L m T')
   exec 'set go-='..flag
 endfor
@@ -52,12 +52,12 @@ set splitright visualbell bsdir=current conceallevel=1
 set wildmode=list:full wildignore=*.bak,*.o,*.e,*~,#*#
 
 set viminfo='50,/100,<10,@100,f1,h,s1
-set listchars=eol:$,tab:>.,trail:.,extends:>,precedes:<
+set listchars=eol:$,tab:>.,trail:-,extends:>,precedes:<,nbsp:+
 
 " this will highlight the column after 'textwidth'
 set colorcolumn=+1
 
-set shellslash
+set shellslash noshelltemp
 set pythonthreedll=python37.dll
 
 " When possible use + register for copy-paste 
@@ -151,12 +151,15 @@ endfunction
 
 
 " My mappings	{{{1
+" let keys do the intuitive work
 nnoremap Y	y$
 nnoremap R	gR
+nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
 
 " <space>/<bs> to scroll down/up
 nnoremap <space>	<C-f>
 nnoremap <bs>	<C-b>
+" move one char is too less, using half screen the default.
 nnoremap zl	zL
 nnoremap zh	zH
 
@@ -232,7 +235,6 @@ nnoremap \v	:setl ft=vim<CR>
 
 nnoremap \l	:setl list!<CR>
 nnoremap \w	:setl wrap!<CR>
-nnoremap \h	:nohlsearch<CR>
 nnoremap \m	:marks<CR>
 
 inoremap <expr> <M-;>	"<C-R>=strftime(\'%Y-%m-%d\')<CR>"
