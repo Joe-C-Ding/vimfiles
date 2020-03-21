@@ -52,7 +52,7 @@ set splitright visualbell bsdir=current conceallevel=1
 set wildmode=list:full wildignore=*.bak,*.o,*.e,*~,#*#
 
 set viminfo='50,/100,<10,@100,f1,h,s1
-set listchars=eol:$,tab:>.,trail:-,extends:>,precedes:<,nbsp:+
+set listchars=eol:$,tab:>.,trail:.,extends:>,precedes:<,nbsp:+
 
 " this will highlight the column after 'textwidth'
 set colorcolumn=+1
@@ -136,19 +136,8 @@ function s:searchopen(file, deepth)
 endfunction
 
 " do a external command without cmd.	{{{2
-nnoremap <expr> \d	":Do "
-nnoremap <expr> \D	":Do! "
-
-command! -bang -nargs=1 Do  :call <SID>ExecCmd(<q-args>, <q-bang>)
-function! s:ExecCmd(cmd, window) abort	" {{{3
-  let l:cmd = substitute(a:cmd, '\s\@<=%\S*', '\=expand(submatch(0))', 'g')
-  if empty(a:window)
-    echo system(l:cmd)
-  else
-    call term_start(l:cmd)
-  end
-endfunction
-
+nnoremap \d	:!
+nnoremap \D	:term 
 
 " My mappings	{{{1
 " let keys do the intuitive work
