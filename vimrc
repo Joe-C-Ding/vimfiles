@@ -39,17 +39,11 @@ set encoding=utf-8
 set fileencodings=ucs-bom,utf-8,chinese,default,latin1
 set fileformats=unix,dos
 
-" spell checking
-set spell spelllang=en_us,cjk
-set spellsuggest=best,20
-" and correcting
-iabbr teh the
+set nu aw ar ts=8 sw=4 sts=-1 conceallevel=1
+set hidden smartcase paste
 
-set ts&vim sw=4 sts=-1
-set nu aw ar hidden smartcase paste autochdir
-
-set splitright visualbell bsdir=current conceallevel=1
-set wildmode=list:full wildignore=*.bak,*.o,*.e,*~,#*#
+set splitright visualbell autochdir bsdir=current
+set wildmode=longest:full,full wildignore=*.bak,*.o,*.e,*~,#*#
 
 set viminfo='50,/100,<10,@100,f1,h,s1
 set listchars=eol:$,tab:>.,trail:.,extends:>,precedes:<,nbsp:+
@@ -57,12 +51,17 @@ set listchars=eol:$,tab:>.,trail:.,extends:>,precedes:<,nbsp:+
 " this will highlight the column after 'textwidth'
 set colorcolumn=+1
 
+" spell checking
+set spell spelllang=en_us,cjk
+set spellsuggest=best,20
+" and correcting
+iabbr teh the
+
 set shellslash noshelltemp
-set pythonthreedll=python37.dll
 
 " When possible use + register for copy-paste 
 if has('unnamedplus')
-  set clipboard=unnamed,unnamedplus 
+  set clipboard=unnamedplus 
 else
   set clipboard=unnamed 
 endif 
@@ -70,6 +69,8 @@ endif
 
 " My commands	{{{1
 if has('win32')	" commad E for windows	{{{2
+  set pythonthreedll=python37.dll
+
   let s:linkdir = "D:/Links/"
 
   command -nargs=? -complete=custom,s:Ecomplete E  :call <SID>Elink(<q-args>)
@@ -107,18 +108,16 @@ endif
 " :S, useful to search files in directory	{{{2
 " `:3S file_name.txt'
 "   to search it in `.' and subdirs with depth no more than 3.
-command -nargs=1 -count=2 S  :call <SID>searchopen(<f-args>, <count>)
+command -nargs=1 -count=5 S  :call <SID>searchopen(<f-args>, <count>)
 
-function s:searchopen(file, deepth)
-  if a:file =~ '[\[\]*?]'
-    let files = glob('**/'.a:file, 0, 1)
-  else
-    let files = findfile(a:file, '**'.a:deepth.'/', -1)
-  endif
+function s:searchopen(file, depth) abort	" {{{3
+  let l:file = substitute(a:file, '*', '.*', 'g')
+  let l:file = substitute(l:file, '?', '.', 'g')
+  let files = s:FindFile([], l:file, '.', a:depth)->map({_,v -> fnamemodify(v, ':.')})
 
   let length = len(files)
   if length == 0
-    echo "file \'".a:file."\' is not found!"
+    echo 'file '''.a:file.''' is not found! (within '.a:depth.' levels of depth)'
     return
   endif
 
@@ -126,7 +125,7 @@ function s:searchopen(file, deepth)
     echo i.":"  files[i-1]
   endfor
 
-  let choice = input("edit [empty/<num>/all]? ")
+  let choice = input("edit [^C/<num>/all]? ", 1)
   if choice > 0 && choice <= length
     exec "e " . fnameescape(files[choice-1])
   elseif choice =~? 'a\%[ll]'
@@ -135,9 +134,20 @@ function s:searchopen(file, deepth)
   endif
 endfunction
 
-" do a external command without cmd.	{{{2
-nnoremap \d	:!
-nnoremap \D	:term 
+function! s:FindFile(list, file, dir, depth) abort	" {{{3
+  if a:depth > 0
+    for f in readdir(a:dir)
+      if f =~ '^\.' | continue | endif
+      let f = a:dir..'/'..f
+      if isdirectory(f)
+	sil call s:FindFile(a:list, a:file, f, a:depth-1)
+      elseif f =~? a:file
+	call add(a:list, f)
+      end
+    endfor
+  endif
+  return a:list
+endfunction
 
 " My mappings	{{{1
 " let keys do the intuitive work
@@ -160,33 +170,34 @@ nnoremap <F2>	m`gg"+yG``
 vnoremap <F2>	"+ygv
 
 " <F3>/<F4> to jump to next/previous item
-nnoremap <expr> <F3>	<SID>Next(0)
-nnoremap <expr> <F4>	<SID>Next(1)
-function s:Next ( reverse )
-  if empty(getqflist())
-    if empty(getloclist(0))
-      return a:reverse ? ":Next\<CR>" : ":next\<CR>"
-    else
-      return a:reverse ? ":lNext\<CR>" : ":lnext\<CR>"
-    endif
-  else
-      return a:reverse ? ":cNext\<CR>" : ":cnext\<CR>"
-  endif
-endfunction
-
 " <F8>/<F9> to jump to next/previous file
-nnoremap <expr> <F8>	<SID>NextFile(0)
-nnoremap <expr> <F9>	<SID>NextFile(1)
-function s:NextFile ( reverse )
-  if empty(getqflist())
-    if empty(getloclist(0))
-      return a:reverse ? ":Next\<CR>" : ":next\<CR>"
-    else
-      return a:reverse ? ":lNfile\<CR>" : ":lnfile\<CR>"
-    endif
+nnoremap <F3>	:call <SID>Next(0, 0)<CR>
+nnoremap <F4>	:call <SID>Next(1, 0)<CR>
+nnoremap <F8>	:call <SID>Next(0, 1)<CR>
+nnoremap <F9>	:call <SID>Next(1, 1)<CR>
+
+function s:Next(reverse, file)
+  if getloclist(0, #{size: 0}).size > 0
+    let l:prefix = 'l'
+  elseif getqflist(#{size: 0}).size > 0
+    let l:prefix = 'c'
   else
-      return a:reverse ? ":cNfile\<CR>" : ":cnfile\<CR>"
-  endif
+    let l:prefix = ''
+  end
+
+  if a:reverse
+    let l:cmd = 'N'
+  else
+    let l:cmd = 'n'
+  end
+
+  if a:file
+    let l:suffix = 'file'
+  else
+    let l:suffix = 'ext'
+  end
+
+  exec l:prefix..l:cmd..l:suffix
 endfunction
 
 " <F5> to clear buffer

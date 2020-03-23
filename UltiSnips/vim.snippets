@@ -16,8 +16,24 @@ $0
 endsnippet
 
 snippet fun  "Add a function" bw
-function! ${1:FunctionName}(${2:paras}) abort	" {{{2
-	$3
+function! ${1:`!v substitute(matchstr(expand('%:p:r')..'/', 'autoload/\zs.*'), '/\|\\', '#', 'g')`}${2:FunctionName}(${3:paras}) abort	" {{{2
+	$4
 endfunction
 $0
 endsnippet
+
+snippet map(  "map()" w
+map(${1:list_or_dict, }{k,v -> ${2:do_what}})$0
+endsnippet
+
+snippet fil(  "filter()" w
+filter(${1:list_or_dict, }{k,v -> ${2:do_what}})$0
+endsnippet
+
+snippet prof "reltime()" bw
+let ${1:l:start} = reltime()
+${2:do}
+echo 'elapsed:' reltimestr(reltime($1)) 's.'
+$0
+endsnippet
+
