@@ -108,12 +108,13 @@ endif
 " :S, useful to search files in directory	{{{2
 " `:3S file_name.txt'
 "   to search it in `.' and subdirs with depth no more than 3.
-command -nargs=1 -count=5 S  :call <SID>searchopen(<f-args>, <count>)
+command -nargs=1 -count=5 -bang S  :call <SID>searchopen(<f-args>, <count>, <q-bang>)
 
-function s:searchopen(file, depth) abort	" {{{3
-  let l:file = substitute(a:file, '*', '.*', 'g')
+function s:searchopen(file, depth, with_dir) abort	" {{{3
+  let l:file = substitute(a:file, '\*', '.*', 'g')
   let l:file = substitute(l:file, '?', '.', 'g')
-  let files = s:FindFile([], l:file, '.', a:depth)->map({_,v -> fnamemodify(v, ':.')})
+  let l:file = substitute(l:file, '\.', '.', 'g')
+  let files = s:FindFiles([], l:file, '.', a:depth, a:with_dir)->map({_,v -> fnamemodify(v, ':.')})
 
   let length = len(files)
   if length == 0
@@ -134,15 +135,18 @@ function s:searchopen(file, depth) abort	" {{{3
   endif
 endfunction
 
-function! s:FindFile(list, file, dir, depth) abort	" {{{3
+function! s:FindFiles(list, file, dir, depth, with_dir) abort	" {{{3
   if a:depth > 0
     for f in readdir(a:dir)
       if f =~ '^\.' | continue | endif
-      let f = a:dir..'/'..f
-      if isdirectory(f)
-	sil call s:FindFile(a:list, a:file, f, a:depth-1)
+      let fullf = a:dir..'/'..f
+      if isdirectory(fullf)
+	if !empty(a:with_dir) && f =~ a:file
+	  call add(a:list, fullf)
+	endif
+	sil call s:FindFiles(a:list, a:file, fullf, a:depth-1, a:with_dir)
       elseif f =~? a:file
-	call add(a:list, f)
+	call add(a:list, fullf)
       end
     endfor
   endif
