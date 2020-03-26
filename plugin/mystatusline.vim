@@ -1,8 +1,8 @@
-" vim: fdm=marker ff=unix
+" vim: fdm=marker
 " Language:	Vim-script
 " Maintainer:	Joe
 " Version:	1.2
-" Last Change:	2020-03-21 11:22:40
+" Last Change:	2020-03-26 12:37:00
 
 if exists("g:my_statusline") | finish | endif
 let g:my_statusline = 1

@@ -1,9 +1,9 @@
-" cpp.vim	vim: ts=8 sw=4 ff=unix
+" cpp.vim	vim: ts=8 sw=4
 " Vim filetype plugin file
 " Language:	c++
 " Version:	0.7
 " Maintainer:	Joe Ding
-" Last Change:	2017-09-10 09:08:21
+" Last Change:	2020-03-26 12:36:01
 
 if exists("b:my_ftpcpp") | finish | endif
 let b:my_ftpcpp = 1

@@ -1,4 +1,4 @@
-" vim: fdm=marker ts=8 ff=unix
+" vim: fdm=marker ts=8
 " Author:	Joe
 " Modified:	2013-10-15 20:32:16
 

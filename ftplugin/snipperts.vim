@@ -1,8 +1,8 @@
-" snipperts.vim	vim: ts=8 sw=4 ff=unix
+" snipperts.vim	vim: ts=8 sw=4
 " Language:	Vim-script
 " Maintainer:	Joe Ding
 " Version:	0.1
-" Last Change:	2019-04-27 23:07:38
+" Last Change:	2020-03-26 12:36:24
 
 if &cp || exists("g:loaded_snipperts")
     finish

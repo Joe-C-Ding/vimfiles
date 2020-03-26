@@ -1,8 +1,8 @@
-" plaintex.vim	vim: ts=8 sw=4 ff=unix
+" plaintex.vim	vim: ts=8 sw=4
 " Language:	Vim-script
 " Maintainer:	Joe Ding
 " Version:	0.8
-" Last Change:	2017-11-13 16:44:31
+" Last Change:	2020-03-26 12:36:14
 
 let s:keepcpo= &cpo
 set cpo&vim

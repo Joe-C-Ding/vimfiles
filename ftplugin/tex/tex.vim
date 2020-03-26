@@ -1,8 +1,8 @@
-" tex.vim	vim: ts=8 sw=4 ff=unix
+" tex.vim	vim: ts=8 sw=4
 " Language:	Vim-script
 " Maintainer:	Joe Ding
 " Version:	0.95
-" Last Change:	2019-06-30 16:56:45
+" Last Change:	2020-03-26 12:36:31
 
 let s:keepcpo= &cpo
 set cpo&vim

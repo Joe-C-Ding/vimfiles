@@ -1,4 +1,4 @@
-" vim: nowrap fenc=utf-8 ff=unix sw=2 fdm=marker
+" vim: nowrap fenc=utf-8 sw=2 fdm=marker
 " Last Change: 2020-03-19 13:32:47
 
 " For vim-8.2, all affected options in vimrc_example.vim are:

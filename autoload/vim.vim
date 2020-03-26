@@ -1,35 +1,34 @@
-" vim.vim	vim: ts=8 sw=4 ff=unix
+" vim.vim	vim: ts=8 sw=4
 " Maintainer:	Joe Ding
 " Version:	0.5
-" Last Change:	2020-03-12 14:47:12
+" Last Change:	2020-03-26 12:50:28
 
 let s:cpo_save = &cpo
 set cpo&vim
 
-function! vim#Writeheader(file)
+function! vim#Writeheader(file) abort
     if a:file =~# substitute($VIMRUNTIME, '\\', '/', 'g')
 	return
     endif
-
     let lines = getline(1, 20)
 
     let chng = match(lines, 'Version:\c')
-    if chng != -1
+    if chng >= 0
 	let vers = matchstr(lines[chng], ':\s*\zs.*')
 	let vers = input("Version? ", vers)
 	call setline(chng+1, "\" Version:\t".vers)
     endif
 
     let chng = match(lines, 'Last Change:\c')
-    if chng != -1
+    if chng >= 0
 	call setline(chng+1, "\" Last Change:\t".strftime('%Y-%m-%d %H:%M:%S'))
     endif
 endfunction
 
-function! vim#InsertTemplate()
+function! vim#InsertTemplate() abort
     let plugin = expand('%:t:r')
 
-    put ='\" '.expand('%:t').'	vim: ts=8 sw=4 ff=unix fdm=marker'
+    put ='\" '.expand('%:t').'	vim: ts=8 sw=4 fdm=marker'
     put ='\" Language:	Vim-script'
     put ='\" Maintainer:	Joe Ding'
     put ='\" Version:	0.1'
@@ -49,15 +48,12 @@ function! vim#InsertTemplate()
     put ='unlet s:save_cpo'
 
     1d_	" remove the blank 1st line
-    norm G
+    norm! G
     call search('>!<', 'bW')
     norm "_d3l
 endfunction
 
 function! vim#Vim2html()
-    let reg_av = getreg("a")
-    let reg_ao = getregtype("a")
-
     TOhtml
 
     1; /^pre {.*}/
@@ -80,8 +76,6 @@ function! vim#Vim2html()
 
     1; /<div .*>/-1 d_
     /<\/div>/+1,$ d_
-
-    call setreg("a", reg_av, reg_ao)
 endfunction
 
 let &cpo = s:cpo_save
