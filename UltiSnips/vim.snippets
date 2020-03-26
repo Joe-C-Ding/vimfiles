@@ -22,11 +22,15 @@ endfunction
 $0
 endsnippet
 
-snippet map(  "map()" w
+snippet m(  "map()" w
 map(${1:list_or_dict, }{k,v -> ${2:do_what}})$0
 endsnippet
 
-snippet fil(  "filter()" w
+snippet s(  "sort()" w
+sort(${1:list_or_dict, }{a,b -> ${2:(a-b)}})$0
+endsnippet
+
+snippet f(  "filter()" w
 filter(${1:list_or_dict, }{k,v -> ${2:do_what}})$0
 endsnippet
 

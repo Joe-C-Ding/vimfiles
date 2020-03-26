@@ -108,7 +108,7 @@ endif
 " :S, useful to search files in directory	{{{2
 " `:3S file_name.txt'
 "   to search it in `.' and subdirs with depth no more than 3.
-command -nargs=1 -count=5 -bang S  :call <SID>searchopen(<f-args>, <count>, <q-bang>)
+command -nargs=1 -count=7 -bang S  :call <SID>searchopen(<f-args>, <count>, <q-bang>)
 
 function s:searchopen(file, depth, with_dir) abort	" {{{3
   let l:file = substitute(a:file, '\*', '.*', 'g')
