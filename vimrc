@@ -1,6 +1,10 @@
 " vim: nowrap fenc=utf-8 sw=2 fdm=marker
 " Last Change: 2020-03-19 13:32:47
 
+" set go at the very beginning, since it affects many behaviors
+" and adjust cpo and fo here too
+set cpo+=FJ fo+=M1j go=Mcdg
+
 " For vim-8.2, all affected options in vimrc_example.vim are:
 "   backup, undofile, hlsearch, textwidth, and matchit
 " it will source default.vim, and further affects:
@@ -11,7 +15,6 @@
 " if gvimrc will be sourced after vimrc files, gvimrc_example.vim affects:
 "   cmdheight, mousehide, <S-Insert>
 "   syntax on and defines several highlights
-unlet! skip_defaults_vim
 source $VIMRUNTIME/vimrc_example.vim
 
 " something I don't like in default	{{{1
@@ -21,13 +24,6 @@ set nobackup noundofile
 " do not use scrolloff, scrolljump is more intuitive, but sidescrolloff is
 " good.  scrollfocus makes Windows scrolling like other system.
 set scrolloff=0 scrolljump=5 sidescrolloff=5 scrollfocus
-
-" further adjust go, and adjust cpo and fo here too
-" flags must remove one by one see |:set-=|
-set go+=c cpo+=FJ fo+=M1j
-for flag in split('e b r R l L m T')
-  exec 'set go-='..flag
-endfor
 
 language C
 " if menu present, change its language to English
@@ -52,7 +48,7 @@ set listchars=eol:$,tab:>.,trail:.,extends:>,precedes:<,nbsp:+
 set colorcolumn=+1
 
 " spell checking
-set spell spelllang=en_us,cjk
+set spelllang=en_us,cjk spell
 set spellsuggest=best,20
 " and correcting
 iabbr teh the
@@ -75,7 +71,7 @@ if has('win32')	" commad E for windows	{{{2
 
   command -nargs=? -complete=custom,s:Ecomplete E  :call <SID>Elink(<q-args>)
 
-  function s:Ecomplete(ArgLead, CmdLine, CursorPos)
+  function s:Ecomplete(ArgLead, CmdLine, CursorPos) abort	" {{{3
     if !exists('s:links')
       let s:links = glob(s:linkdir.'*.lnk', 0, 1)
       call map(s:links, 'substitute(v:val, ''^.*/\(.*\)\.lnk$'', ''\1'', "")')
@@ -85,7 +81,7 @@ if has('win32')	" commad E for windows	{{{2
     return s:links
   endfunction
 
-  function s:Elink ( lk )
+  function s:Elink ( lk ) abort	" {{{3
     if empty(a:lk)
       exec "!start " .. getcwd()
       return
@@ -103,8 +99,9 @@ if has('win32')	" commad E for windows	{{{2
       echohl WarningMsg | echom "Shortcut not exists: ". a:lk | echohl None
     endif
   endfunction
+  " }}}3
 endif
-
+" }}}2
 " :S, useful to search files in directory	{{{2
 " `:3S file_name.txt'
 "   to search it in `.' and subdirs with depth no more than 3.
@@ -180,7 +177,7 @@ nnoremap <F4>	:call <SID>Next(1, 0)<CR>
 nnoremap <F8>	:call <SID>Next(0, 1)<CR>
 nnoremap <F9>	:call <SID>Next(1, 1)<CR>
 
-function s:Next(reverse, file)
+function s:Next(reverse, file) abort	" {{{3
   if getloclist(0, #{size: 0}).size > 0
     let l:prefix = 'l'
   elseif getqflist(#{size: 0}).size > 0
@@ -208,7 +205,7 @@ endfunction
 nnoremap <F5>	:%d_<CR>
 
 " <F12> echo syntax stack
-nnoremap <F12>	:echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')<CR>
+nnoremap <F12>	:echo synstack(line('.'), col('.'))->map({_,v -> synIDattr(v, "name")})<CR>
 
 " smart <BS>,  Delete pairs
 inoremap <expr> <BS> <SID>Backspace()
