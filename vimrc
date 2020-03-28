@@ -31,18 +31,22 @@ language C
 
 
 " My options	 {{{1
+" encoding & file format
 set encoding=utf-8
 set fileencodings=ucs-bom,utf-8,chinese,default,latin1
 set fileformats=unix,dos
 
-set nu aw ar ts=8 sw=4 sts=-1 conceallevel=1
-set hidden smartcase paste
-
-set splitright visualbell autochdir bsdir=current
-set wildmode=longest:full,full wildignore=*.bak,*.o,*.e,*~,#*#
-
 set viminfo='50,/100,<10,@100,f1,h,s1
+
+" display settings
+set nu visualbell conceallevel=1
 set listchars=eol:$,tab:>.,trail:.,extends:>,precedes:<,nbsp:+
+
+" auto-read/write & indentation
+set aw ar hidden ts=8 sw=4 sts=-1
+" using habits
+set smartcase paste splitright autochdir
+set bsdir=current wildignore=*.bak,*.o,*.e,*~,#*#
 
 " this will highlight the column after 'textwidth'
 set colorcolumn=+1
@@ -53,15 +57,15 @@ set spellsuggest=best,20
 " and correcting
 iabbr teh the
 
+" using terminal
 set shellslash noshelltemp
 
-" When possible use + register for copy-paste 
+" When possible use + register for copy/paste 
 if has('unnamedplus')
   set clipboard=unnamedplus 
 else
   set clipboard=unnamed 
 endif 
-
 
 " My commands	{{{1
 if has('win32')	" commad E for windows	{{{2
@@ -159,7 +163,7 @@ nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR
 " <space>/<bs> to scroll down/up
 nnoremap <space>	<C-f>
 nnoremap <bs>	<C-b>
-" move one char is too less, using half screen the default.
+" move one char is too little, using half screen instead.
 nnoremap zl	zL
 nnoremap zh	zH
 
@@ -178,6 +182,7 @@ nnoremap <F8>	:call <SID>Next(0, 1)<CR>
 nnoremap <F9>	:call <SID>Next(1, 1)<CR>
 
 function s:Next(reverse, file) abort	" {{{3
+  " location list > quickfix list > arguments
   if getloclist(0, #{size: 0}).size > 0
     let l:prefix = 'l'
   elseif getqflist(#{size: 0}).size > 0
@@ -207,7 +212,7 @@ nnoremap <F5>	:%d_<CR>
 " <F12> echo syntax stack
 nnoremap <F12>	:echo synstack(line('.'), col('.'))->map({_,v -> synIDattr(v, "name")})<CR>
 
-" smart <BS>,  Delete pairs
+" smart <BS>, Delete pairs
 inoremap <expr> <BS> <SID>Backspace()
 let s:pairs = {
       \  '"': '"',
@@ -250,13 +255,12 @@ nnoremap <C-k> m`:m -2<CR>``
 vnoremap <C-k> :m '<-2<CR>gv
 
 " setting for plugins/packages	{{{1
-
 " NETRW:
-let g:netrw_keepdir = 0
+" let g:netrw_keepdir = 0
 
 " SOLARIZED:
 if has('unix') || has('win32') && has('gui_running')
-  set t_Co=256
+  set t_Co=256	" this also affects the definition of mycolor
   set background=dark
   colorscheme solarized
 endif
@@ -279,9 +283,9 @@ let g:fencview_autodetect = 1
 " let skk_jisyo = "path to private dictionary"
 
 " VIMIM:
-let g:vimim_map = 'c-bslash'
-let g:vimim_cloud = -1
-let g:vimim_toggle = 'wubi'
+" let g:vimim_map = 'c-bslash'
+" let g:vimim_cloud = -1
+" let g:vimim_toggle = 'wubi'
 
 " CALENDAR:
 let g:calendar_mark = 'left-fit'
