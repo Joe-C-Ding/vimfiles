@@ -181,6 +181,9 @@ nnoremap <F4>	:call <SID>Next(1, 0)<CR>
 nnoremap <F8>	:call <SID>Next(0, 1)<CR>
 nnoremap <F9>	:call <SID>Next(1, 1)<CR>
 
+" <F11> toggle diff mode
+nnoremap <silent> <F11>	:exec 'windo diff'.(&diff ? 'off' : 'this')<CR>
+
 function s:Next(reverse, file) abort	" {{{3
   " location list > quickfix list > arguments
   if getloclist(0, #{size: 0}).size > 0
