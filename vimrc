@@ -34,7 +34,6 @@ language C
 " encoding & file format
 set encoding=utf-8
 set fileencodings=ucs-bom,utf-8,chinese,default,latin1
-set fileformats=unix,dos
 
 set viminfo='50,/100,<10,@100,f1,h,s1
 
@@ -153,6 +152,26 @@ function! s:FindFiles(list, file, dir, depth, with_dir) abort	" {{{3
   endif
   return a:list
 endfunction
+
+" command to sort Chinese	{{{2
+command -nargs=0 -range=% -bang Sort  :call <SID>SortRegion(<line1>, <line2>, <q-bang>)
+
+function! s:SortRegion(beg, end, keepcase='') abort	" {{{3
+  function! s:SortCmp(a, b, keepcase) abort
+    if empty(a:keepcase)
+      let l:a = trim(toupper(a:a))
+      let l:b = trim(toupper(a:b))
+    else
+      let l:a = trim(a:a)
+      let l:b = trim(a:b)
+    endif
+    return iconv(l:a, &enc, 'chinese') <= iconv(l:b, &enc, 'chinese') ? -1 : 1
+  endfunction
+
+  let l:text = getline(a:beg, a:end)->sort({a, b -> s:SortCmp(a,b,a:keepcase)})
+  call setline(a:beg, l:text)
+endfunction
+
 
 " My mappings	{{{1
 " let keys do the intuitive work
