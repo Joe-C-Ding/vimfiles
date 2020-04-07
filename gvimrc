@@ -1,14 +1,13 @@
 " Make external commands work through a pipe instead of a pseudo-tty
 set noguipty
 
-try
-  if has('win32')
-    set guifont=DejaVu_Sans_Mono:h16
-    set guifontwide=MS_Gothic:h16
-  else
-    set guifont=Monospace\ 15
-  endif
-endtry
+" if the fonts are not available, just ignore it and use the default.
+if has('win32')
+    sil! set guifont=DejaVu_Sans_Mono:h16
+    sil! set guifontwide=MS_Gothic:h16
+else
+    sil! set guifont=Monospace\ 15
+endif
 
 set cmdheight=2		" Make command line two lines high
 set mousehide		" Hide the mouse when typing text
