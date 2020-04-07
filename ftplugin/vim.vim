@@ -2,7 +2,7 @@
 " Language:	Vim-script
 " Maintainer:	Joe Ding
 " Version:	0.9
-" Last Change:	2020-03-26 12:40:20
+" Last Change:	2020-04-07 16:35:37
 
 if &cp || exists("g:loaded_myvimftp")
     finish

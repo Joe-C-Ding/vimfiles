@@ -6,7 +6,7 @@ if has('win32')
     sil! set guifont=DejaVu_Sans_Mono:h16
     sil! set guifontwide=MS_Gothic:h16
 else
-    sil! set guifont=Monospace\ 15
+    sil! set guifont=Monospace\ 14
 endif
 
 set cmdheight=2		" Make command line two lines high
