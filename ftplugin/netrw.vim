@@ -2,7 +2,7 @@
 " Language:	Vim-script
 " Maintainer:	Joe Ding
 " Version:	0.52
-" Last Change:	2020-02-29 11:31:37
+" Last Change:	2020-04-07 16:28:51
 
 " move to the previous/next directory
 " </> ignores those directories whose name begin with a dot
@@ -11,6 +11,7 @@ nmap <buffer><nowait><silent>   >	<Plug>(netrw-next-dir)
 nmap <buffer><nowait><silent>   {	<Plug>(netrw-prev-dirall)
 nmap <buffer><nowait><silent>   }	<Plug>(netrw-next-dirall)
 nmap <buffer><nowait><silent>   c	<Plug>(netrw-open-terminal)
+nnoremap <buffer><silent>   S	:S 
 
 nnoremap <buffer><silent> <Plug>(netrw-prev-dir)    :call <SID>Jumpdir(1)<CR>
 nnoremap <buffer><silent> <Plug>(netrw-next-dir)    :call <SID>Jumpdir(2)<CR>
