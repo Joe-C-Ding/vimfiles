@@ -4,18 +4,15 @@
 [submodule "pack/dist/opt/ultisnips"]
 	path = pack/dist/opt/ultisnips
 	url = https://github.com/SirVer/ultisnips.git
-[submodule "pack/vimtex/opt/vimtex"]
+[submodule "pack/dist/opt/vimtex"]
 	path = pack/dist/opt/vimtex
 	url = https://github.com/lervag/vimtex.git
 [submodule "pack/vimBookmarks"]
 	path = pack/vimBookmarks
 	url = git@github.com:Joe-C-Ding/vimBookmarks.git
-[submodule "pack/fugitive/opt/fugitive"]
+[submodule "pack/dist/opt/fugitive"]
 	path = pack/dist/opt/fugitive
 	url = git@github.com:tpope/vim-fugitive.git
-[submodule "pack/vader/opt/vader"]
-	path = pack/vader/opt/vader
-	url = git@github.com:junegunn/vader.vim.git
 [submodule "pack/dist/start/fencview"]
 	path = pack/dist/start/fencview
 	url = git@github.com:mbbill/fencview.git
@@ -25,3 +22,6 @@
 [submodule "pack/dist/start/solarized"]
 	path = pack/dist/start/solarized
 	url = git@github.com:altercation/vim-colors-solarized.git
+[submodule "pack/dist/opt/vader"]
+	path = pack/dist/opt/vader
+	url = git@github.com:junegunn/vader.vim.git

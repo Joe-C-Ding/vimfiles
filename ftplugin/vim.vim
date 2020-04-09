@@ -2,13 +2,9 @@
 " Language:	Vim-script
 " Maintainer:	Joe Ding
 " Version:	0.9
-" Last Change:	2020-04-08 17:41:09
+" Last Change:	2020-04-09 16:47:14
 
 " don't define b:did_ftplugin, or the global ftplugin will not be loaded.
-if &cp || exists("g:loaded_myvimftp")
-    finish
-endif
-let g:loaded_myvimftp = 1
 
 setl iskeyword+=:
 " actually we don't need this, cause global ftplugin also set &isk.

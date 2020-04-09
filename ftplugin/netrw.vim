@@ -1,8 +1,8 @@
-" netrw.vim	vim: ts=8 sw=4
+" netrw.vim	vim: ts=8 sw=4 fdm=marker
 " Language:	Vim-script
 " Maintainer:	Joe Ding
 " Version:	0.52
-" Last Change:	2020-04-07 16:28:51
+" Last Change:	2020-04-09 16:45:45
 
 " move to the previous/next directory
 " </> ignores those directories whose name begin with a dot
@@ -23,7 +23,7 @@ nnoremap <buffer><silent> <Plug>(netrw-open-terminal)	:call <SID>Msys()<CR>
 " Jumpdir: move to the next fold for plugin netrw
 " direction: 1, 2 -- move to the fold whose name not begin with a dot
 "	     3, 4 -- similar to 1 and 2, but counts for all folds.
-function s:Jumpdir ( direction )
+function! s:Jumpdir ( direction ) abort	" {{{2
     let l:flags = 'sW'
     if a:direction == 1 || a:direction == 3
 	let l:flags .= 'b'
@@ -38,7 +38,7 @@ function s:Jumpdir ( direction )
     call search(l:pattern, l:flags)
 endfunction
 
-function s:Msys()
+function! s:Msys() abort	" {{{2
     if has('win32')
 	!start cmd /k
     else
