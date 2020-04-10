@@ -57,8 +57,8 @@ set spellsuggest=best,20
 " and correcting
 iabbr teh the
 
-" using terminal
-set shellslash noshelltemp
+" using terminal with pipe
+set noshelltemp
 
 " When possible use + register for copy/paste 
 if has('unnamedplus')
