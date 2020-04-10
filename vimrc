@@ -42,6 +42,9 @@ set viminfo='50,/100,<10,@100,f1,h,s1
 set nu visualbell conceallevel=1 colorcolumn=+1
 set listchars=eol:$,tab:>.,trail:.,extends:>,precedes:<,nbsp:+
 
+" for Windows DirectX
+set renderoptions=type:directx,gamma:1.0,contrast:0.5,level:1,geom:1,renmode:4,taamode:1
+
 " auto-read/write & indentation
 set aw ar hidden ts=8 sw=4 sts=-1
 " using habits
@@ -158,6 +161,16 @@ if has('unix') || has('win32') && has('gui_running')
   colorscheme solarized
 endif
 
+" VIM_AIRLANE:	{{{2
+let g:airline_powerline_fonts = 1
+
+if !exists('g:airline_symbols')
+  let g:airline_symbols = {}
+endif
+let g:airline_symbols.paste = 'Ꝓ'
+let g:airline_symbols.spell = 'Ꞩ'
+let g:airline_symbols.dirty = '!'
+
 " FENCVIEW:	{{{2
 let g:fencview_autodetect = 1
 
@@ -218,6 +231,9 @@ let g:UltiSnipsEditSplit="vertical"
 
 " Fugitive:	{{{2
 packadd! fugitive
+
+"Vader:	{{{2
+packadd! vader
 "}}}2
 
 
@@ -225,4 +241,4 @@ packadd! fugitive
 packadd! bmk
 let g:vbookmarks_omitpath = 1
 
-packadd! sy
+"packadd! sy

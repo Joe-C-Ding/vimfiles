@@ -25,3 +25,9 @@
 [submodule "pack/dist/opt/vader"]
 	path = pack/dist/opt/vader
 	url = git@github.com:junegunn/vader.vim.git
+[submodule "pack/dist/start/vim-airline"]
+	path = pack/dist/start/vim-airline
+	url = git@github.com:vim-airline/vim-airline.git
+[submodule "pack/dist/start/vim-airline-themes"]
+	path = pack/dist/start/vim-airline-themes
+	url = git@github.com:vim-airline/vim-airline-themes.git
