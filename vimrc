@@ -43,7 +43,8 @@ set nu visualbell conceallevel=1 colorcolumn=+1
 set listchars=eol:$,tab:>.,trail:.,extends:>,precedes:<,nbsp:+
 
 " for Windows DirectX
-set renderoptions=type:directx,gamma:1.0,contrast:0.5,level:1,geom:1,renmode:4,taamode:1
+set renderoptions=type:directx,
+      \gamma:1.0,contrast:0.5,level:1,geom:1,renmode:4,taamode:1
 
 " auto-read/write & indentation
 set aw ar hidden ts=8 sw=4 sts=-1
@@ -60,12 +61,12 @@ iabbr teh the
 " using terminal with pipe
 set noshelltemp
 
-" When possible use + register for copy/paste 
+" When possible use + register for copy/paste
 if has('unnamedplus')
-  set clipboard=unnamedplus 
+  set clipboard=unnamedplus
 else
-  set clipboard=unnamed 
-endif 
+  set clipboard=unnamed
+endif
 
 
 " My commands	{{{1
@@ -75,16 +76,19 @@ if has('win32')
   set rubydll=x64-msvcrt-ruby270
 
   let g:Elinkdir = 'D:/Links/'
-  command -nargs=? -complete=custom,utilities#Ecomplete E :call utilities#Elink(<q-args>)
+  command -nargs=? -complete=custom,utilities#Ecomplete
+	\ E :call utilities#Elink(<q-args>)
 endif
 
 " :S, useful to search files in directory
-"   ':3S file_name.txt' will search 'file_name.txt' in current and subdirs 
+"   ':3S file_name.txt' will search 'file_name.txt' in current and subdirs
 "   with depth no more than 3.
-command -nargs=1 -count=7 -bang S  :call utilities#SearchOpen(<f-args>, <count>, <q-bang>)
+command -nargs=1 -count=7 -bang
+      \ S  :call utilities#SearchOpen(<f-args>, <count>, <q-bang>)
 
 " Sort sort chinese
-command -nargs=0 -range=% -bang Sort	:call utilities#SortRegion(<line1>, <line2>, <q-bang>)
+command -range=% -bang
+      \ Sort	:call utilities#SortRegion(<line1>, <line2>, <q-bang>)
 "
 " BuildLocalHelp will generate helptag for all packages
 command -nargs=0  BuildPackHelp	:call utilities#BuildHelp()
@@ -94,7 +98,8 @@ command -nargs=0  BuildPackHelp	:call utilities#BuildHelp()
 " let keys do the intuitive work
 nnoremap Y	y$
 nnoremap R	gR
-nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
+nnoremap <silent> <C-L> :nohlsearch
+      \<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
 
 " <space>/<bs> to scroll down/up
 nnoremap <space>	<C-f>
@@ -122,7 +127,8 @@ nnoremap <F8>	:call utilities#Next(1, 1)<CR>
 " <F11> toggle diff mode
 nnoremap <silent> <F11>	:exec 'windo diff'.(&diff ? 'off' : 'this')<CR>
 " <F12> echo syntax stack
-nnoremap <F12>	:echo synstack(line('.'), col('.'))->map({_,v -> synIDattr(v, "name")})<CR>
+nnoremap <F12>	:echo synstack(line('.'), col('.'))
+      \->map({_,v -> synIDattr(v, "name")})<CR>
 
 " smart <BS>, Delete pairs
 inoremap <expr> <BS> utilities#Backspace()
@@ -165,6 +171,12 @@ endif
 " VIM_AIRLANE:	{{{2
 let g:airline_powerline_fonts = 1
 
+" certain number of spaces are allowed after tabs, but not in between
+let g:airline#extensions#whitespace#mixed_indent_algo = 1
+" configure which white space checks to enable, remove: 'mixed-indent-file'
+let g:airline#extensions#whitespace#checks =
+      \[ 'indent', 'trailing', 'long', 'conflicts' ]
+
 if !exists('g:airline_symbols')
   let g:airline_symbols = {}
 endif
@@ -204,8 +216,8 @@ let g:vimtex_compiler_latexmk = {
 
 if has('win32')
   let g:vimtex_view_general_viewer = 'SumatraPDF'
-  let g:vimtex_view_general_options = 
-	\ '-reuse-instance -forward-search @tex @line @pdf'
+  let g:vimtex_view_general_options =
+	\'-reuse-instance -forward-search @tex @line @pdf'
   let g:vimtex_view_general_options_latexmk = '-reuse-instance'
 else
   let g:vimtex_view_general_viewer = 'okular'
@@ -222,7 +234,7 @@ packadd! vim-snippets
 
 let g:UltiSnipsUsePythonVersion = 3
 
-" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+" Trigger configuration.
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
@@ -242,4 +254,4 @@ packadd! vader
 packadd! bmk
 let g:vbookmarks_omitpath = 1
 
-"packadd! sy
+packadd! sy
