@@ -72,6 +72,7 @@ endif
 " :E open a shortcut (Windows only).
 if has('win32')
   set pythonthreedll=python37.dll
+  set rubydll=x64-msvcrt-ruby270
 
   let g:Elinkdir = 'D:/Links/'
   command -nargs=? -complete=custom,utilities#Ecomplete E :call utilities#Elink(<q-args>)
