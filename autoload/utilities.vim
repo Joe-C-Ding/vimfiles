@@ -1,6 +1,6 @@
 " vim: ts=8 sw=4 fdm=marker
 " Author:	Joe Ding
-" Last Change:	2020-04-09 19:21:13
+" Last Change:	2020-04-10 22:53:54
 
 function! utilities#CleanDownload() abort	" {{{1
     let l:save_cwd = fnameescape(getcwd())
@@ -148,7 +148,13 @@ function utilities#Next(reverse, file) abort	" {{{1
     let l:cmd = a:reverse ? 'N' : 'n'
     let l:suffix = a:file ? 'file' : 'ext'
 
-    exec l:prefix..l:cmd..l:suffix
+    try
+	exec l:prefix..l:cmd..l:suffix
+    catch /^Vim\%((\a\+)\)\=:E/
+	echohl WarningMsg
+	echom v:exception
+	echohl None
+    endtry
 endfunction
 
 " utilities#Backspace()	{{{1
