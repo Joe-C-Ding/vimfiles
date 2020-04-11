@@ -1,6 +1,6 @@
 " vim: ts=8 sw=4 fdm=marker
 " Author:	Joe Ding
-" Last Change:	2020-04-10 22:53:54
+" Last Change:	2020-04-11 15:03:15
 
 function! utilities#CleanDownload() abort	" {{{1
     let l:save_cwd = fnameescape(getcwd())
@@ -99,13 +99,12 @@ function! s:FindFiles(list, file, dir, depth, with_dir) abort	" {{{2
 endfunction
 
 function! utilities#BuildHelp() abort	" {{{1
-    let l:save_cwd = fnameescape(getcwd())
-
-    exec "lcd $HOME/" .. (has('win32') ? 'vimfiles/doc' : '.vim/doc')
-    sil! helptags .
+    let l:save_cwd = getcwd()
+    exec 'lcd '.expand('$HOME/') .. (has('win32') ? 'vimfiles' : '.vim')
 
     echo 'Building help tags for packages...'
-    for l:dir in finddir('doc', '../pack/**', -1)
+    sil! helptags doc
+    for l:dir in glob('pack/*/*/*/doc', 0, 1)
 	try
 	    exec "helptags " .. l:dir
 	    echo "\t" .. l:dir
@@ -115,7 +114,16 @@ function! utilities#BuildHelp() abort	" {{{1
     endfor
     echo 'done.'
 
-    exec "lcd " .. l:save_cwd
+    echo 'Copying ftdetect files from packages...'
+    let l:ftdetect = glob('pack/*/*/*/ftdetect/*.vim', 0, 1)
+    for l:file in l:ftdetect
+	echo "\t" .. l:file
+	let l:content = readfile(l:file)
+	call writefile(l:content, 'ftdetect/' .. fnamemodify(l:file, ':t'))
+    endfor
+    echo 'done.'
+
+    exec 'lcd ' .. fnameescape(l:save_cwd)
 endfunction
 
 function! utilities#SortRegion(beg, end, keepcase='') abort	" {{{1

@@ -5,7 +5,7 @@ set noguipty
 if has('win32')
     try
 	set guifont=DejaVu_Sans_Mono_for_Powerline:h16
-    catch /^Vim(set):/
+    catch
 	let g:airline_powerline_fonts = 0
 	sil! set guifont=DejaVu_Sans_Mono:h16
     endtry
