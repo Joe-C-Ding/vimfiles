@@ -5,6 +5,14 @@
 " and adjust cpo and fo here too
 set cpo+=FJ fo+=M1j go=Mcdg
 
+" set color and theme at beginning, cause it affects syntax highlight etc.
+" SOLARIZED:
+if has('unix') || has('win32') && has('gui_running')
+  set t_Co=256
+  set background=dark
+  colorscheme solarized
+endif
+
 " source vimrc_example.vim	{{{1
 " For vim-8.2, all affected options in vimrc_example.vim are:
 "   backup, undofile, hlsearch, textwidth, and matchit
@@ -53,8 +61,11 @@ set smartcase paste splitright autochdir
 set bsdir=current wildignore=*.bak,*.o,*.e,*~,#*#
 
 " spell checking
-set spelllang=en_us,cjk spell
+if &t_Co > 16
+  set spelllang=en_us,cjk spell
+endif
 set spellsuggest=best,20
+
 " and correcting
 iabbr teh the
 
@@ -161,28 +172,26 @@ let g:netrw_keepdir = 0
 
 " }}}2
 " others
-" SOLARIZED:	{{{2
-if has('unix') || has('win32') && has('gui_running')
-  set t_Co=256	" this also affects the definition of mycolor
-  set background=dark
-  colorscheme solarized
-endif
-
 " VIM_AIRLANE:	{{{2
-let g:airline_powerline_fonts = 1
+if has('unix') || has('win32') && has('gui_running')
+  let g:airline_powerline_fonts = 1
+
+  if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+  endif
+  let g:airline_symbols.paste = 'Ꝓ'
+  let g:airline_symbols.spell = 'Ꞩ'
+  let g:airline_symbols.dirty = '!'
+
+else
+  let g:airline_symbols_ascii = 1
+endif
 
 " certain number of spaces are allowed after tabs, but not in between
 let g:airline#extensions#whitespace#mixed_indent_algo = 1
 " configure which white space checks to enable, remove: 'mixed-indent-file'
 let g:airline#extensions#whitespace#checks =
       \[ 'indent', 'trailing', 'long', 'conflicts' ]
-
-if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
-endif
-let g:airline_symbols.paste = 'Ꝓ'
-let g:airline_symbols.spell = 'Ꞩ'
-let g:airline_symbols.dirty = '!'
 
 " FENCVIEW:	{{{2
 let g:fencview_autodetect = 1
