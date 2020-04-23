@@ -2,7 +2,7 @@
 " Language:	Vim-script
 " Maintainer:	Joe Ding
 " Version:	0.9
-" Last Change:	2020-04-09 16:47:14
+" Last Change:	2020-04-22 00:09:55
 
 " don't define b:did_ftplugin, or the global ftplugin will not be loaded.
 
@@ -22,3 +22,6 @@ augroup MyVim
     au BufNewFile *.vim	call vim#InsertTemplate()
     au BufWrite *.vim	call vim#Writeheader(expand("<afile>:p"))
 augroup END
+
+" Airline:
+let b:airline_whitespace_checks = ['indent', 'trailing', 'conflicts']
