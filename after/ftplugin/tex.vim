@@ -2,10 +2,8 @@
 " Language:	Vim-script
 " Maintainer:	Joe Ding
 " Version:	0.5
-" Last Change:	2020-03-26 12:33:45
+" Last Change:	2020-04-25 21:09:54
 
 if exists("*SetTeXTarget")
     call SetTeXTarget("pdf")
 endif
-
-set indentkeys-=[,(,{,),},]	" should set in after/

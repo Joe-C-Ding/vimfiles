@@ -204,38 +204,6 @@ let g:calendar_weeknm = 1 " WK01
 " let g:calendar_weeknm = 4 " KW 1
 " let g:calendar_weeknm = 5 " 1
 
-" Vimtex:	{{{2
-packadd! vimtex
-let g:tex_flavor = 'latex'
-let g:vimtex_compiler_latexmk = {
-    \ 'backend' : 'jobs',
-    \ 'background' : 1,
-    \ 'build_dir' : '',
-    \ 'callback' : 1,
-    \ 'continuous' : 1,
-    \ 'executable' : 'latexmk',
-    \ 'options' : [
-    \   '-verbose',
-    \   '-file-line-error',
-    \   '-synctex=1',
-    \   '-interaction=nonstopmode',
-    \ ],
-    \}
-
-if has('win32')
-  let g:vimtex_view_general_viewer = 'SumatraPDF'
-  let g:vimtex_view_general_options =
-	\'-reuse-instance -forward-search @tex @line @pdf'
-  let g:vimtex_view_general_options_latexmk = '-reuse-instance'
-else
-  let g:vimtex_view_general_viewer = 'okular'
-  let g:vimtex_view_general_options = '--unique file:@pdf\#src:@line@tex'
-  let g:vimtex_view_general_options_latexmk = '--unique'
-endif
-
-let g:tex_conceal='abdmgs'
-
-
 " UltiSnips:	{{{2
 packadd! ultisnips
 packadd! vim-snippets
