@@ -182,6 +182,7 @@ if has('unix') || has('win32') && has('gui_running')
   let g:airline_symbols.paste = 'Ꝓ'
   let g:airline_symbols.spell = 'Ꞩ'
   let g:airline_symbols.dirty = '!'
+  let g:airline_symbols.keymap = '⎇'
 else
   let g:airline_symbols_ascii = 1
 endif

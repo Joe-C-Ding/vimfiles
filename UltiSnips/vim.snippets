@@ -16,7 +16,7 @@ $0
 endsnippet
 
 snippet fun  "Add a function" bw
-function! ${1:`!v substitute(matchstr(expand('%:p:r')..'/', 'autoload/\zs.*'), '/\|\\', '#', 'g')`}${2:FunctionName}(${3:paras}) abort	" {{{2
+function! ${1:`!v matchstr(expand('%:p:r:gs?/\|\\?#?')..'#', 'autoload#\zs.*')`}${2:FunctionName}(${3:paras}) abort	" {{{2
 	$4
 endfunction
 $0
