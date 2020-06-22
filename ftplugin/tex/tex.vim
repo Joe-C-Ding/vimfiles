@@ -1,71 +1,10 @@
-" tex.vim	vim: ts=8 sw=4
+" tex.vim	vim: ts=8 sw=4 fdm=marker
 " Language:	Vim-script
 " Maintainer:	Joe Ding
 " Version:	0.95
-" Last Change:	2020-04-25 21:15:48
+" Last Change:	2020-06-22 10:23:56
 
-source $VIMRUNTIME/ftplugin/tex.vim
-
-let s:keepcpo= &cpo
-set cpo&vim
-
-let b:undo_ftplugin .= "| setl kp< sw< tw< isk< cfu< fo< cpt<"
-
-set sw=2 textwidth=78
-set fo-=t   " Don't wrap
-set complete-=i	" Don't complete include files
-
-" TIP: if you write your \label's as \label{fig:something}, then if you
-" type in \ref{fig: and press <C-n> you will automatically cycle through
-" all the figure labels. Very useful!
-set iskeyword+=:
-
-
-noremap <buffer><silent>   <C-F5>  :call Go()<CR>
-
-function! Go()
-    " if running in continuous mode, updating files will trigger compilation
-    update
-
-    " else we do need to start it.
-    if !b:vimtex.compiler.is_running()
-	VimtexCompile
-    endif
-endfunction
-
-inoremap <silent><buffer> <F3>	<C-\><C-O>:call TexInsEnv()<CR>
-function! TexInsEnv()
-    put ='\begin{env}'
-    put =''
-    put ='\end{env}'
-
-    norm =2kj
-    norm cse
-    norm cc
-endfunction
-
-let s:dir = expand("<sfile>:p:h") . '/'
-nnoremap <silent><buffer> ;t	:call TexTemplate()<CR>
-function! TexTemplate()
-    exec "0r " . s:dir .  "paper_template.tex"
-    norm G
-    call search('>!<', 'bW')
-    norm cc
-
-    " copy preamble.template and config files to working dir
-    " and touch refs.bib
-    let files = ["preamble.template", ".gitignore", ".gitattributes"]
-    for f in files
-	let content = readfile(s:dir . f)
-	call writefile(content, f)
-    endfor
-    call writefile([], "refs.bib", "a")
-endfunction
-
-
-" Vimtex: config
-packadd vimtex
-let g:tex_flavor = 'latex'
+" Vimtex: {{{1
 let g:vimtex_compiler_latexmk = {
     \ 'backend' : 'jobs',
     \ 'background' : 1,
@@ -93,6 +32,66 @@ else
 endif
 
 let g:tex_conceal='abdmgs'
+
+packadd vimtex
+runtime PACK ftplugin/tex.vim
+" }}}1
+
+let s:keepcpo= &cpo
+set cpo&vim
+
+let s:undo_cmd = "setl sw< tw< isk< fo< cpt< | silent! unmap ;t | silent! unmap <C-F5>"
+if get(b:, 'undo_ftplugin', '') != ''
+    let b:undo_ftplugin .= '| ' .. s:undo_cmd
+else
+    let b:undo_ftplugin = s:undo_cmd
+endif
+
+set sw=2 textwidth=78
+set fo-=t   " Don't wrap
+set complete-=i	" Don't complete include files
+
+" TIP: if you write your \label's as \label{fig:something}, then if you
+" type in \ref{fig: and press <C-n> you will automatically cycle through
+" all the figure labels. Very useful!
+set iskeyword+=:
+
+
+noremap <buffer><silent>   <C-F5>  :call Go()<CR>
+
+function! Go()
+    " if running in continuous mode, updating files will trigger compilation
+    update
+
+    if get(b:, 'vimtex.compiler', {}) == {}
+	echohl WarningMsg
+	echo vimtex compiler not exist.
+	echohl None
+
+    " else if the compiler is not running, start it.
+    else !b:vimtex.compiler.is_running()
+	VimtexCompile
+    endif
+
+endfunction
+
+let s:dir = expand("<sfile>:p:h") . '/'
+nnoremap <silent><buffer> ;t	:call TexTemplate()<CR>
+function! TexTemplate()
+    exec "0r " . s:dir .  "paper_template.tex"
+    norm G
+    call search('>!<', 'bW')
+    norm cc
+
+    " copy preamble.template and config files to working dir
+    " and touch refs.bib
+    let files = ["preamble.template", ".gitignore", ".gitattributes"]
+    for f in files
+	let content = readfile(s:dir . f)
+	call writefile(content, f)
+    endfor
+    call writefile([], "refs.bib", "a")
+endfunction
 
 let &cpo = s:keepcpo
 unlet s:keepcpo
