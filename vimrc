@@ -170,6 +170,9 @@ vnoremap <C-k> :m '<-2<CR>gv
 " NETRW:	{{{2
 let g:netrw_keepdir = 0
 
+" TEX:	{{{2
+let g:tex_flavor = "latex"
+
 " }}}2
 " others
 " VIM_AIRLANE:	{{{2
@@ -230,5 +233,7 @@ packadd! vader
 " My packages:	{{{1
 packadd! bmk
 let g:vbookmarks_omitpath = 1
+
+packadd! imtable
 
 packadd! sy
