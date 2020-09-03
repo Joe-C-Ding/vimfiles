@@ -1,6 +1,6 @@
 " vim: ts=8 sw=4 fdm=marker
 " Author:	Joe Ding
-" Last Change:	2020-04-11 20:20:07
+" Last Change:	2020-09-02 11:00:24
 
 function! utilities#CleanDownload() abort	" {{{1
     let l:save_cwd = fnameescape(getcwd())
@@ -48,7 +48,7 @@ endfunction
 function utilities#Ecomplete(ArgLead, CmdLine, CursorPos) abort	" {{{2
     if !exists('s:links')
 	let s:links = glob(g:Elinkdir.'*.lnk', 0, 1)
-	call map(s:links, 'substitute(v:val, ''^.*/\(.*\)\.lnk$'', ''\1'', "")')
+	call map(s:links, 'fnamemodify(v:val, ":t:r")')
 	let s:links = join(s:links, "\n")
     endif
 
