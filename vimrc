@@ -83,7 +83,7 @@ endif
 " My commands	{{{1
 " :E open a shortcut (Windows only).
 if has('win32')
-  set pythonthreedll=python37.dll
+  set pythonthreedll=python38.dll
   set rubydll=x64-msvcrt-ruby270
 
   let g:Elinkdir = 'D:/Links/'
