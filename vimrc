@@ -164,6 +164,9 @@ vnoremap <C-j> :m '>+1<CR>gv
 nnoremap <C-k> m`:m -2<CR>``
 vnoremap <C-k> :m '<-2<CR>gv
 
+" enter normal mode in terminal
+tnoremap <silent> <RightMouse>	<C-\><C-N>
+
 
 " settings for plugins	{{{1
 " standard plugins
@@ -234,6 +237,6 @@ packadd! vader
 packadd! bmk
 let g:vbookmarks_omitpath = 1
 
-packadd! imtable
+"packadd! imtable
 
 packadd! sy

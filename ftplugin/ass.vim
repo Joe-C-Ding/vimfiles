@@ -6,9 +6,9 @@ if exists("b:my_ftpass") | finish | endif
 let b:my_ftpass= 1
 
 " to convert ass to srt.
-nnoremap <silent><buffer> \c	:argdo call <SID>ass#Convert2Srt()<CR>
+nnoremap <silent><buffer> \c	:argdo call <SID>Convert()<CR>
 
-function! s:ass2srt#Convert() abort
+function! s:Convert() abort
     f %:p:r.srt
     g!/Dialogue/d
     g+\\+d
