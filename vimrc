@@ -9,7 +9,7 @@ set cpo+=FJ fo+=M1j go=Mcdg
 " SOLARIZED:
 if has('unix') || has('win32') && has('gui_running')
   set t_Co=256
-  set background=dark
+  set background=light
   colorscheme solarized
 endif
 
@@ -57,8 +57,9 @@ set renderoptions=type:directx,
 " auto-read/write & indentation
 set aw ar hidden ts=8 sw=4 sts=-1
 " using habits
-set smartcase paste splitright autochdir
+set smartcase paste splitright autochdir cdhome
 set bsdir=current wildignore=*.bak,*.o,*.e,*~,#*#
+set wildoptions=pum
 
 " spell checking
 if &t_Co > 16
@@ -83,7 +84,7 @@ endif
 " My commands	{{{1
 " :E open a shortcut (Windows only).
 if has('win32')
-  set pythonthreedll=python38.dll
+  set pythonthreedll=python310.dll
   set rubydll=x64-msvcrt-ruby270
 
   let g:Elinkdir = 'D:/Links/'
@@ -164,9 +165,8 @@ vnoremap <C-j> :m '>+1<CR>gv
 nnoremap <C-k> m`:m -2<CR>``
 vnoremap <C-k> :m '<-2<CR>gv
 
-" enter normal mode in terminal
+"enter normal mode in terminal-mode
 tnoremap <silent> <RightMouse>	<C-\><C-N>
-
 
 " settings for plugins	{{{1
 " standard plugins
@@ -236,7 +236,5 @@ packadd! vader
 " My packages:	{{{1
 packadd! bmk
 let g:vbookmarks_omitpath = 1
-
-"packadd! imtable
 
 packadd! sy

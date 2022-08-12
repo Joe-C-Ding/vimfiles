@@ -1,9 +1,12 @@
 % vim: ft=tex
 
 \usepackage{xeCJK}                                      
-\setCJKmainfont[BoldFont=Adobe Heiti Std,ItalicFont=Adobe Kaiti Std]{Adobe Song Std}
-\setCJKsansfont{Adobe Heiti Std}         
-\setCJKmonofont{Adobe Fangsong Std} 
+\setCJKmainfont[BoldFont=SimHei,ItalicFont=KaiTi]{SimSun}
+\setCJKsansfont{SimHei}         
+\setCJKmonofont{FangSong} 
+% \setCJKmainfont[BoldFont=Adobe Heiti Std,ItalicFont=Adobe Kaiti Std]{Adobe Song Std}
+% \setCJKsansfont{Adobe Heiti Std}         
+% \setCJKmonofont{Adobe Fangsong Std} 
 
 \XeTeXlinebreaklocale "zh"
 \XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt

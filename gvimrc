@@ -4,12 +4,12 @@ set noguipty
 " if the fonts are not available, just ignore it and use the default.
 if has('win32')
     try
-	set guifont=DejaVu_Sans_Mono_for_Powerline:h16
+	set guifont=DejaVu_Sans_Mono_for_Powerline:h14
     catch
 	let g:airline_powerline_fonts = 0
-	sil! set guifont=DejaVu_Sans_Mono:h16
+	sil! set guifont=DejaVu_Sans_Mono:h14
     endtry
-    sil! set guifontwide=MS_Gothic:h16
+    sil! set guifontwide=MS_Gothic:h14
 else
     sil! set guifont=Monospace\ 14
 endif
