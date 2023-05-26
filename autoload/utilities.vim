@@ -1,6 +1,6 @@
 " vim: ts=8 sw=4 fdm=marker
 " Author:	Joe Ding
-" Last Change:	2020-09-02 11:00:24
+" Last Change:	2023-01-09 21:03:19
 
 function! utilities#CleanDownload() abort	" {{{1
     let l:save_cwd = fnameescape(getcwd())
@@ -173,6 +173,8 @@ let s:pairs = {
 	\  '[': ']',
 	\  '{': '}',
 	\  '<': '>',
+	\  '（': '）',
+	\  '「': '」',
 	\}
 
 function! utilities#Backspace() abort	" {{{2
