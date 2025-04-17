@@ -1,82 +1,45 @@
-" vim.vim	vim: ts=8 sw=4
-" Maintainer:	Joe Ding
-" Version:	0.5
-" Last Change:	2020-03-26 12:50:28
+vim9script
 
-let s:cpo_save = &cpo
-set cpo&vim
+# Maintainer:	Joe Ding
+# Version:	0.5
+# Last Change:	2025-04-16 20:54:55
 
-function! vim#Writeheader(file) abort
-    if a:file =~# substitute($VIMRUNTIME, '\\', '/', 'g')
+const timefmt = '%Y-%m-%d %H:%M:%S'
+
+export def Writeheader()   # {{{1
+    # Don't modify system files.
+    if getcwd() =~# substitute($VIMRUNTIME, '\\', '/', 'g')
 	return
     endif
-    let lines = getline(1, 20)
 
-    let chng = match(lines, 'Version:\c')
-    if chng >= 0
-	let vers = matchstr(lines[chng], ':\s*\zs.*')
-	let vers = input("Version? ", vers)
-	call setline(chng+1, "\" Version:\t".vers)
+    const lines = getline(1, 20)
+    var line: number
+
+    const v9script = lines[0] =~# '^vim9s'
+    const comment = v9script ? '#' : '"'
+
+    line = match(lines, 'Version:\c')
+    if line >= 0
+	var vers = input("Version? ", matchstr(lines[line], ':\s*\zs.*'))
+	setline(line + 1, $"{comment} Version:\t{vers}")
     endif
 
-    let chng = match(lines, 'Last Change:\c')
-    if chng >= 0
-	call setline(chng+1, "\" Last Change:\t".strftime('%Y-%m-%d %H:%M:%S'))
+    line = match(lines, 'Last Change:\c')
+    if line >= 0
+	setline(line + 1, $"{comment} Last Change:\t{strftime(timefmt)}")
     endif
-endfunction
+enddef
 
-function! vim#InsertTemplate() abort
-    let plugin = expand('%:t:r')
+export def Execute(visual: bool)
+    if !visual
+	so
+    elseif getline(1) !~# '^vim9s'
+	:'<,'>so
+    else
+	vim9cmd :'<,'>so
+    endif
+enddef
+#}}}
 
-    put ='\" '.expand('%:t').'	vim: ts=8 sw=4 fdm=marker'
-    put ='\" Language:	Vim-script'
-    put ='\" Maintainer:	Joe Ding'
-    put ='\" Version:	0.1'
-    put ='\" Last Change:	'.strftime('%Y-%m-%d %H:%M:%S')
-    put =''
-    put ='if &cp \|\| exists(\"g:loaded_'.plugin.'\")'
-    put ='    finish'
-    put ='endif'
-    put ='let g:loaded_'.plugin.' = 1'
-    put =''
-    put ='let s:save_cpo = &cpo'
-    put ='set cpo&vim'
-    put =''
-    put ='>!<'
-    put =''
-    put ='let &cpo = s:save_cpo'
-    put ='unlet s:save_cpo'
-
-    1d_	" remove the blank 1st line
-    norm! G
-    call search('>!<', 'bW')
-    norm "_d3l
-endfunction
-
-function! vim#Vim2html()
-    TOhtml
-
-    1; /^pre {.*}/
-    let sub = matchstr(getline("."), '\%(\S*:\s*\S*;\s*\)\+')
-    exec '%s+^<pre .*>+<div style="'.sub.'">+'
-    %s+</pre>+</div>+
-
-    1; /\* {.*}/+1
-    let begin = line(".")
-    /^-->/-1
-    let end = line(".")
-
-    let lines = getline(begin, end)
-    for l in lines
-	let cls = matchstr(l, '^\.\zs\S*')
-	let sub = matchstr(l, '\%(\S*:\s*\S*;\s*\)\+')
-
-	exec '%s+class="'.cls.'"+style="'.sub.'"+g'
-    endfor
-
-    1; /<div .*>/-1 d_
-    /<\/div>/+1,$ d_
-endfunction
-
-let &cpo = s:cpo_save
-unlet s:cpo_save
+#defcompile
+# vim.vim	vim: ts=8 sw=4

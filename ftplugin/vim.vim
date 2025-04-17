@@ -1,27 +1,29 @@
-" vim.vim	vim: ts=8 sw=4
-" Language:	Vim-script
-" Maintainer:	Joe Ding
-" Version:	0.9
-" Last Change:	2020-04-22 00:09:55
+vim9script
 
-" don't define b:did_ftplugin, or the global ftplugin will not be loaded.
+# Language:	Vim-script
+# Maintainer:	Joe Ding
+# Version:	0.9
+# Last Change:	2025-04-16 20:55:12
 
-setl iskeyword+=:
-" actually we don't need this, cause global ftplugin also set &isk.
-" anyway this won't work, cause user ftplugin will load before global one.
-" let b:undo_ftplugin ..= '| setl isk<'
+# don't define b:did_ftplugin, or the global ftplugin will not be loaded.
 
-nnoremap <buffer>   <C-F5>  m`ggVG"ay``:@a<CR>
-vnoremap <buffer>   <C-F5>  "ay:@a<CR>gv
+# setl iskeyword+=:	" not useful for vim 9 script
+# actually we don't need this, cause global ftplugin also set &isk.
+# anyway this won't work, cause user ftplugin will load before global one.
+# let b:undo_ftplugin ..= '| setl isk<'
 
-command -nargs=0  Vim2html  :call vim#Vim2html()
+import autoload '../autoload/vim.vim'
+
+nnoremap <buffer>   <C-F5>  <ScriptCmd>vim.Execute(v:false)<CR>
+vnoremap <buffer>   <C-F5>  <ScriptCmd>vim.Execute(v:true)<CR>
 
 augroup MyVim
     au!
 
-    au BufNewFile *.vim	call vim#InsertTemplate()
-    au BufWrite *.vim	call vim#Writeheader(expand("<afile>:p"))
+    au BufWrite *.vim	call vim.Writeheader()
 augroup END
 
-" Airline:
-let b:airline_whitespace_checks = ['indent', 'trailing', 'conflicts']
+# Airline:
+b:airline_whitespace_checks = ['indent', 'trailing', 'conflicts']
+
+# vim.vim	vim: ts=8 sw=4

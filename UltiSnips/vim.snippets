@@ -41,3 +41,21 @@ echo 'elapsed:' reltimestr(reltime($1)) 's.'
 $0
 endsnippet
 
+snippet vim9 "Init a vim 9 script" bw
+vim9script
+
+# Language:	Vim-script
+# Maintainer:	Joe Ding
+# Version:	0.1
+# Last Change:	`!v strftime('%Y-%m-%d %H:%M:%S')`
+
+$1
+
+# `!v expand('%:t')`	vim: ts=8 sw=4 fdm=marker
+endsnippet
+
+snippet def "Add a vim 9 function" bw
+def ${1:FunctionName}(${2:paras})${3:: void}
+	$4
+enddef
+endsnippet
