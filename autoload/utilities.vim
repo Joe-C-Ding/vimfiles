@@ -1,191 +1,176 @@
-" vim: ts=8 sw=4 fdm=marker
-" Author:	Joe Ding
-" Last Change:	2023-01-09 21:03:19
+vim9script
 
-function! utilities#CleanDownload() abort	" {{{1
-    let l:save_cwd = fnameescape(getcwd())
-    exec "lcd " .. (has('win32') ? 'E:/Downloads/' : '$HOME/Downloads')
+# Language:	Vim-script
+# Maintainer:	Joe Ding
+# Version:	0.1  
+# Last Change:	2025-04-26 08:37:07
 
-    let l:files = glob('5MB_file*', 0, 1)
-    call extend(files, glob('**/*.torrent', 0, 1))
-
-    for f in l:files
-	sil! call delete(f)
-    endfor
-
-    exec "lcd " . l:save_cwd
-endfunction
-
-" utilities#Elink()	{{{1
+# Elink()	{{{1
 if get(g:, 'Elinkdir', '') is ''
-    let g:Elinkdir = 'D:/Links/'
+    g:Elinkdir = 'D:/Links/'
 endif
 
-function utilities#Elink(lk) abort
+export def Elink(lk: string)
     if !has('win32')
+	echohl WarningMsg
 	echo 'Elink() is only supported on Windows.'
+	echohl NONE
 	return
     endif
 
-    if empty(a:lk)
-	exec "!start " .. getcwd()
+    var link = lk
+    if empty(lk)
+	exec $"!start {getcwd()}"
 	return
-
-    elseif a:lk !~? '\.lnk$'
-	let l:link = a:lk .. ".lnk"
-    else
-	let l:link = a:lk
+    elseif lk !~? '\.lnk$'
+	link ..= '.lnk'
     endif
 
-    let filename = g:Elinkdir .. l:link
+    const filename = g:Elinkdir .. link
     if filereadable(filename)
-	exec "e ".filename
+	exec "e" filename
     else
-	echohl WarningMsg | echom "Shortcut not exists:" a:lk | echohl None
+	echohl WarningMsg | echom "Shortcut not exists:" lk | echohl None
     endif
-endfunction
+enddef
 
-function utilities#Ecomplete(ArgLead, CmdLine, CursorPos) abort	" {{{2
-    if !exists('s:links')
-	let s:links = glob(g:Elinkdir.'*.lnk', 0, 1)
-	call map(s:links, 'fnamemodify(v:val, ":t:r")')
-	let s:links = join(s:links, "\n")
-    endif
+export def Ecomplete(L: string, C: string, P: string): string	# {{{2
+    return glob(g:Elinkdir .. '*.lnk', 0, 1)
+	->map((k, v): string => fnamemodify(v, ':t:r'))
+	->join("\n")
+enddef
 
-    return s:links
-endfunction
+export def SearchOpen(pattern: string,	# {{{1
+	depth: number, with_dir: bool)
+    # find files whose name matches `pattern` under current and sub-directory
+    # within `depth`.
+    var pat = substitute(pattern, '\*', '.*', 'g')
+	->substitute('?', '.', 'g')
+	->substitute('\.', '.', 'g')
+    var result = FindFiles([], pat, '.', depth, with_dir)
+	->map((k, v) => fnamemodify(v, ':.'))
 
-function! utilities#SearchOpen(file, depth, with_dir) abort	" {{{1
-    let l:file = substitute(a:file, '\*', '.*', 'g')
-    let l:file = substitute(l:file, '?', '.', 'g')
-    let l:file = substitute(l:file, '\.', '.', 'g')
-    let files = s:FindFiles([], l:file, '.', a:depth, a:with_dir)->map({_,v -> fnamemodify(v, ':.')})
-
-    let length = len(files)
+    var length = len(result)
     if length == 0
-	echo 'file '''.a:file.''' is not found! (within '.a:depth.' levels of depth)'
+	echo $"file '{pattern}' is not found! (within {depth} levels of depth)"
 	return
     endif
 
     for i in range(1, length)
-	echo i.":"  files[i-1]
+	echo $'{i}: {result[i - 1]}'
     endfor
 
-    let choice = input("edit [^C/<num>/all]? ", 1)
-    if choice > 0 && choice <= length
-	exec "e " . fnameescape(files[choice-1])
+    var choice: string = input("edit [^C/<num>/all]? ", '1')
+    var nr: number = str2nr(choice)
+    if nr > 0 && nr <= length
+	exec "e" fnameescape(result[nr - 1])
     elseif choice =~? 'a\%[ll]'
-	exec "0argadd ".join(map(files, 'fnameescape(v:val)'), ' ')
+	exec $"0argadd {map(result, (k, v) => fnameescape(v))->join()}"
 	rewind
     endif
-endfunction
+enddef
 
-function! s:FindFiles(list, file, dir, depth, with_dir) abort	" {{{2
-    if a:depth > 0
-	for f in readdir(a:dir)
-	    if f =~ '^\.' | continue | endif
-	    let fullf = a:dir..'/'..f
+def FindFiles(result: list<string>, pattarn: string,		# {{{2
+	dir: string, depth: number, with_dir: bool): list<string>
+    if depth > 0
+	for f in readdir(dir)
+	    if f[0] == '.' | continue | endif
+
+	    const fullf = $'{dir}/{f}'
 	    if isdirectory(fullf)
-		if !empty(a:with_dir) && f =~ a:file
-		    call add(a:list, fullf)
+		if with_dir && f =~ pattarn
+		    add(result, fullf)
 		endif
-		sil call s:FindFiles(a:list, a:file, fullf, a:depth-1, a:with_dir)
-	    elseif f =~? a:file
-		call add(a:list, fullf)
-	    end
+		sil FindFiles(result, pattarn, fullf, depth - 1, with_dir)
+	    elseif f =~? pattarn
+		add(result, fullf)
+	    endif
 	endfor
     endif
-    return a:list
-endfunction
+    return result
+enddef
 
-function! utilities#BuildHelp() abort	" {{{1
-    let l:save_cwd = getcwd()
-    exec 'lcd '.expand('$HOME/') .. (has('win32') ? 'vimfiles' : '.vim')
+export def BuildHelp()	# {{{1
+    var save_dir = chdir($"$HOME/{has('win32') ? 'vimfiles' : '.vim'}")
+    if empty(save_dir)
+	return
+    endif
 
     echo 'Building help tags for packages...'
+    for txt in glob('pack/**/doc/*.txt', false, true)
+	if filecopy(txt, $'doc/{fnamemodify(txt, ":t")}')
+	    echo "\t" txt
+	else
+	    echo " skip!" txt
+	endif
+    endfor
     sil! helptags doc
-    for l:dir in glob('pack/*/*/*/doc', 0, 1)
-	try
-	    exec "helptags " .. l:dir
-	    echo "\t" .. l:dir
-	catch /^Vim\%((\a\+)\)\=:E/
-	    echo " skip!" matchstr(v:exception, 'E\d*:') l:dir
-	endtry
-    endfor
     echo 'done.'
 
-    echo 'Copying ftdetect files from packages...'
-    let l:ftdetect = glob('pack/*/*/*/ftdetect/*.vim', 0, 1)
-    for l:file in l:ftdetect
-	echo "\t" .. l:file
-	let l:content = readfile(l:file)
-	call writefile(l:content, 'ftdetect/' .. fnamemodify(l:file, ':t'))
-    endfor
-    echo 'done.'
+    chdir(save_dir)
+enddef
 
-    exec 'lcd ' .. fnameescape(l:save_cwd)
-endfunction
+export def SortRegion(beg: string, end: string,	# {{{1
+	keepcase: bool = false)
+    def SortCmp(a: string, b: string, kc: bool): number
+	var trim_a = trim(a)->iconv(&enc, 'chinese')
+	var trim_b = trim(b)->iconv(&enc, 'chinese')
 
-function! utilities#SortRegion(beg, end, keepcase='') abort	" {{{1
-    function! s:SortCmp(a, b, keepcase) abort
-	let l:a = trim(a:a)
-	let l:b = trim(a:b)
-
-	if empty(a:keepcase)
-	    let l:a = toupper(l:a)
-	    let l:b = toupper(l:b)
+	if !kc
+	    trim_a = toupper(trim_a)
+	    trim_b = toupper(trim_b)
 	endif
 
-	return iconv(l:a, &enc, 'chinese') <= iconv(l:b, &enc, 'chinese') ? -1 : 1
-    endfunction
+	return trim_a <= trim_b ? -1 : 1
+    enddef
 
-    let l:text = getline(a:beg, a:end)->sort({a, b -> s:SortCmp(a,b,a:keepcase)})
-    call setline(a:beg, l:text)
-endfunction
+    getline(beg, end)
+	->sort((a, b) => SortCmp(a, b, keepcase))
+	->setline(beg)
+enddef
 
-function utilities#Next(reverse, file) abort	" {{{1
-    " priority: location list > quickfix list > arguments
-    if getloclist(0, #{size: 0}).size > 0
-	let l:prefix = 'l'
-    elseif getqflist(#{size: 0}).size > 0
-	let l:prefix = 'c'
-    else
-	let l:prefix = ''
-    end
+export def Next(reverse: bool, file: bool)	# {{{1
+    # priority: location list > quickfix list > arguments
+    var prefix = ''
+    if getloclist(0, {size: 0}).size > 0
+	prefix = 'l'
+    elseif getqflist({size: 0}).size > 0
+	prefix = 'c'
+    endif
 
-    let l:cmd = a:reverse ? 'N' : 'n'
-    let l:suffix = a:file ? 'file' : 'ext'
+    var cmd = reverse ? 'N' : 'n'
+    var suffix = file ? 'file' : 'ext'
 
     try
-	exec l:prefix..l:cmd..l:suffix
+	exec $'{prefix}{cmd}{suffix}'
     catch /^Vim\%((\a\+)\)\=:E/
-	echohl WarningMsg
-	echom v:exception
-	echohl None
+	echohl WarningMsg | echom v:exception | echohl None
     endtry
-endfunction
+enddef
 
-" utilities#Backspace()	{{{1
-let s:pairs = {
-	\  '"': '"',
-	\  "'": "'",
-	\  '(': ')',
-	\  '[': ']',
-	\  '{': '}',
-	\  '<': '>',
-	\  '（': '）',
-	\  '「': '」',
-	\}
+# Backspace()	{{{1
+var pairs = {
+    '"': '"',
+    "'": "'",
+    '(': ')',
+    '[': ']',
+    '{': '}',
+    '<': '>',
+    '（': '）',
+    '「': '」',
+}
 
-function! utilities#Backspace() abort	" {{{2
-    let line = getline('.')
-    let col = col('.') - 1
-    let char = line[col-1]
+export def Backspace(): string	# {{{2
+    var line = getline('.')
+    var col = col('.') - 1
+    var char = line[col - 1]
 
-    let keys = "\<BS>"
-    if get(s:pairs, char, 'xx') == line[col]
-	let keys .= "\<DEL>"
+    var keys = "\<BS>"
+    if get(pairs, char, 'xx') == line[col]
+	keys ..= "\<DEL>"
     endif
     return keys
-endfunction
+enddef
 
+defcompile
+# utilities.vim	vim: ts=8 sw=4 fdm=marker

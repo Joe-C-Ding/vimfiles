@@ -1,17 +1,19 @@
-" python.vim	vim: ts=8 sw=4
-" Language:	python
-" Maintainer:	Joe Ding
-" Version:	0.1
-" Last Change:	2024-11-30 13:30:59
+vim9script
 
-let b:undo_ftplugin .= 'setl tw< path<'
+# Language:	Python
+# Maintainer:	Joe Ding
+# Version:	0.1
+# Last Change:	2025-04-19 16:34:32
+
+b:undo_ftplugin ..= '|setl tw< path<'
 
 setl tw=80
 
-let pyroot = system('which python')->fnamemodify(':h')->fnameescape()
+var pyroot = system('which python')->fnamemodify(':h')->fnameescape()
 if has('win32')
-    let pyroot = substitute(pyroot, '^/\(.\)/', '\1:/', '')
+    pyroot = substitute(pyroot, '^/\(.\)/', '\1:/', '')
 endif
-exe 'setl path+=' .. pyroot .. '/Lib'
-exe 'setl path+=' .. pyroot .. '/Lib/site-packages'
+exe $'setl path+={pyroot}/Lib'
+exe $'setl path+={pyroot}/Lib/site-packages'
 
+# python.vim	vim: ts=8 sw=4
