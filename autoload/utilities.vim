@@ -2,8 +2,8 @@ vim9script
 
 # Language:	Vim-script
 # Maintainer:	Joe Ding
-# Version:	0.1  
-# Last Change:	2025-05-03 09:47:08
+# Version:	0.1
+# Last Change:	2025-05-03 11:06:52
 
 # Elink()	{{{1
 if get(g:, 'Elinkdir', '') is ''
@@ -34,20 +34,20 @@ export def Elink(lk: string)
     endif
 enddef
 
-export def Ecomplete(L: string, C: string, P: string): string	# {{{2
-    return glob(g:Elinkdir .. '*.lnk', 0, 1)
-	->map((k, v): string => fnamemodify(v, ':t:r'))
+export def Ecomplete(L: string, C: string, P: number): string	# {{{2
+    return glob(g:Elinkdir .. '*.lnk', false, true)
+	->map((k, v) => fnamemodify(v, ':t:r'))
 	->join("\n")
 enddef
 
 export def SearchOpen(pattern: string,	# {{{1
-	depth: number, with_dir: bool)
+	depth: number, with_dir: string)
     # find files whose name matches `pattern` under current and sub-directory
     # within `depth`.
     var pat = substitute(pattern, '\*', '.*', 'g')
 	->substitute('?', '.', 'g')
 	->substitute('\.', '.', 'g')
-    var result = FindFiles([], pat, '.', depth, with_dir)
+    var result = FindFiles([], pat, '.', depth, !!with_dir)
 	->map((k, v) => fnamemodify(v, ':.'))
 
     var length = len(result)
@@ -98,7 +98,7 @@ export def BuildHelp()	# {{{1
     endif
 
     echo 'Building help tags for packages...'
-    for txt in glob('pack/**/doc/*.txt', false, true)
+    for txt in glob('pack/opt/doc/*.txt', false, true)
 	if filecopy(txt, $'doc/{fnamemodify(txt, ":t")}')
 	    echo "\t" txt
 	else

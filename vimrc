@@ -92,9 +92,10 @@ if has('win32')
 	\ E :call utilities#Elink(<q-args>)
 endif
 
-" :S, useful to search files in directory
+" :S useful to search files under current directory
 "   ':3S file_name.txt' will search 'file_name.txt' in current and subdirs
 "   with depth no more than 3.
+" :S! will search files AND directors under current one.
 command -nargs=1 -count=7 -bang
       \ S  :call utilities#SearchOpen(<f-args>, <count>, <q-bang>)
 
@@ -175,6 +176,10 @@ let g:netrw_keepdir = 0
 
 " TEX:	{{{2
 let g:tex_flavor = "latex"
+let g:tex_conceal='abdmgs'
+
+" COMMENT:	{{{2
+packadd! comment
 
 " }}}2
 " others
@@ -201,15 +206,6 @@ let g:airline#extensions#whitespace#checks =
 
 " FENCVIEW:	{{{2
 let g:fencview_autodetect = 1
-
-" CALENDAR:	{{{2
-let g:calendar_mark = 'left-fit'
-let g:calendar_navi = 'both'
-let g:calendar_weeknm = 1 " WK01
-" let g:calendar_weeknm = 2 " WK 1
-" let g:calendar_weeknm = 3 " KW01
-" let g:calendar_weeknm = 4 " KW 1
-" let g:calendar_weeknm = 5 " 1
 
 " UltiSnips:	{{{2
 packadd! ultisnips
