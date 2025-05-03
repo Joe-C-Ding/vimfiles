@@ -23,21 +23,21 @@ $0
 endsnippet
 
 snippet m(  "map()" w
-map(${1:list_or_dict, }{k,v -> ${2:do_what}})$0
+map(${1:list_or_dict, }(k, v) => ${2:do_what})$0
 endsnippet
 
 snippet s(  "sort()" w
-sort(${1:list_or_dict, }{a,b -> ${2:(a-b)}})$0
+sort(${1:list_or_dict, }(a, b) => ${2:(a - b)})$0
 endsnippet
 
 snippet f(  "filter()" w
-filter(${1:list_or_dict, }{k,v -> ${2:do_what}})$0
+filter(${1:list_or_dict, }(k, v) => ${2:do_what})$0
 endsnippet
 
 snippet prof "reltime()" bw
-let ${1:l:start} = reltime()
+var ${1:start} = reltime()
 ${2:do}
-echo 'elapsed:' reltimestr(reltime($1)) 's.'
+echo $'elapsed: {reltimestr(reltime($1))}s.'
 $0
 endsnippet
 
@@ -55,13 +55,19 @@ $1
 endsnippet
 
 snippet def "Add a vim 9 function" bw
-def ${1:FunctionName}(${2:paras})${3:: void}
-	$4
+def ${1:FunctionName}(${2:paras})${3:: ${4:void}}
+	$0
 enddef
 endsnippet
 
 snippet edef "Add a vim 9 export function" bw
-export def ${1:FunctionName}(${2:paras})${3:: void}
-	$4
+export def ${1:FunctionName}(${2:paras})${3:: ${4:void}}
+	$0
+enddef
+endsnippet
+
+snippet edef "Add a vim 9 class static function" bw
+static def ${1:FunctionName}(${2:paras})${3:: ${4:void}}
+	$0
 enddef
 endsnippet

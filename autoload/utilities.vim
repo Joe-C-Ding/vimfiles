@@ -3,7 +3,7 @@ vim9script
 # Language:	Vim-script
 # Maintainer:	Joe Ding
 # Version:	0.1  
-# Last Change:	2025-04-26 08:37:07
+# Last Change:	2025-05-03 09:47:08
 
 # Elink()	{{{1
 if get(g:, 'Elinkdir', '') is ''
@@ -91,6 +91,7 @@ def FindFiles(result: list<string>, pattarn: string,		# {{{2
 enddef
 
 export def BuildHelp()	# {{{1
+    # Copy package docs to ./doc, and build help tags for them.  
     var save_dir = chdir($"$HOME/{has('win32') ? 'vimfiles' : '.vim'}")
     if empty(save_dir)
 	return

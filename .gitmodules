@@ -4,9 +4,6 @@
 [submodule "pack/dist/opt/ultisnips"]
 	path = pack/dist/opt/ultisnips
 	url = https://github.com/SirVer/ultisnips.git
-[submodule "pack/dist/opt/vimtex"]
-	path = pack/dist/opt/vimtex
-	url = https://github.com/lervag/vimtex.git
 [submodule "pack/vimBookmarks"]
 	path = pack/vimBookmarks
 	url = git@github.com:Joe-C-Ding/vimBookmarks.git
