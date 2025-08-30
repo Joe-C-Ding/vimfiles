@@ -17,9 +17,8 @@ endif
 " For vim-8.2, all affected options in vimrc_example.vim are:
 "   backup, undofile, hlsearch, textwidth, and matchit
 " it will source default.vim, and further affects:
-"   backspace, history, ruler, showcmd, wildmenu
-"   ttimeout, ttimeoutlen, display, scrolloff,
-"   incsearch, nrformats, guioptions, mouse, langremap
+"   ruler ttimeout, ttimeoutlen, display, scrolloff, incsearch, nrformats,
+"   guioptions, mouse, langremap
 "   syntax on & filetype on
 " if gvimrc will be sourced after vimrc files, gvimrc_example.vim affects:
 "   cmdheight, mousehide, <S-Insert>
@@ -75,9 +74,9 @@ set noshelltemp
 
 " When possible use + register for copy/paste
 if has('unnamedplus')
-  set clipboard=unnamedplus
+  set clipboard^=unnamedplus
 else
-  set clipboard=unnamed
+  set clipboard^=unnamed
 endif
 
 
