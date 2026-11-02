@@ -3,13 +3,13 @@
 
 " set go at the very beginning, since it affects many behaviors
 " and adjust cpo and fo here too
-set cpo+=FJ fo+=M1j go=Mcdg
+set cpo+=FJ fo+=M1j go=mcdg
 
 " set color and theme at beginning, cause it affects syntax highlight etc.
 " SOLARIZED:
 if has('unix') || has('win32') && has('gui_running')
   set t_Co=256
-  set background=light
+  set background=dark
   colorscheme solarized
 endif
 
@@ -59,6 +59,9 @@ set aw ar hidden ts=8 sw=4 sts=-1
 set smartcase paste splitright autochdir cdhome
 set bsdir=current wildignore=*.bak,*.o,*.e,*~,#*#
 set wildoptions=pum
+
+" MacOS
+set macmeta
 
 " spell checking
 if &t_Co > 16
@@ -225,6 +228,11 @@ packadd! fugitive
 
 "Vader:	{{{2
 packadd! vader
+
+"Smartim:	{{{2
+if has('mac')
+  packadd! smartim
+endif
 "}}}2
 
 

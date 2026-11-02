@@ -10,6 +10,17 @@ if has('win32')
 	sil! set guifont=DejaVu_Sans_Mono:h14
     endtry
     sil! set guifontwide=MS_Gothic:h14
+elseif has('mac')
+    " MacVim seems to remember the window size of last use, so it's good to
+    " set the default size here.
+    set lines=27 columns=85
+
+    try
+	set guifont=DejaVuSansMonoPowerline:h18
+    catch
+	let g:airline_powerline_fonts = 0
+	sil! set guifont=DejaVuSansMono:h18
+    endtry
 else
     sil! set guifont=Monospace\ 14
 endif

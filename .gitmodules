@@ -28,3 +28,6 @@
 [submodule "pack/dist/start/vim-airline-themes"]
 	path = pack/dist/start/vim-airline-themes
 	url = git@github.com:vim-airline/vim-airline-themes.git
+[submodule "pack/dist/start/smartim"]
+	path = pack/dist/start/smartim
+	url = git@github.com:ybian/smartim.git
