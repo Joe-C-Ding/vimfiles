@@ -61,7 +61,9 @@ set bsdir=current wildignore=*.bak,*.o,*.e,*~,#*#
 set wildoptions=pum
 
 " MacOS
-set macmeta
+if has('mac')
+  set macmeta
+endif
 
 " spell checking
 if &t_Co > 16

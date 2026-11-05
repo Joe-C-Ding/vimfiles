@@ -10,6 +10,19 @@ if has('win32')
 	sil! set guifont=DejaVu_Sans_Mono:h14
     endtry
     sil! set guifontwide=MS_Gothic:h14
+
+    " set double width characters.
+    "	circled 1 -- 9 (①--⑨)
+    "	horizontal ellipsis (…)
+    "	black & white star (★, ☆)
+    "	reference mark (※)
+    call setcellwidths([
+		\ [0x2460, 0x2468, 2],
+		\ [0x2026, 0x2026, 2],
+		\ [0x2605, 0x2606, 2],
+		\ [0x203b, 0x203b, 2],
+		\])
+
 elseif has('mac')
     " MacVim seems to remember the window size of last use, so it's good to
     " set the default size here.
